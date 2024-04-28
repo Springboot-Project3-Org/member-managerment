@@ -24,4 +24,9 @@ public class UserController {
     public String changePassword() {
         return "change-password";
     }
+
+    @GetMapping("/home")
+    public String home() {
+        return "user-homepage";
+    }
 }
