@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Register</title>
+  <!-- Font Awesome -->
+  <link
+          th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}"
+          rel="stylesheet"
+  />
+  <!-- Google Fonts -->
+  <link
+          th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}"
+          rel="stylesheet"
+  />
+  <!-- MDB -->
+  <link
+          th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}"
+          rel="stylesheet"
+  />
+  <!--  CSS -->
+  <link
+          th:href="@{css/login.css}"
+          rel="stylesheet"
+  />
+</head>
+<body>
+<!-- Start your project here-->
+<section class="vh-100 bg-image"
+         style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Vui lòng đăng ký tài khoản</h2>
+
+              <form>
+
+                <!-- Member ID input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <input type="text" name="memberID" id="memberID" class="form-control" />
+                  <label class="form-label" for="memberID">Mã thành viên</label>
+                </div>
+
+                <!-- Full Name input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <input type="text" name="fullName" id="fullName" class="form-control" />
+                  <label class="form-label" for="fullName">Họ tên</label>
+                </div>
+
+                <div class="row">
+                  <!-- Faculty input -->
+                  <div class="col-sm-6">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <input type="text" name="faculty" id="faculty" class="form-control" />
+                      <label class="form-label" for="faculty">Khoa</label>
+                    </div>
+                  </div>
+
+                  <!-- Major input -->
+                  <div class="col-sm-6">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <input type="text" name="major" id="major" class="form-control" />
+                      <label class="form-label" for="major">Ngành</label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Phone number input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <input type="text" name="phone" id="phone" class="form-control" />
+                  <label class="form-label" for="phone">Số điện thoại</label>
+                </div>
+
+                <!-- Email input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <input type="email" name="email" id="email" class="form-control" />
+                  <label class="form-label" for="email">Email</label>
+                </div>
+
+                <!-- Password input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <input type="password" name="password" id="password" class="form-control" />
+                  <label class="form-label" for="password">Mật khẩu</label>
+                </div>
+
+                <!-- Repeat Password input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <input type="password" id="repeatPassword" class="form-control" />
+                  <label class="form-label" for="repeatPassword">Nhập lại mật khẩu</label>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                  <button type="button"
+                          data-mdb-button-init data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Đăng ký</button>
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">Đã có tài khoản?
+                  <a th:href="@{login}" class="fw-bold text-body"><u>Đăng nhập</u></a>
+                </p>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End your project here-->
+
+
+<!-- MDB -->
+<script
+        type="text/javascript"
+        th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
+></script>
+<!-- Custom scripts -->
+<script type="text/javascript"></script>
+</body>
+</html>
