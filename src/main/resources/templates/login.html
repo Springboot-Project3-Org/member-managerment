@@ -61,7 +61,7 @@
 
                   <!-- Submit button -->
                   <div class="d-flex justify-content-center">
-                    <button type="button"
+                    <button type="button" id="loginBtn"
                             data-mdb-button-init data-mdb-ripple-init
                             class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
                       Đăng nhập
@@ -91,6 +91,39 @@
         th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
 ></script>
 <!-- Custom scripts -->
-<script type="text/javascript"></script>
+<script>
+  var loginButton = document.getElementById('loginBtn');
+  loginButton.addEventListener('click', () => {
+      var username = document.getElementById('idOrEmail').value;
+      var password = document.getElementById('password').value;
+
+      var loginData = {
+          idOrEmail: username,
+          password: password
+      };
+
+      // send POST request to "/login" endpoint with body: username,password
+      fetch("/loginHandle", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json' // Chỉ định kiểu dữ liệu là JSON
+          },
+          body: JSON.stringify(loginData)
+      })
+          .then(res => res.json())
+          .then(data => {
+              if(data.success === true) {
+                    // link to admin form('/admin?username='+data.username)
+<!--                  window.location.href = '/register';-->
+              }else {
+                  console.log("Đăng nhập không thành công");
+              }
+              alert(data.message);
+          })
+          .catch(error => {
+              console.log("Got some error with fetch request: " + error);
+          })
+  })
+</script>
 </body>
 </html>

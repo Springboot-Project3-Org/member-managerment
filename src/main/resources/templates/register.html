@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                  <button type="button"
+                  <button type="button" id="registerBtn"
                           data-mdb-button-init data-mdb-ripple-init
                           class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
                     Đăng ký
@@ -124,6 +124,56 @@
         th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
 ></script>
 <!-- Custom scripts -->
-<script type="text/javascript"></script>
+<script>
+  var registerButton = document.getElementById('registerBtn');
+  registerButton.addEventListener('click', () => {
+    var memberID = document.getElementById('memberID').value;
+    var fullName = document.getElementById('fullName').value;
+    var faculty = document.getElementById('faculty').value;
+    var major = document.getElementById('major').value;
+    var phone = document.getElementById('phone').value;
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+    var repeatPassword = document.getElementById('repeatPassword').value;
+
+    // Kiểm tra xem mật khẩu có khớp không
+    if (password !== repeatPassword) {
+        console.log("Mật khẩu không khớp");
+        return;
+    }
+
+    var registerData = {
+        memberID: memberID,
+        fullName: fullName,
+        faculty: faculty,
+        major: major,
+        phone: phone,
+        email: email,
+        password: password
+    };
+
+    fetch("/registerHandle", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(registerData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success === false){
+            alert(data.message);
+        }else {
+            alert("Đăng ký thành công");
+            window.location.href = '/login';
+        }
+        console.log(data);
+    })
+    .catch(error => {
+        console.log("error: " + error);
+    });
+});
+
+</script>
 </body>
 </html>

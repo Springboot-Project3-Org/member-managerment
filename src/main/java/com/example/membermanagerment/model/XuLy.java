@@ -21,16 +21,16 @@ public class XuLy {
     @Column(name = "MaTV")
     private BigInteger MaTV;
 
-    @Column(name = "HinhThucXL")
+    @Column(name = "hinh_thucxl")
     private String HinhThucXL;
 
-    @Column(name = "SoTien")
+    @Column(name = "so_tien")
     private Integer SoTien;
 
     @Column(name = "NgayXL")
     private Date NgayXL;
 
-    @Column(name = "TrangThaiXL")
+    @Column(name = "trang_thaixl")
     private int TrangThaiXL;
 
     public XuLy() {
