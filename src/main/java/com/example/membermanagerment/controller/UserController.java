@@ -156,8 +156,8 @@ public class UserController {
                 return response;
             }
         }
-        response.put("success", true);
-        response.put("message", "New password failed");
+        response.put("success", false);
+        response.put("message", "Email doesn't exist");
         return response;
     }
 
