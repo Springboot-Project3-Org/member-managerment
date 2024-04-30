@@ -42,13 +42,13 @@
                             <a class="nav-link" th:href="@{admin}" href="#">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-thanhvien}" >Thành viên</a>
+                            <a class="nav-link" href="#" th:href="@{admin-thanhvien}">Thành viên</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-thietbi}" >Thiết bị</a>
+                            <a class="nav-link" href="#" th:href="@{admin-thietbi}">Thiết bị</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-vipham}" >Vi phạm</a>
+                            <a class="nav-link" href="#" th:href="@{admin-vipham}">Vi phạm</a>
                         </li>
                     </ul>
                     <!-- Left links -->
@@ -97,15 +97,79 @@
             </thead>
             <tbody>
                 <tr>
-                    <td scope="col" >01</td>
-                    <td scope="col" >Vi tính 1</td>
-                    <td scope="col" >Bao xịn</td>
-                    <td><i class="fa fa-info-circle" aria-hidden="true"></i></td>
+                    <td scope="col">01</td>
+                    <td scope="col">Vi tính 1</td>
+                    <td scope="col">Bao xịn</td>
+                    <td>
+                        <i class="fas fa-trash-can fa-2x mx-2"></i>
+                        <i class="edit-btn fas fa-square-pen fa-2x"></i>
+                    </td>
                 </tr>
             </tbody>
         </table>
         <!--            Table -->
     </div>
+    <div style="display: flex;justify-content: right;">
+        <div class="input-group w-50 mx-2">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                aria-describedby="search-addon" />
+            <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
+        </div>
+        <button type="button" class="btn-newThietbi btn btn-outline-primary" data-mdb-ripple-init
+            data-mdb-ripple-color="dark">Thêm</button>
+    </div>
+    <!-- new thiet bi -->
+    <div class="newThietBi"
+        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
+        <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
+            class="rounded">
+            <span class="text-uppercase text-center mt-5 mb-5">Thiết bị mới</span>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Tên thiết bị</span>
+                <input type="text" class="name form-control" aria-label="name" aria-describedby="basic-addon1" />
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-text">Mô tả</span>
+                <textarea class="decription form-control" aria-label="With textarea"></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: right;">
+                <button type="button" class="closeNewThietBi-btn btn btn-link" data-mdb-ripple-init
+                    data-mdb-ripple-color="dark">Hủy</button>
+                <button type="button" class="btn btn-primary" data-mdb-ripple-init>Lưu</button>
+            </div>
+
+        </div>
+    </div>
 </body>
+<script>
+    var newThietBi = document.querySelector('.newThietBi');
+
+    //open form new thietbi
+    var newThietBiBtn = document.querySelector('.btn-newThietbi');
+    newThietBiBtn.addEventListener('click', function () {
+        newThietBi.style.display = ' flex';
+        newThietBi.querySelector('.name').value = ''
+        newThietBi.querySelector('.decription').value = ''
+    })
+
+    //close form new thietbi
+    var closeNewThietBi = document.querySelector('.closeNewThietBi-btn');
+    closeNewThietBi.addEventListener('click', function () {
+        newThietBi.style.display = ' none';
+    })
+    //edit thietbi
+    var editBtn = document.querySelectorAll('.edit-btn')
+    editBtn.forEach(btn => {
+        btn.addEventListener('click', function () {
+            newThietBi.style.display = ' flex';
+            // đưa data tương ứng vào
+            newThietBi.querySelector('.name').value = 'name'
+            newThietBi.querySelector('.decription').value = 'khoa'
+        })
+    });
+
+</script>
 
 </html>

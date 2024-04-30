@@ -42,13 +42,13 @@
                             <a class="nav-link" th:href="@{admin}" href="#">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-thanhvien}" >Thành viên</a>
+                            <a class="nav-link" href="#" th:href="@{admin-thanhvien}">Thành viên</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-thietbi}" >Thiết bị</a>
+                            <a class="nav-link" href="#" th:href="@{admin-thietbi}">Thiết bị</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-vipham}" >Vi phạm</a>
+                            <a class="nav-link" href="#" th:href="@{admin-vipham}">Vi phạm</a>
                         </li>
                     </ul>
                     <!-- Left links -->
@@ -101,40 +101,117 @@
             </thead>
             <tbody>
                 <tr>
-                    <td scope="col" >01</td>
-                    <td scope="col" >Triều đẹp trai</td>
-                    <td scope="col" >CNTT</td>
-                    <td scope="col" >CNTT</td>
-                    <td scope="col" >0999999999</td>
-                    <td scope="col" >cocail</td>
-                    <td scope="col" >trieudeptrai@yahoo.com</td>
-                    <td><i class="fa fa-info-circle" aria-hidden="true"></i></td>
+                    <td scope="col">01</td>
+                    <td scope="col">Triều đẹp trai</td>
+                    <td scope="col">CNTT</td>
+                    <td scope="col">CNTT</td>
+                    <td scope="col">0999999999</td>
+                    <td scope="col">cocail</td>
+                    <td scope="col">trieudeptrai@yahoo.com</td>
+                    <td>
+                        <i class="fas fa-trash-can fa-2x mx-2"></i>
+                        <i class="edit-btn fas fa-square-pen fa-2x"></i>
+                    </td>
                 </tr>
-                <tr>
-                    <td scope="col" >01</td>
-                    <td scope="col" >Triều đẹp trai</td>
-                    <td scope="col" >CNTT</td>
-                    <td scope="col" >CNTT</td>
-                    <td scope="col" >0999999999</td>
-                    <td scope="col" >cocail</td>
-                    <td scope="col" >trieudeptrai@yahoo.com</td>
-                    <td><i class="fa fa-info-circle" aria-hidden="true"></i></td>
-                </tr>
-                <tr>
-                    <td scope="col" >01</td>
-                    <td scope="col" >Triều đẹp trai</td>
-                    <td scope="col" >CNTT</td>
-                    <td scope="col" >CNTT</td>
-                    <td scope="col" >0999999999</td>
-                    <td scope="col" >cocail</td>
-                    <td scope="col" >trieudeptrai@yahoo.com</td>
-                    <td><i class="fa fa-info-circle" aria-hidden="true"></i></td>
-                </tr>
-                
+
             </tbody>
         </table>
         <!--            Table -->
     </div>
+    <!-- button -->
+    <div style="display: flex;justify-content: right;">
+        <div class="input-group w-50 mx-2">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                aria-describedby="search-addon" />
+            <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
+        </div>
+        <button type="button" class="btn-newUser btn btn-outline-primary" data-mdb-ripple-init
+            data-mdb-ripple-color="dark">Thêm</button>
+    </div>
+    <!-- new user -->
+    <div class="newUser"
+        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
+        <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
+            class="rounded">
+            <span class="text-uppercase text-center mt-5 mb-5">Thành viên mới</span>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Tên thành viên</span>
+                <input type="text" class="name form-control" aria-label="Username" aria-describedby="basic-addon1" />
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text " id="basic-addon1">Khoa</span>
+                <input type="text" class="khoa form-control" aria-label="Username" aria-describedby="basic-addon1" />
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text " id="basic-addon1">Ngành</span>
+                <input type="text" class="nganh form-control" aria-label="Username" aria-describedby="basic-addon1" />
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text " id="basic-addon1">Số điện thoại</span>
+                <input type="text" class="phone form-control" aria-label="Username" aria-describedby="basic-addon1" />
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text " id="basic-addon1">Mật khẩu</span>
+                <input type="text" class="password form-control" aria-label="Username"
+                    aria-describedby="basic-addon1" />
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text " id="basic-addon1">Email</span>
+                <input type="text" class="email form-control" placeholder="Recipient's username"
+                    aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                <span class="input-group-text" id="basic-addon2">@gmail.com</span>
+            </div>
+
+            <div style="display: flex; justify-content: right;">
+                <button type="button" class="closeNewUser-btn btn btn-link" data-mdb-ripple-init
+                    data-mdb-ripple-color="dark">Hủy</button>
+                <button type="button" class="btn btn-primary" data-mdb-ripple-init>Lưu</button>
+            </div>
+
+        </div>
+    </div>
 </body>
+
+<script type="text/javascript" src="js/mdb.min.js"></script>
+<script type="text/javascript"></script>
+
+<script>
+    var newUser = document.querySelector('.newUser');
+
+    //open form new user
+    var newUserBtn = document.querySelector('.btn-newUser');
+    newUserBtn.addEventListener('click', function () {
+        newUser.style.display = ' flex';
+        newUser.querySelector('.name').value = ''
+        newUser.querySelector('.khoa').value = ''
+        newUser.querySelector('.nganh').value = ''
+        newUser.querySelector('.phone').value = ''
+        newUser.querySelector('.password').value = ''
+        newUser.querySelector('.email').value = ''
+    })
+
+    //close form new user
+    var closeNewUser = document.querySelector('.closeNewUser-btn');
+    closeNewUser.addEventListener('click', function () {
+        newUser.style.display = ' none';
+    })
+
+    //edit user
+    var editBtn = document.querySelectorAll('.edit-btn')
+    editBtn.forEach(btn => {
+        btn.addEventListener('click', function () {
+            newUser.style.display = ' flex';
+            // đưa data tương ứng vào
+            newUser.querySelector('.name').value = 'name'
+            newUser.querySelector('.khoa').value = 'khoa'
+            newUser.querySelector('.nganh').value = 'nganh'
+            newUser.querySelector('.phone').value = '097858475434'
+            newUser.querySelector('.password').value = '233333'
+            newUser.querySelector('.email').value = 'yantic088'
+        })
+    });
+
+</script>
 
 </html>
