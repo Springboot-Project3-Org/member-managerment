@@ -35,17 +35,23 @@ public class UserController {
         String password = loginData.get("password");
 
         Map<String, Object> response = new HashMap<>();
+        ThanhVien member;
 
-        for(ThanhVien member : thanhVienRepository.findAll()) {
-            String validMaSV = String.valueOf(member.getMaTV());
-            if(member.getEmail().equals(idOrEmail) && member.getPassword().equals(password)
-                || validMaSV.equals(idOrEmail) && member.getPassword().equals(password)) {
-                response.put("success", true);
-                response.put("memberID", member.getMaTV());
-                response.put("message", "Xin chào: "+idOrEmail);
-                return response;
-            }
+        try {
+//            Nếu mà là mã thành viên thì sẽ không có lỗi
+            BigInteger memberID = new BigInteger(idOrEmail);
+            member = thanhVienRepository.findByMaTVAndPassword(memberID, password);
+        } catch (NumberFormatException ex) {
+            member = thanhVienRepository.findByEmailAndPassword(idOrEmail, password);
         }
+
+        if(member != null) {
+            response.put("success", true);
+            response.put("memberID", member.getMaTV());
+            response.put("message", "Xin chào: "+idOrEmail);
+            return response;
+        }
+
         response.put("success", false);
         response.put("message", "Đăng nhập thất bại");
         return response;
@@ -93,26 +99,28 @@ public class UserController {
             response.put("message", "Email is not valid");
             return response;
         } else {
-            for(ThanhVien member : thanhVienRepository.findAll()) {
-                if(memberID.compareTo(member.getMaTV()) == 0) {
-                    response.put("success", false);
-                    response.put("message", "Existed MaTV");
-                    return response;
-                }else if(email.equals(member.getEmail())) {
-                    response.put("success", false);
-                    response.put("message", "Existed email");
-                    return response;
-                }else if(phone.equals(member.getSdt())) {
-                    response.put("success", false);
-                    response.put("message", "Existed phone number");
-                    return response;
-                }
+            if (thanhVienRepository.findById(memberID).isPresent()) {
+                response.put("success", false);
+                response.put("message", "Existed MaTV");
+                return response;
             }
+            if (thanhVienRepository.findByEmail(email) != null) {
+                response.put("success", false);
+                response.put("message", "Existed email");
+                return response;
+            }
+            if (thanhVienRepository.findBySdt(phone) != null) {
+                response.put("success", false);
+                response.put("message", "Existed phone number");
+                return response;
+            }
+
             ThanhVien newMember = new ThanhVien(memberID, fullName, faculty, major, phone, password, email);
             ThanhVien addedMember = thanhVienRepository.save(newMember);
             response.put("success", addedMember != null);
             if (addedMember != null) {
                 response.put("message", "Registration successful");
+                response.put("memberID", memberID);
             } else {
                 response.put("message", "Registration failed");
             }
@@ -133,21 +141,22 @@ public class UserController {
         String email = loginData.get("email");
         Map<String, Object> response = new HashMap<>();
 
-        for(ThanhVien member : thanhVienRepository.findAll()) {
-            if(member.getEmail().equals(email)) {
-                String newPassword = generateRandomPassword();
+        ThanhVien member = thanhVienRepository.findByEmail(email);
 
-                sendNewPasswordByEmail(email, newPassword);
+        if (member != null) {
+            String newPassword = generateRandomPassword();
 
-                member.setPassword(newPassword);
-                thanhVienRepository.save(member);
+            sendNewPasswordByEmail(email, newPassword);
 
-                response.put("email", email);
-                response.put("success", true);
-                response.put("message", "New password sent");
-                return response;
-            }
+            member.setPassword(newPassword);
+            thanhVienRepository.save(member);
+
+            response.put("email", email);
+            response.put("success", true);
+            response.put("message", "New password sent");
+            return response;
         }
+
         response.put("success", false);
         response.put("message", "Email doesn't exist");
         return response;
@@ -181,8 +190,9 @@ public class UserController {
         System.out.println("OKK");
     }
 
-    @GetMapping("/change-password")
-    public String changePassword() {
+    @GetMapping("/change-password/{memberID}")
+    public String changePassword(@PathVariable BigInteger memberID, Model model) {
+        model.addAttribute("memberID", memberID);
         return "change-password";
     }
 
@@ -193,39 +203,37 @@ public class UserController {
         return "user-homepage";
     }
 
-    @PostMapping("/changeHandle")
+    @PostMapping("/changeHandle/{memberID}")
     @ResponseBody
-    public Map<String, Object> changePasswordHandle(@RequestBody Map<String, String> changeData) {
+    public Map<String, Object> changePasswordHandle(@PathVariable BigInteger memberID,
+                                                    @RequestBody Map<String, String> changeData) {
         Map<String, Object> response = new HashMap<>();
 
-        String email = changeData.get("email");
         String oldPassword = changeData.get("oldPassword");
         String newPassword = changeData.get("password");
 
-        for(ThanhVien member : thanhVienRepository.findAll()) {
-            if(member.getEmail().equals(email)) {
-                String currentPassword = member.getPassword();
+        ThanhVien member = thanhVienRepository.findById(memberID).orElse(null);
 
-                if(!currentPassword.equals(oldPassword)) {
-                    response.put("success", false);
-                    response.put("message", "Mật khẩu không khớp với mật khẩu trong email đã gửi(mật khẩu cũ)");
-                    return response;
-                }else {
-                    System.out.println("newpassword: "+newPassword);
-                    member.setPassword(newPassword);
-
-                    System.out.println(member.toString());
-                    thanhVienRepository.save(member);
-
-                    response.put("success", true);
-                    response.put("message", "Đổi mật khẩu thành công");
-                    return response;
-                }
-
-            }
+        if (member == null) {
+            response.put("success", false);
+            response.put("message", "Thành viên không tồn tại");
         }
-        response.put("success", false);
-        response.put("message", "Đổi mật khẩu không thành công");
+
+        String currentPassword = member.getPassword();
+
+        if (!currentPassword.equals(oldPassword)) {
+            response.put("success", false);
+            response.put("message", "Mật khẩu không khớp với mật khẩu cũ");
+        } else {
+            System.out.println("newpassword: " + newPassword);
+            member.setPassword(newPassword);
+
+            System.out.println(member.toString());
+            thanhVienRepository.save(member);
+
+            response.put("success", true);
+            response.put("message", "Đổi mật khẩu thành công");
+        }
         return response;
     }
 }

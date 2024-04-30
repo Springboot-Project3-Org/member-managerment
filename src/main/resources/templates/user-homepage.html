@@ -103,7 +103,7 @@
                   aria-labelledby="navbarDropdownMenuAvatar"
           >
             <li>
-              <a class="dropdown-item" th:href="@{/change-password}">Đổi mật khẩu</a>
+              <a class="dropdown-item" th:href="@{/change-password/{id}(id=${member.maTV})}">Đổi mật khẩu</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">Xem trạng thái vi phạm</a>

@@ -165,7 +165,7 @@
             alert(data.message);
         }else {
             alert("Đăng ký thành công");
-            window.location.href = '/login';
+            window.location.href = `/home/${data.memberID}`;
         }
         console.log(data);
     })
