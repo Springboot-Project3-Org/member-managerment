@@ -22,7 +22,7 @@
   />
   <!--  CSS -->
   <link
-          th:href="@{css/style.css}"
+          th:href="@{/css/style.css}"
           rel="stylesheet"
   />
 </head>
@@ -103,7 +103,7 @@
                 </div>
 
                 <p class="text-center text-muted mt-5 mb-0">Đã có tài khoản?
-                  <a th:href="@{login}" class="fw-bold text-body"><u>Đăng nhập</u></a>
+                  <a th:href="@{/login}" class="fw-bold text-body"><u>Đăng nhập</u></a>
                 </p>
 
               </form>
@@ -138,7 +138,7 @@
 
     // Kiểm tra xem mật khẩu có khớp không
     if (password !== repeatPassword) {
-        console.log("Mật khẩu không khớp");
+        alert("Mật khẩu không khớp");
         return;
     }
 

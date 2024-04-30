@@ -3,21 +3,13 @@ package com.example.membermanagerment.controller;
 import com.example.membermanagerment.model.ThanhVien;
 import com.example.membermanagerment.repository.ThanhVienRepository;
 import com.example.membermanagerment.validate.validate;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.thymeleaf.util.Validate;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -49,7 +41,7 @@ public class UserController {
             if(member.getEmail().equals(idOrEmail) && member.getPassword().equals(password)
                 || validMaSV.equals(idOrEmail) && member.getPassword().equals(password)) {
                 response.put("success", true);
-                response.put("username", idOrEmail);
+                response.put("memberID", member.getMaTV());
                 response.put("message", "Xin chào: "+idOrEmail);
                 return response;
             }
@@ -194,8 +186,10 @@ public class UserController {
         return "change-password";
     }
 
-    @GetMapping("/home")
-    public String home() {
+    @GetMapping("/home/{memberID}")
+    public String home(@PathVariable BigInteger memberID, Model model) {
+        ThanhVien member = thanhVienRepository.findById(memberID).orElse(null);
+        model.addAttribute("member", member);
         return "user-homepage";
     }
 

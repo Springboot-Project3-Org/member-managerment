@@ -22,7 +22,7 @@
   />
 <!--  CSS -->
   <link
-          th:href="@{css/style.css}"
+          th:href="@{/css/style.css}"
           rel="stylesheet"
   />
 </head>
@@ -55,7 +55,7 @@
                   <div class="row mb-4">
                     <div class="col">
                       <!-- Forget Password -->
-                      <a th:href="@{forgot-password}" class="text-body"><u>Quên mật khẩu?</u></a>
+                      <a th:href="@{/forgot-password}" class="text-body"><u>Quên mật khẩu?</u></a>
                     </div>
                   </div>
 
@@ -70,7 +70,7 @@
 
                   <!-- Register buttons -->
                   <p class="text-center text-muted mt-5 mb-0">Không phải là thành viên?
-                    <a th:href="@{register}" class="fw-bold text-body"><u>Đăng ký</u></a>
+                    <a th:href="@{/register}" class="fw-bold text-body"><u>Đăng ký</u></a>
                   </p>
 
                 </form>
@@ -94,15 +94,15 @@
 <script>
   var loginButton = document.getElementById('loginBtn');
   loginButton.addEventListener('click', () => {
-      var username = document.getElementById('idOrEmail').value;
-      var password = document.getElementById('password').value;
+      let username = document.getElementById('idOrEmail').value;
+      let password = document.getElementById('password').value;
 
-      var loginData = {
+      let loginData = {
           idOrEmail: username,
           password: password
       };
 
-      // send POST request to "/login" endpoint with body: username,password
+      // send POST request to "/loginHandle" endpoint with body: username, password
       fetch("/loginHandle", {
           method: 'POST',
           headers: {
@@ -113,12 +113,10 @@
           .then(res => res.json())
           .then(data => {
               if(data.success === true) {
-                    // link to admin form('/admin?username='+data.username)
-<!--                  window.location.href = '/register';-->
-              }else {
-                  console.log("Đăng nhập không thành công");
+                window.location.href = `/home/${data.memberID}`;
+              } else {
+                  alert(data.message);
               }
-              alert(data.message);
           })
           .catch(error => {
               console.log("Got some error with fetch request: " + error);

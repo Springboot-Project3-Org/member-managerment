@@ -24,7 +24,7 @@
 
   <!--  CSS -->
   <link
-          th:href="@{css/style.css}"
+          th:href="@{/css/style.css}"
           rel="stylesheet"
   />
 </head>
@@ -52,7 +52,7 @@
         <!-- Navbar brand -->
         <a class="navbar-brand mt-2 mt-lg-0" href="#">
           <img
-                  th:src="@{image/student-icon.png}"
+                  th:src="@{/image/student-icon.png}"
                   height="15"
                   alt="MDB Logo"
                   loading="lazy"
@@ -61,7 +61,16 @@
         <!-- Left links -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="#">Đặt chỗ mượn thiết bị</a>
+            <a class="nav-link" href="#">Mã TV: <span th:text="${member.maTV}"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Họ tên: <span th:text="${member.hoTen}"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Khoa: <span th:text="${member.khoa}"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Ngành: <span th:text="${member.nganh}"></span></a>
           </li>
         </ul>
         <!-- Left links -->
@@ -82,7 +91,7 @@
                   aria-expanded="false"
           >
             <img
-                    th:src="@{image/default-avatar.jpg}"
+                    th:src="@{/image/default-avatar.jpg}"
                     class="rounded-circle"
                     height="25"
                     alt="Black and White Portrait of a Man"
@@ -94,7 +103,7 @@
                   aria-labelledby="navbarDropdownMenuAvatar"
           >
             <li>
-              <a class="dropdown-item" th:href="@{change-password}">Đổi mật khẩu</a>
+              <a class="dropdown-item" th:href="@{/change-password}">Đổi mật khẩu</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">Xem trạng thái vi phạm</a>
@@ -104,6 +113,9 @@
             </li>
             <li>
               <a class="dropdown-item" href="#">Xem thiết bị đang mượn</a>
+            </li>
+            <li>
+              <a class="dropdown-item" th:href="@{/login}">Đăng xuất</a>
             </li>
           </ul>
         </div>
@@ -193,12 +205,19 @@
 ></script>
 
 <!-- JavaScript -->
-<script type="text/javascript">
-  mdb.Datetimepicker.getInstance(document.getElementById('datetimepickerExample'));
-</script>
+<!--<script type="text/javascript">-->
+<!--  mdb.Datetimepicker.getInstance(document.getElementById('datetimepickerExample'));-->
+<!--</script>-->
 
 <!-- Custom scripts -->
-<script type="text/javascript" th:src="@{js/user-homepage.js}"></script>
+<script>
+  const searchButton = document.getElementById('search-button');
+  const searchInput = document.getElementById('search-input');
+  searchButton.addEventListener('click', () => {
+    const inputValue = searchInput.value;
+    alert(inputValue);
+  });
+</script>
 
 </body>
 </html>
