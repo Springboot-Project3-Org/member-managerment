@@ -271,4 +271,79 @@ public class UserController {
         }
         return response;
     }
+
+    @GetMapping("/violation-status")
+    public String violationStatus(Model model, HttpSession session) {
+//        Lấy maTV từ session
+        Object memberObj = session.getAttribute("memberID");
+//        Nếu không có maTV từ session chuyển hướng sang đăng nhập
+        if (memberObj == null) {
+            return "redirect:/login";
+        }
+
+        BigInteger memberID;
+        try {
+            memberID = new BigInteger(memberObj.toString());
+        } catch (NumberFormatException ex) {
+            return "redirect:/login";
+        }
+
+        ThanhVien member = thanhVienRepository.findById(memberID).orElse(null);
+        if (member == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("member", member);
+
+        return "user-violation-status";
+    }
+
+    @GetMapping("/borrowing-status")
+    public String borrowingStatus(Model model, HttpSession session) {
+//        Lấy maTV từ session
+        Object memberObj = session.getAttribute("memberID");
+//        Nếu không có maTV từ session chuyển hướng sang đăng nhập
+        if (memberObj == null) {
+            return "redirect:/login";
+        }
+
+        BigInteger memberID;
+        try {
+            memberID = new BigInteger(memberObj.toString());
+        } catch (NumberFormatException ex) {
+            return "redirect:/login";
+        }
+
+        ThanhVien member = thanhVienRepository.findById(memberID).orElse(null);
+        if (member == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("member", member);
+
+        return "user-borrowing-status";
+    }
+
+    @GetMapping("/booking-status")
+    public String bookingStatus(Model model, HttpSession session) {
+//        Lấy maTV từ session
+        Object memberObj = session.getAttribute("memberID");
+//        Nếu không có maTV từ session chuyển hướng sang đăng nhập
+        if (memberObj == null) {
+            return "redirect:/login";
+        }
+
+        BigInteger memberID;
+        try {
+            memberID = new BigInteger(memberObj.toString());
+        } catch (NumberFormatException ex) {
+            return "redirect:/login";
+        }
+
+        ThanhVien member = thanhVienRepository.findById(memberID).orElse(null);
+        if (member == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("member", member);
+
+        return "user-booking-status";
+    }
 }

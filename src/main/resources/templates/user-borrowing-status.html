@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Borrowing Status</title>
+    <!-- Font Awesome -->
+    <link
+            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}"
+            rel="stylesheet"
+    />
+
+    <!-- MDB -->
+    <link
+            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}"
+            rel="stylesheet"
+    />
+
+    <!--  CSS -->
+    <link
+            th:href="@{/css/style.css}"
+            rel="stylesheet"
+    />
+</head>
+<body>
+<!-- Start your project here-->
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary fixed-top">
+    <!-- Container wrapper -->
+    <div class="container-fluid px-5">
+        <!-- Toggle button -->
+        <button
+                data-mdb-collapse-init
+                class="navbar-toggler"
+                type="button"
+                data-mdb-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Navbar brand -->
+            <a class="navbar-brand mt-2 mt-lg-0" th:href="@{/home}">
+                <img
+                        th:src="@{/image/student-icon.png}"
+                        height="15"
+                        alt="MDB Logo"
+                        loading="lazy"
+                />
+            </a>
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mã TV: <span th:text="${member.maTV}"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Họ tên: <span th:text="${member.hoTen}"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Khoa: <span th:text="${member.khoa}"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Ngành: <span th:text="${member.nganh}"></span></a>
+                </li>
+            </ul>
+            <!-- Left links -->
+        </div>
+        <!-- Collapsible wrapper -->
+
+        <!-- Right elements -->
+        <div class="d-flex align-items-center">
+
+            <!-- Avatar -->
+            <div class="dropdown">
+                <a
+                        data-mdb-dropdown-init
+                        class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                        href="#"
+                        id="navbarDropdownMenuAvatar"
+                        role="button"
+                        aria-expanded="false"
+                >
+                    <img
+                            th:src="@{/image/default-avatar.jpg}"
+                            class="rounded-circle"
+                            height="25"
+                            alt="Black and White Portrait of a Man"
+                            loading="lazy"
+                    />
+                </a>
+                <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="navbarDropdownMenuAvatar"
+                >
+                    <li>
+                        <a class="dropdown-item" th:href="@{/change-password/{id}(id=${member.maTV})}">Đổi mật khẩu</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:href="@{/violation-status}">Xem trạng thái vi phạm</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:href="@{/booking-status}">Xem đặt chỗ thiết bị</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Xem thiết bị đang mượn</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+
+<!-- Main content -->
+<section class="min-vh-100 bg-image"
+         style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+    <div class="d-flex flex-column align-items-center justify-content-center min-vh-100 gradient-custom-3">
+
+        <!--      Display borrowing -->
+        <div class="card text-center m-4" style="width: 22rem;">
+            <div class="card-header">Thiết bị đang mượn</div>
+            <div class="card-body">
+                <h5 class="card-title">Tên thiết bị</h5>
+                <p class="card-text">Mô tả thiết bị: With supporting text below as a natural lead-in to additional content.</p>
+            </div>
+            <div class="card-footer text-muted">Thời gian mượn</div>
+        </div>
+        <!--      Display borrowing -->
+
+        <!--      Display borrowing -->
+        <div class="card text-center m-4" style="width: 22rem;">
+            <div class="card-header">Thiết bị đang mượn</div>
+            <div class="card-body">
+                <h5 class="card-title">Tên thiết bị</h5>
+                <p class="card-text">Mô tả thiết bị: With supporting text below as a natural lead-in to additional content.</p>
+            </div>
+            <div class="card-footer text-muted">Thời gian mượn</div>
+        </div>
+        <!--      Display borrowing -->
+
+    </div>
+</section>
+<!-- Main content -->
+<!-- End your project here-->
+
+<!-- MDB -->
+<script
+        type="text/javascript"
+        th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
+></script>
+
+<!-- Custom scripts -->
+<script>
+
+</script>
+
+</body>
+</html>
