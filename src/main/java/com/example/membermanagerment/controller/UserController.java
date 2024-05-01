@@ -3,6 +3,7 @@ package com.example.membermanagerment.controller;
 import com.example.membermanagerment.model.ThanhVien;
 import com.example.membermanagerment.repository.ThanhVienRepository;
 import com.example.membermanagerment.validate.validate;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -23,14 +24,52 @@ public class UserController {
 
     @Autowired
     private JavaMailSender emailSender;
+
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home")
+    public String home(Model model, HttpSession session) {
+        Object memberObj = session.getAttribute("memberID");
+        if (memberObj == null) {
+            return "redirect:/login";
+        }
+
+        BigInteger memberID;
+        try {
+            memberID = new BigInteger(memberObj.toString());
+        } catch (NumberFormatException ex) {
+            return "redirect:/login";
+        }
+
+        ThanhVien member = thanhVienRepository.findById(memberID).orElse(null);
+        if (member == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("member", member);
+        return "user-homepage";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // Xóa session
+        session.invalidate();
+
+        return "redirect:/login";
+    }
+
+
     @GetMapping("/login")
-    public String login() {
-        return "login";
+    public String login(HttpSession session) {
+        Object memberObj = session.getAttribute("memberID");
+        return (memberObj != null) ? "redirect:/home" : "login";
     }
 
     @PostMapping("/loginHandle")
     @ResponseBody
-    public Map<String, Object> processLogin(@RequestBody Map<String, String> loginData) {
+    public Map<String, Object> processLogin(@RequestBody Map<String, String> loginData, HttpSession session) {
         String idOrEmail = loginData.get("idOrEmail");
         String password = loginData.get("password");
 
@@ -49,6 +88,8 @@ public class UserController {
             response.put("success", true);
             response.put("memberID", member.getMaTV());
             response.put("message", "Xin chào: "+idOrEmail);
+//            Them memberID vao session
+            session.setAttribute("memberID", member.getMaTV());
             return response;
         }
 
@@ -58,13 +99,14 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String register() {
-        return "register";
+    public String register(HttpSession session) {
+        Object memberObj = session.getAttribute("memberID");
+        return (memberObj == null) ? "register" : "redirect:/home";
     }
 
     @PostMapping("/registerHandle")
     @ResponseBody
-    public Map<String, Object> registerHandle(@RequestBody Map<String, String> loginData) {
+    public Map<String, Object> registerHandle(@RequestBody Map<String, String> loginData, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         String memberIDString = loginData.get("memberID");
         BigInteger memberID = null;
@@ -120,7 +162,8 @@ public class UserController {
             response.put("success", addedMember != null);
             if (addedMember != null) {
                 response.put("message", "Registration successful");
-                response.put("memberID", memberID);
+//                Them memberID vao session
+                session.setAttribute("memberID", memberID);
             } else {
                 response.put("message", "Registration failed");
             }
@@ -151,7 +194,7 @@ public class UserController {
             member.setPassword(newPassword);
             thanhVienRepository.save(member);
 
-            response.put("email", email);
+            response.put("memberID", member.getMaTV());
             response.put("success", true);
             response.put("message", "New password sent");
             return response;
@@ -196,13 +239,6 @@ public class UserController {
         return "change-password";
     }
 
-    @GetMapping("/home/{memberID}")
-    public String home(@PathVariable BigInteger memberID, Model model) {
-        ThanhVien member = thanhVienRepository.findById(memberID).orElse(null);
-        model.addAttribute("member", member);
-        return "user-homepage";
-    }
-
     @PostMapping("/changeHandle/{memberID}")
     @ResponseBody
     public Map<String, Object> changePasswordHandle(@PathVariable BigInteger memberID,
@@ -217,6 +253,7 @@ public class UserController {
         if (member == null) {
             response.put("success", false);
             response.put("message", "Thành viên không tồn tại");
+            return response;
         }
 
         String currentPassword = member.getPassword();
@@ -225,10 +262,8 @@ public class UserController {
             response.put("success", false);
             response.put("message", "Mật khẩu không khớp với mật khẩu cũ");
         } else {
-            System.out.println("newpassword: " + newPassword);
             member.setPassword(newPassword);
 
-            System.out.println(member.toString());
             thanhVienRepository.save(member);
 
             response.put("success", true);

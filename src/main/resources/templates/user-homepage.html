@@ -115,7 +115,7 @@
               <a class="dropdown-item" href="#">Xem thiết bị đang mượn</a>
             </li>
             <li>
-              <a class="dropdown-item" th:href="@{/login}">Đăng xuất</a>
+              <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
             </li>
           </ul>
         </div>
@@ -152,11 +152,12 @@
               <!--            Date time picker -->
               <div class='col-md-4'>
                 <div class="form-outline datetimepicker">
-                  <input type="text" id="datetimepickerExample" class="form-control" />
+                  <input type="text" class="form-control" value="22/12/2020, 14:12:56" id="datetimepickerExample">
                   <label for="datetimepickerExample" class="form-label">Select Date and Time</label>
                 </div>
               </div>
               <!--            Date time picker -->
+
             </div>
 
 <!--            Table -->
@@ -203,11 +204,6 @@
         type="text/javascript"
         th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
 ></script>
-
-<!-- JavaScript -->
-<!--<script type="text/javascript">-->
-<!--  mdb.Datetimepicker.getInstance(document.getElementById('datetimepickerExample'));-->
-<!--</script>-->
 
 <!-- Custom scripts -->
 <script>
