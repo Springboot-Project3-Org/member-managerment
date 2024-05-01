@@ -1,5 +1,6 @@
 package com.example.membermanagerment.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,7 @@ public class ThongTinSD {
     private BigInteger thanhvien;
 
     @Column(name = "MaTB")
+    @JsonIgnore
     private Integer thietbi;
 
     @Column(name = "TGVao")
@@ -33,7 +35,7 @@ public class ThongTinSD {
     @Column(name = "TGTra")
     private Timestamp TGTra;
 
-    @Column(name = "TGDatCho")
+    @Column(name = "tgdat_cho")
     private Timestamp TGDatCho;
 
     public ThongTinSD() {

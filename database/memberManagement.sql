@@ -60,14 +60,14 @@ INSERT INTO `thanhvien` (`MaTV`, `ho_ten`, `Khoa`, `Nganh`, `SDT`,`password`,`em
 CREATE TABLE `thietbi` (
   `MaTB` int(10) NOT NULL,
   `TenTB` varchar(100) NOT NULL,
-  `MoTaTB` text DEFAULT NULL
+  `mo_tatb` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `thietbi`
 --
 
-INSERT INTO `thietbi` (`MaTB`, `TenTB`, `MoTaTB`) VALUES
+INSERT INTO `thietbi` (`MaTB`, `TenTB`, `mo_tatb`) VALUES
 (1, 'Micro', 'Micro không dây MS2023'),
 (2, 'Micro', 'Micro không dây MS2024'),
 (3, 'Bảng điện tử', 'Bản điện tử trình chiếu');
@@ -85,14 +85,14 @@ CREATE TABLE `thongtinsd` (
   `TGVao` datetime DEFAULT NULL,
   `TGMuon` datetime DEFAULT NULL,
   `TGTra` datetime DEFAULT NULL,
-  `TGDatCho` datetime null
+  `tgdat_cho` datetime null
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `thongtinsd`
 --
 
-INSERT INTO `thongtinsd` (`MaTT`, `MaTV`, `MaTB`, `TGVao`, `TGMuon`, `TGTra`,`TGDatCho`) VALUES
+INSERT INTO `thongtinsd` (`MaTT`, `MaTV`, `MaTB`, `TGVao`, `TGMuon`, `TGTra`,`tgdat_cho`) VALUES
 (1, 1120150184, NULL, '2024-01-05 09:00:00', NULL, NULL,NULL),
 (2, 1123330257, 1, NULL, '2024-02-12 10:00:32', '2024-02-12 14:00:00',NULL);
 
@@ -185,11 +185,15 @@ ALTER TABLE `thongtinsd`
   FOREIGN KEY (`MaTV`) REFERENCES `thanhvien` (`MaTV`)
   ON DELETE CASCADE;
 
+  ALTER TABLE `thongtinsd`
+  ADD CONSTRAINT `fk_thongtinsd_MaTB`
+  FOREIGN KEY (`MaTB`) REFERENCES `thietbi` (`MaTB`)
+  ON DELETE CASCADE;
+
 ALTER TABLE `xuly`
   ADD CONSTRAINT `fk_xuly_MaTV`
   FOREIGN KEY (`MaTV`) REFERENCES `thanhvien` (`MaTV`)
   ON DELETE CASCADE;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
