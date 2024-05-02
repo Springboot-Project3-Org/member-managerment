@@ -27,6 +27,7 @@ public class ThietBi {
     @JsonIgnore
     private List<ThongTinSD> thongtinsd;
 
+
     public ThietBi() {
     }
 

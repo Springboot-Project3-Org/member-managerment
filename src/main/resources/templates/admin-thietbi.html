@@ -232,8 +232,9 @@
         })
             .then(res => res.json())
             .then(data => {
+                alert(data.message);
                 if (data.success === true) {
-                    alert(data.message);
+                    window.location.reload();
                 }
             })
             .catch(error => {

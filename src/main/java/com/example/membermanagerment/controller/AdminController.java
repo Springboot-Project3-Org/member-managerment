@@ -1,5 +1,7 @@
     package com.example.membermanagerment.controller;
+    import com.example.membermanagerment.model.ThanhVien;
     import com.example.membermanagerment.model.ThietBi;
+    import com.example.membermanagerment.repository.ThanhVienRepository;
     import com.example.membermanagerment.repository.ThietBiRepository;
     import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@
     import org.springframework.web.bind.annotation.RequestBody;
     import org.springframework.web.bind.annotation.ResponseBody;
 
+    import java.math.BigInteger;
     import java.util.HashMap;
     import java.util.List;
     import java.util.Map;
@@ -19,14 +22,226 @@
         @Autowired
         private ThietBiRepository thietBiRepository;
 
+        @Autowired
+        private ThanhVienRepository thanhVienRepository;
+
         @GetMapping("/admin")
         public String admin() {
             return "admin";
         }
+        // --------------------MEMBER----------------------
         @GetMapping("/admin-thanhvien")
-        public String admin_thanhvien() {
+        public String admin_thanhvien(Model model) {
+            List<ThanhVien> memberList = thanhVienRepository.findAll();
+            model.addAttribute("memberList",memberList);
             return "admin-thanhvien";
         }
+        @PostMapping("/addMember")
+        @ResponseBody
+        public Map<String, Object> addMember(@RequestBody Map<String, String> memberData) {
+            Map<String, Object> response = new HashMap<>();
+
+            if (memberData.get("maTV") == null || memberData.get("maTV").isEmpty() ||
+                    memberData.get("tenTV") == null || memberData.get("tenTV").isEmpty() ||
+                    memberData.get("khoa") == null || memberData.get("khoa").isEmpty() ||
+                    memberData.get("nganh") == null || memberData.get("nganh").isEmpty() ||
+                    memberData.get("sdt") == null || memberData.get("sdt").isEmpty() ||
+                    memberData.get("password") == null || memberData.get("password").isEmpty() ||
+                    memberData.get("email") == null || memberData.get("email").isEmpty()) {
+
+                response.put("success", false);
+                response.put("message", "Không được để trống các trường");
+                return response;
+            }
+
+            BigInteger maTV = new BigInteger(memberData.get("maTV"));
+            String tenTV = memberData.get("tenTV");
+            String khoa = memberData.get("khoa");
+            String nganh = memberData.get("nganh");
+            String sdt = memberData.get("sdt");
+            String password = memberData.get("password");
+            String email = memberData.get("email");
+
+            ThanhVien existingMemberByMaTV = thanhVienRepository.findByMaTV(maTV);
+            ThanhVien existingMemberByEmail = thanhVienRepository.findByEmail(email);
+            ThanhVien existingMemberBySdt = thanhVienRepository.findBySdt(sdt);
+            ThanhVien existingMemberByTenTV = thanhVienRepository.findByHoTen(tenTV);
+
+            if (existingMemberByMaTV != null && !existingMemberByMaTV.getMaTV().equals(maTV)) {
+                response.put("message", "Mã thành viên đã tồn tại");
+                response.put("success", false);
+                return response;
+            }
+            if (existingMemberByEmail != null && !existingMemberByEmail.getMaTV().equals(maTV)) {
+                response.put("message", "Email đã tồn tại");
+                response.put("success", false);
+                return response;
+            }
+            if (existingMemberBySdt != null && !existingMemberBySdt.getMaTV().equals(maTV)) {
+                response.put("message", "Số điện thoại đã tồn tại");
+                response.put("success", false);
+                return response;
+            }
+            if (existingMemberByTenTV != null && !existingMemberByTenTV.getMaTV().equals(maTV)) {
+                response.put("message", "Tên thành viên đã tồn tại");
+                response.put("success", false);
+                return response;
+            }
+
+            ThanhVien newMember = new ThanhVien(maTV, tenTV, khoa, nganh, sdt, password, email);
+            ThanhVien addedMember = thanhVienRepository.save(newMember);
+
+            response.put("success", addedMember != null);
+            if (addedMember != null) {
+                response.put("message", "Thêm thành viên thành công");
+            } else {
+                response.put("message", "Thêm thành viên thất bại");
+            }
+            return response;
+        }
+
+
+        @PostMapping("/editMember")
+        @ResponseBody
+        public Map<String, Object> editMember(@RequestBody Map<String, String> memberData) {
+            Map<String, Object> response = new HashMap<>();
+
+            if (memberData.get("maTV") == null || memberData.get("maTV").isEmpty() ||
+                    memberData.get("tenTV") == null || memberData.get("tenTV").isEmpty() ||
+                    memberData.get("khoa") == null || memberData.get("khoa").isEmpty() ||
+                    memberData.get("nganh") == null || memberData.get("nganh").isEmpty() ||
+                    memberData.get("sdt") == null || memberData.get("sdt").isEmpty() ||
+                    memberData.get("password") == null || memberData.get("password").isEmpty() ||
+                    memberData.get("email") == null || memberData.get("email").isEmpty()) {
+
+                response.put("success", false);
+                response.put("message", "Không được để trống các trường");
+                return response;
+            }
+
+            BigInteger maTV = new BigInteger(memberData.get("maTV"));
+            String tenTV = memberData.get("tenTV");
+            String khoa = memberData.get("khoa");
+            String nganh = memberData.get("nganh");
+            String sdt = memberData.get("sdt");
+            String password = memberData.get("password");
+            String email = memberData.get("email");
+
+            ThanhVien existingMemberByMaTV = thanhVienRepository.findByMaTV(maTV);
+            ThanhVien existingMemberByEmail = thanhVienRepository.findByEmail(email);
+            ThanhVien existingMemberBySdt = thanhVienRepository.findBySdt(sdt);
+            ThanhVien existingMemberByTenTV = thanhVienRepository.findByHoTen(tenTV);
+
+            if (existingMemberByMaTV != null && !existingMemberByMaTV.getMaTV().equals(maTV)) {
+                response.put("message", "Mã thành viên đã tồn tại");
+                response.put("success", false);
+                return response;
+            }
+            if (existingMemberByEmail != null && !existingMemberByEmail.getMaTV().equals(maTV)) {
+                response.put("message", "Email đã tồn tại");
+                response.put("success", false);
+                return response;
+            }
+            if (existingMemberBySdt != null && !existingMemberBySdt.getMaTV().equals(maTV)) {
+                response.put("message", "Số điện thoại đã tồn tại");
+                response.put("success", false);
+                return response;
+            }
+            if (existingMemberByTenTV != null && !existingMemberByTenTV.getMaTV().equals(maTV)) {
+                response.put("message", "Tên thành viên đã tồn tại");
+                response.put("success", false);
+                return response;
+            }
+
+            ThanhVien updateMember = new ThanhVien(maTV, tenTV, khoa, nganh, sdt, password, email);
+            ThanhVien result = thanhVienRepository.save(updateMember);
+
+            response.put("success", result != null);
+            if (result != null) {
+                response.put("message", "Cập nhật thành viên thành công");
+            } else {
+                response.put("message", "Cập nhật thành viên thất bại");
+            }
+            return response;
+        }
+
+        @PostMapping("/getMember")
+        @ResponseBody
+        @JsonIgnoreProperties
+        public ThanhVien getMemberById(@RequestBody Map<String, String> requestData) {
+            BigInteger maTV = new BigInteger(requestData.get("maTV"));
+            ThanhVien thanhvien = thanhVienRepository.findByMaTV(maTV);
+            return thanhvien;
+        }
+
+        @PostMapping("/deleteMember")
+        @ResponseBody
+        public Map<String, Object> deleteMemberById(@RequestBody Map<String, String> memberData) {
+            Map<String, Object> response = new HashMap<>();
+            BigInteger maTV = new BigInteger(memberData.get("maTV"));
+
+            ThanhVien thanhVien = thanhVienRepository.findByMaTV(maTV);
+            if (thanhVien == null) {
+                response.put("success", false);
+                response.put("message", "Không tồn tại thành viên này");
+                return response;
+            }
+
+            try {
+                thanhVienRepository.delete(thanhVien);
+                response.put("success", true);
+                response.put("message", "Xóa thành công");
+            } catch (Exception e) {
+                response.put("success", false);
+                response.put("message", "Xóa thất bại");
+            }
+            return response;
+        }
+
+        // search member
+        @PostMapping("/searchMember")
+        @ResponseBody
+        public List<ThanhVien> searchMember(@RequestBody Map<String, String> searchData) {
+            String searchValue = searchData.get("searchValue");
+            System.out.println("test thu value: "+searchValue);
+            if (searchValue.isEmpty()) {
+                return thanhVienRepository.findAll();
+            }
+            return thanhVienRepository.findByKeyword(searchValue);
+        }
+
+        // search member by year
+        @PostMapping("/searchMemberByYear")
+        @ResponseBody
+        public List<ThanhVien> searchMemberByYear(@RequestBody Map<String, String> searchData) {
+            String searchValue = searchData.get("searchValue");
+            if (searchValue == null || searchValue.isEmpty()) {
+                return thanhVienRepository.findAll();
+            }
+            return thanhVienRepository.findByYear(searchValue);
+        }
+
+        @PostMapping("/deleteAll")
+        @ResponseBody
+        public Map<String, Object> deleteAll(@RequestBody Map<String, String> searchData) {
+            Map<String, Object> response = new HashMap<>();
+
+            String searchValue = searchData.get("searchValue");
+            List<ThanhVien> deletedMembers = thanhVienRepository.findByYear(searchValue);
+
+            if (deletedMembers.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Không tồn tại thành viên nào để xóa");
+                return response;
+            }
+
+            thanhVienRepository.deleteAll(deletedMembers);
+            response.put("success", true);
+            response.put("message", "Xóa thành công ");
+            return response;
+        }
+        // --------------------END MEMBER----------------------
+        // --------------------DEVICE----------------------
         @GetMapping("/admin-thietbi")
         public String admin_thietbi(Model model) {
             List<ThietBi> thietBiList = thietBiRepository.findAll();
@@ -136,6 +351,7 @@
                 List<ThietBi> searchResult = thietBiRepository.findByKeyword(searchValue);
                 return searchResult;
             }
+        // --------------------END DEVICE----------------------
 
 
 

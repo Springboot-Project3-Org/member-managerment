@@ -33,6 +33,54 @@ public class XuLy {
     @Column(name = "trang_thaixl")
     private int TrangThaiXL;
 
+    public int getMaXL() {
+        return MaXL;
+    }
+
+    public void setMaXL(int maXL) {
+        MaXL = maXL;
+    }
+
+    public BigInteger getMaTV() {
+        return MaTV;
+    }
+
+    public void setMaTV(BigInteger maTV) {
+        MaTV = maTV;
+    }
+
+    public String getHinhThucXL() {
+        return HinhThucXL;
+    }
+
+    public void setHinhThucXL(String hinhThucXL) {
+        HinhThucXL = hinhThucXL;
+    }
+
+    public Integer getSoTien() {
+        return SoTien;
+    }
+
+    public void setSoTien(Integer soTien) {
+        SoTien = soTien;
+    }
+
+    public Date getNgayXL() {
+        return NgayXL;
+    }
+
+    public void setNgayXL(Date ngayXL) {
+        NgayXL = ngayXL;
+    }
+
+    public int getTrangThaiXL() {
+        return TrangThaiXL;
+    }
+
+    public void setTrangThaiXL(int trangThaiXL) {
+        TrangThaiXL = trangThaiXL;
+    }
+
     public XuLy() {
     }
 
