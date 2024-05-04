@@ -15,6 +15,7 @@ import java.util.List;
 public class ThanhVien {
     @Id
     @Column(name = "MaTV")
+    @JsonIgnore
     private BigInteger maTV;
 
     @Column(name = "ho_ten")
