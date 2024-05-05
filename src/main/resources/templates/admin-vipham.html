@@ -1,178 +1,246 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Change Password</title>
+    <title>Forgot Password</title>
     <!-- Font Awesome -->
-    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}" rel="stylesheet" />
+    <link
+            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}"
+            rel="stylesheet"
+    />
     <!-- Google Fonts -->
-    <link th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}" rel="stylesheet" />
+    <link
+            th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}"
+            rel="stylesheet"
+    />
     <!-- MDB -->
-    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}" rel="stylesheet" />
+    <link
+            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}"
+            rel="stylesheet"
+    />
     <!--  CSS -->
-    <link th:href="@{css/style.css}" rel="stylesheet" />
+    <link
+            th:href="@{/css/style.css}"
+            rel="stylesheet"
+    />
 </head>
 
 <body>
-    <div>
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-            <!-- Container wrapper -->
-            <div class="container-fluid">
-                <!-- Toggle button -->
-                <button data-mdb-collapse-init class="navbar-toggler" type="button"
+<div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button data-mdb-collapse-init class="navbar-toggler" type="button"
                     data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <i class="fas fa-bars"></i>
+            </button>
 
-                <!-- Collapsible wrapper -->
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Navbar brand -->
-                    <a class="navbar-brand mt-2 mt-lg-0" href="#">
-                        <img src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp" height="15"
-                            alt="MDB Logo" loading="lazy" />
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Navbar brand -->
+                <a class="navbar-brand mt-2 mt-lg-0" href="#">
+                    <img src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp" height="15"
+                         alt="MDB Logo" loading="lazy" />
+                </a>
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{admin}" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{admin-thanhvien}">Thành viên</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{admin-thietbi}">Thiết bị</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{admin-vipham}">Vi phạm</a>
+                    </li>
+                </ul>
+                <!-- Left links -->
+            </div>
+            <!-- Collapsible wrapper -->
+
+            <!-- Right elements -->
+            <div class="d-flex align-items-center">
+                <!-- Avatar -->
+                <div class="dropdown">
+                    <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                       href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
+                             height="25" alt="Black and White Portrait of a Man" loading="lazy" />
                     </a>
-                    <!-- Left links -->
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{admin}" href="#">Dashboard</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                        <li>
+                            <a class="dropdown-item" href="#">My profile</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-thanhvien}">Thành viên</a>
+                        <li>
+                            <a class="dropdown-item" href="#">Settings</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-thietbi}">Thiết bị</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-vipham}">Vi phạm</a>
+                        <li>
+                            <a class="dropdown-item" href="#">Logout</a>
                         </li>
                     </ul>
-                    <!-- Left links -->
                 </div>
-                <!-- Collapsible wrapper -->
-
-                <!-- Right elements -->
-                <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="dropdown">
-                        <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                            href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
-                                height="25" alt="Black and White Portrait of a Man" loading="lazy" />
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-                            <li>
-                                <a class="dropdown-item" href="#">My profile</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Settings</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Right elements -->
             </div>
-            <!-- Container wrapper -->
-        </nav>
-        <!-- Navbar -->
-    </div>
-    <div>
-        <h2 class="text-uppercase text-center mt-5 mb-5">Quản lý vi phạm</h2>
-
-        <!--            Table -->
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Mã</th>
-                    <th scope="col">Mã thành viên</th>
-                    <th scope="col">Hình thức xử lý</th>
-                    <th scope="col">Số tiền</th>
-                    <th scope="col">Ngày xử lý</th>
-                    <th scope="col">Trạng thái</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td scope="col">01</td>
-                    <td scope="col">01</td>
-                    <td scope="col">Đi tù</td>
-                    <td scope="col">1.000.000 đ</td>
-                    <td scope="col">20/12/2021</td>
-                    <td scope="col">Chưa xử lý</td>
-                    <td>
-                        <i class="fas fa-trash-can fa-2x mx-2"></i>
-                        <i class="edit-btn fas fa-square-pen fa-2x"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <!--            Table -->
-    </div>
-    <div style="display: flex;justify-content: right;">
-        <div class="input-group w-50 mx-2">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                aria-describedby="search-addon" />
-            <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
+            <!-- Right elements -->
         </div>
-        <button type="button" class="btn-newViPham btn btn-outline-primary" data-mdb-ripple-init
+        <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+</div>
+<div>
+    <h2 class="text-uppercase text-center mt-5 mb-5">Quản lý vi phạm</h2>
+
+    <!--            Table -->
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Mã thành viên</th>
+            <th scope="col">Hình thức xử lý</th>
+            <th scope="col">Số tiền</th>
+            <th scope="col">Ngày xử lý</th>
+            <th scope="col">Trạng thái</th>
+        </tr>
+        </thead>
+        <tbody id="errorList">
+        <tr th:each="error : ${errorList}">
+            <td scope="col" th:text="${error.MaTV}"></td>
+            <td scope="col" th:text="${error.HinhThucXL}"></td>
+            <td scope="col" th:text="${error.SoTien}"></td>
+            <td scope="col" th:text="${error.NgayXL}"></td>
+            <td scope="col">
+                <span th:if="${error.TrangThaiXL == 1}">Đã giải quyết</span>
+                <span th:if="${error.TrangThaiXL != 1}">Chưa giải quyết</span>
+            </td>
+            <td>
+                <i th:attr="maXL=${error.MaXL}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
+                <i th:attr="maXL=${error.MaXL}" class="edit-btn fas fa-square-pen fa-2x"></i>
+            </td>
+        </tr>
+    </table>
+    <!--            Table -->
+</div>
+<div style="display: flex;justify-content: right;">
+    <div class="input-group w-50 mx-2">
+        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+               aria-describedby="search-addon" />
+        <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
+    </div>
+    <button type="button" class="btn-newViPham btn btn-outline-primary" data-mdb-ripple-init
             data-mdb-ripple-color="dark">Thêm</button>
-    </div>
-    <div class="newViPham"
-        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
-        <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded">
-            <span class="text-uppercase text-center mt-5 mb-5">Vi phạm mới</span>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Mã thành viên</span>
-                <input type="text" class="name form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon1">Hình thức xử lý</span>
-                <input type="text" class="hinhthuc form-control" aria-label="Username"
-                    aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon1">Số tiền</span>
-                <input type="text" class="sotien form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon1">Ngày xử lý</span>
-                <input type="text" class="ngayxuly form-control" aria-label="Username"
-                    aria-describedby="basic-addon1" />
-            </div>
-            <select class="mdb-select">
-                <option value="" disabled selected>Trạng thái</option>
-                <option value="1">Chưa giải quyết</option>
-                <option value="2">Đã giải quyết</option>
-            </select>
-
-            <div style="display: flex; justify-content: right;">
-                <button type="button" class="closeNewViPham-btn btn btn-link" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Hủy</button>
-                <button type="button" class="btn btn-primary" data-mdb-ripple-init>Lưu</button>
-            </div>
-
+</div>
+<!-- New error -->
+<div class="newViPham"
+     style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
+    <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
+         class="rounded">
+        <span class="text-uppercase text-center mt-5 mb-5">Vi phạm mới</span>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">Mã thành viên</span>
+            <input type="text" class="id form-control" aria-label="Username" aria-describedby="basic-addon1" />
         </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text " id="basic-addon1">Hình thức xử lý</span>
+            <input type="text" class="hinhthuc form-control" aria-label="Username"
+                   aria-describedby="basic-addon1" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text " id="basic-addon2">Số tiền</span>
+            <input type="text" class="sotien form-control" aria-label="Username" aria-describedby="basic-addon1" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text " id="basic-addon3">Ngày xử lý</span>
+            <input type="text" class="ngayxuly form-control" aria-label="Username"
+                   aria-describedby="basic-addon1" />
+        </div>
+        <select class="mdb-select status">
+            <option value="0">Chưa giải quyết</option>
+            <option value="1">Đã giải quyết</option>
+        </select>
+
+        <div style="display: flex; justify-content: right;">
+            <button type="button" class="closeNewViPham-btn btn btn-link" data-mdb-ripple-init
+                    data-mdb-ripple-color="dark">Hủy</button>
+            <button type="button" class="btn btn-primary" data-mdb-ripple-init>Lưu</button>
+        </div>
+
     </div>
+</div>
+<!-- update error -->
+<div class="updateViPham"
+     style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
+    <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
+         class="rounded">
+        <span class="text-uppercase text-center mt-5 mb-5">Vi phạm mới</span>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon4">Mã thành viên</span>
+            <input type="text" class="id form-control" aria-label="Username" aria-describedby="basic-addon1" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text " id="basic-addon5">Hình thức xử lý</span>
+            <input type="text" class="hinhthuc form-control" aria-label="Username"
+                   aria-describedby="basic-addon1" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text " id="basic-addon6">Số tiền</span>
+            <input type="text" class="sotien form-control" aria-label="Username" aria-describedby="basic-addon1" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text " id="basic-addon7">Ngày xử lý</span>
+            <input type="text" class="ngayxuly form-control" aria-label="Username"
+                   aria-describedby="basic-addon1" />
+        </div>
+        <select class="mdb-select status">
+            <option value="0">Chưa giải quyết</option>
+            <option value="1">Đã giải quyết</option>
+        </select>
+
+        <div style="display: flex; justify-content: right;">
+            <button type="button" class="closeNewViPham-btn btn btn-link" data-mdb-ripple-init
+                    data-mdb-ripple-color="dark">Hủy</button>
+            <button type="button" class="btn btn-primary" id="saveBtn" data-mdb-ripple-init>Lưu</button>
+        </div>
+
+    </div>
+</div>
 </body>
+<!-- MDB -->
+<script
+        type="text/javascript"
+        th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
+></script>
 <script>
     var newViPham = document.querySelector('.newViPham');
+    var saveButton = document.querySelector('.newViPham .btn-primary');
+    var updateError = document.querySelector('.updateViPham');
+    var editButtons = document.querySelectorAll('.edit-btn');
+    var deleteButtons = document.querySelectorAll('.delete-btn');
+    var searchButton = document.querySelector('.btn-outline-primary');
+
 
     //open form new user
     var newViPhamBtn = document.querySelector('.btn-newViPham');
     newViPhamBtn.addEventListener('click', function () {
         newViPham.style.display = ' flex';
-        newViPham.querySelector('.name').value = ''
+        newViPham.querySelector('.id').value = ''
         newViPham.querySelector('.hinhthuc').value = ''
         newViPham.querySelector('.sotien').value = ''
         newViPham.querySelector('.ngayxuly').value = ''
+
+        var ngayxulyInput = document.querySelector('.ngayxuly');
+        ngayxulyInput.disabled = true;
+
+        var currentDate = new Date();
+        currentDate.setHours(currentDate.getHours() + 7);
+        var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+        ngayxulyInput.value = formattedDate;
     })
 
     //close form new user
@@ -181,16 +249,250 @@
         newViPham.style.display = ' none';
     })
 
-    var editBtn = document.querySelectorAll('.edit-btn')
-    editBtn.forEach(btn => {
-        btn.addEventListener('click', function () {
-            newViPham.style.display = ' flex';
-            // đưa data tương ứng vào
-            newViPham.querySelector('.name').value = '4'
-            newViPham.querySelector('.hinhthuc').value = '4'
-            newViPham.querySelector('.sotien').value = '4'
-            newViPham.querySelector('.ngayxuly').value = '4'
+    // fetch handle
+    searchReload();
+    // add device
+    saveButton.addEventListener('click', () => {
+        var maTV = document.querySelector('.id').value;
+        var hinhthuc = document.querySelector('.hinhthuc').value;
+        var sotien = document.querySelector('.sotien').value;
+        var ngayxuly = document.querySelector('.ngayxuly').value;
+        var status = document.querySelector('.status').value;
+
+        var newErrorData = {
+            maTV: maTV,
+            hinhthuc: hinhthuc,
+            sotien: sotien,
+            ngayxuly: ngayxuly,
+            status: status,
+        };
+
+        fetch("/addError", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newErrorData)
         })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success === true) {
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.log("error: " + error);
+            });
+    });
+
+
+    function searchReload() {
+        var editButtons = document.querySelectorAll('.edit-btn');
+        var deleteButtons = document.querySelectorAll('.delete-btn');
+        //edit error
+        var editBtn = document.querySelectorAll('.edit-btn')
+        editBtn.forEach(btn => {
+            btn.addEventListener('click', function () {
+                var maXL = btn.getAttribute("maXL");
+                fetch('/getError', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ maXL: maXL })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        updateError.style.display = 'flex';
+                        updateError.querySelector('.id').value = data.maTV;
+                        updateError.querySelector('.hinhthuc').value = data.hinhThucXL;
+                        updateError.querySelector('.sotien').value = data.soTien;
+                        var currentDate = new Date(data.ngayXL);
+                        currentDate.setHours(currentDate.getHours() + 7);
+                        var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+                        updateError.querySelector('.ngayxuly').value = formattedDate;
+
+                        var statusSelect = updateError.querySelector('.status');
+
+                        if (data.trangThaiXL == 1) {
+                            statusSelect.selectedIndex = 1;
+                        } else {
+                            statusSelect.selectedIndex = 0;
+                        }
+
+                        var ngayxulyInput = document.querySelector('.updateViPham .ngayxuly');
+                        ngayxulyInput.disabled = true;
+                    })
+                    .catch(error => console.error('Error:', error));
+            })
+        });
+        // edit error
+        editButtons.forEach((btn) => {
+            btn.addEventListener('click', function () {
+                var saveBtn = document.getElementById('saveBtn');
+                saveBtn.addEventListener('click', () => {
+                    var maXL = btn.getAttribute('maXL');
+                    var maTV = document.querySelector('.updateViPham .id').value;
+                    var hinhthuc = document.querySelector('.updateViPham .hinhthuc').value;
+                    var sotien = document.querySelector('.updateViPham .sotien').value;
+                    var ngayxuly = document.querySelector('.updateViPham .ngayxuly').value;
+                    var status = document.querySelector('.updateViPham .status').value;
+
+                    var data = {
+                        maXL: maXL,
+                        maTV: maTV,
+                        hinhthuc: hinhthuc,
+                        sotien: sotien,
+                        ngayxuly: ngayxuly,
+                        status: status
+                    };
+                    console.log(JSON.stringify(data));
+                    fetch('/editError', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            if (data.success === true) {
+                                window.location.reload();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Fetch error:', error);
+                        });
+                });
+            });
+        });
+
+        // delete error
+        deleteButtons.forEach((btn) => {
+            btn.addEventListener('click', function () {
+                if (confirm("Bạn có chắc chắn muốn xóa xử lý này?")) {
+                    var maXL = btn.getAttribute("maXL");
+
+                    fetch("/deleteError", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ maXL: maXL })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            alert(data.message);
+                            if (data.success === true) {
+                                window.location.reload();
+                            }
+                        })
+                        .catch(error => {
+                            console.log("error: " + error);
+                        });
+                }
+            });
+        });
+    }
+
+    // search error
+    searchButton.addEventListener('click', function () {
+        var searchValue = document.querySelector('.form-control.rounded').value;
+
+        var searchData = {
+            searchValue: searchValue
+        };
+        console.log(JSON.stringify(searchData));
+        fetch("/searchError", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(searchData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('errorList').innerHTML = '';
+
+
+                data.forEach(function (error) {
+                    var tr = document.createElement('tr');
+                    var currentDate = new Date(error.ngayXL);
+                    currentDate.setHours(currentDate.getHours() + 7);
+                    var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+                    tr.innerHTML = `
+                    <td>${error.maTV}</td>
+                    <td>${error.hinhThucXL}</td>
+                    <td>${error.soTien === null ? "" : error.soTien}</td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        ${error.trangThaiXL == 1 ? '<span>Đã giải quyết</span>' : '<span>Chưa giải quyết</span>'}
+                    </td>
+                     <td>
+                            <i maXL="${error.maXL}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
+                            <i maXL="${error.maXL}" class="edit-btn fas fa-square-pen fa-2x"></i>
+                     </td>
+                `;
+                    document.getElementById('errorList').appendChild(tr);
+                });
+                searchReload();
+            })
+            .catch(error => {
+                console.log("error: " + error);
+            });
+    });
+
+    // search error(enter)
+    var searchInput = document.querySelector('.form-control.rounded');
+
+    searchInput.addEventListener('keydown', function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+
+            var searchValue = document.querySelector('.form-control.rounded').value;
+
+            var searchData = {
+                searchValue: searchValue
+            };
+            fetch("/searchError", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(searchData)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('errorList').innerHTML = '';
+
+                    data.forEach(function (error) {
+                        var tr = document.createElement('tr');
+                        var currentDate = new Date(error.ngayXL);
+                        currentDate.setHours(currentDate.getHours() + 7);
+                        var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+                        tr.innerHTML = `
+                            <td>${error.maTV}</td>
+                            <td>${error.hinhThucXL}</td>
+                            <td>${error.soTien === null ? "" : error.soTien}</td>
+                            <td>${formattedDate}</td>
+                            <td>
+                                ${error.trangThaiXL == 1 ? '<span>Đã giải quyết</span>' : '<span>Chưa giải quyết</span>'}
+                            </td>
+                            <td>
+                                    <i maXL="${error.maXL}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
+                                    <i maXL="${error.maXL}" class="edit-btn fas fa-square-pen fa-2x"></i>
+                            </td>
+                `;
+                        document.getElementById('errorList').appendChild(tr);
+                    });
+                    searchReload();
+                })
+                .catch(error => {
+                    console.log("error: " + error);
+                });
+        }
     });
 
 </script>

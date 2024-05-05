@@ -1,19 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Change Password</title>
+    <title>Forgot Password</title>
     <!-- Font Awesome -->
-    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}" rel="stylesheet" />
+    <link
+            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}"
+            rel="stylesheet"
+    />
     <!-- Google Fonts -->
-    <link th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}" rel="stylesheet" />
+    <link
+            th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}"
+            rel="stylesheet"
+    />
     <!-- MDB -->
-    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}" rel="stylesheet" />
+    <link
+            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}"
+            rel="stylesheet"
+    />
     <!--  CSS -->
-    <link th:href="@{css/style.css}" rel="stylesheet" />
+    <link
+            th:href="@{/css/style.css}"
+            rel="stylesheet"
+    />
 </head>
 
 <body>
@@ -83,8 +95,59 @@
     </nav>
     <!-- Navbar -->
 </div>
-<div>
+<div class="container">
     <h2 class="text-uppercase text-center mt-5 mb-5">Quản lý thành viên</h2>
+
+<!--    Search and Add Btn -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group">
+                <!-- Search input -->
+                <div class="form-outline" data-mdb-input-init>
+                    <input type="search" id="search" class="form-control" />
+                    <label class="form-label" for="search">Search</label>
+                </div>
+                <!-- Search input -->
+
+<!--                Btn search -->
+                <button type="button" id="searchBtn" class="btn btn-primary" data-mdb-ripple-init>
+                    <i class="fas fa-search"></i>
+                </button>
+<!--                Btn search -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn-newUser btn btn-outline-primary" data-mdb-ripple-init
+                    data-mdb-ripple-color="dark">Thêm</button>
+        </div>
+    </div>
+    <!--    Search and Add Btn -->
+
+    <!-- search by year -->
+    <div class="row my-3">
+        <div class="col-md-4">
+            <div class="input-group">
+                <!-- Search by year input -->
+                <div class="form-outline" data-mdb-input-init>
+                    <input type="search" id="searchByYear" class="form-control" />
+                    <label class="form-label" for="searchByYear">Search by year</label>
+                </div>
+                <!-- Search by year input -->
+
+                <!--                Btn search by year  -->
+                <button type="button" id="searchByYearBtn" class="btn btn-primary" data-mdb-ripple-init>
+                    <i class="fas fa-search"></i>
+                </button>
+                <!--                Btn search by year -->
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <button id="deleteAllButton" type="button" class="btn btn-outline-primary"
+                    data-mdb-ripple-init data-mdb-ripple-color="dark">Xóa tất cả</button>
+        </div>
+    </div>
+    <!-- search by year -->
 
     <!--            Table -->
     <table class="table table-striped table-hover">
@@ -118,26 +181,8 @@
     </table>
     <!--            Table -->
 </div>
-<!-- button -->
-<div style="display: flex;justify-content: right;">
-    <div class="input-group w-50 mx-2">
-        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-               aria-describedby="search-addon" />
-        <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
-    </div>
-    <button type="button" class="btn-newUser btn btn-outline-primary" data-mdb-ripple-init
-            data-mdb-ripple-color="dark">Thêm</button>
-</div>
-<!-- search by year -->
-<div style="display: flex;justify-content: right;">
-    <div class="input-group w-50 mx-2">
-        <input type="search" class="form-control1 rounded" placeholder="Search by year" aria-label="Search"
-               aria-describedby="search-addon" />
-        <button type="button" class="btn btn-outline-primary1" data-mdb-ripple-init>search</button>
-        <button id="deleteAllButton" type="button" class="btn-deleteAll btn btn-outline-primary"
-                data-mdb-ripple-init data-mdb-ripple-color="dark">Xóa tất cả</button>
-    </div>
-</div>
+
+
 <!-- new user -->
 <div class="newUser"
      style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
@@ -230,22 +275,27 @@
 </div>
 </body>
 
-<script type="text/javascript" src="js/mdb.min.js"></script>
 <script type="text/javascript"></script>
+<!-- MDB -->
+<script
+        type="text/javascript"
+        th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
+></script>
 
 <script>
-    var newUser = document.querySelector('.newUser');
-    var updateUser = document.querySelector('.updateUser');
-    var saveButton = document.querySelector('.newUser .btn-primary');
-    var editButtons = document.querySelectorAll('.edit-btn');
-    var deleteButtons = document.querySelectorAll('.delete-btn');
-    var searchButton = document.querySelector('.btn-outline-primary');
-    var searchButtonYear = document.querySelector('.btn-outline-primary1');
-    var searchInputYear = document.querySelector('.form-control1.rounded');
-    var deleteAll = document.getElementById('deleteAllButton');
+    let newUser = document.querySelector('.newUser');
+    let updateUser = document.querySelector('.updateUser');
+    let saveButton = document.querySelector('.newUser .btn-primary');
+    let editButtons = document.querySelectorAll('.edit-btn');
+    let deleteButtons = document.querySelectorAll('.delete-btn');
+    let searchButton = document.getElementById('searchBtn');
+    let searchButtonYear = document.getElementById('searchByYearBtn');
+    let searchInputYear = document.getElementById('searchByYear');
+    let deleteAll = document.getElementById('deleteAllButton');
+    let searchInput = document.getElementById('search');
 
     //open form new user
-    var newUserBtn = document.querySelector('.btn-newUser');
+    let newUserBtn = document.querySelector('.btn-newUser');
     newUserBtn.addEventListener('click', function () {
         newUser.style.display = ' flex';
         newUser.querySelector('.name').value = ''
@@ -257,24 +307,24 @@
     })
 
     //close form new user
-    var closeNewUser = document.querySelector('.closeNewUser-btn');
+    let closeNewUser = document.querySelector('.closeNewUser-btn');
     closeNewUser.addEventListener('click', function () {
         newUser.style.display = ' none';
     })
 
     // fetch handle
     searchReload();
-    // add device
+    // add member
     saveButton.addEventListener('click', () => {
-        var maTV = document.querySelector('.id').value;
-        var tenTV = document.querySelector('.name').value;
-        var khoa = document.querySelector('.khoa').value;
-        var nganh = document.querySelector('.nganh').value;
-        var sdt = document.querySelector('.phone').value;
-        var password = document.querySelector('.password').value;
-        var email = document.querySelector('.email').value;
+        let maTV = document.querySelector('.id').value;
+        let tenTV = document.querySelector('.name').value;
+        let khoa = document.querySelector('.khoa').value;
+        let nganh = document.querySelector('.nganh').value;
+        let sdt = document.querySelector('.phone').value;
+        let password = document.querySelector('.password').value;
+        let email = document.querySelector('.email').value;
 
-        var newMemberData = {
+        let newMemberData = {
             maTV: maTV,
             tenTV: tenTV,
             khoa: khoa,
@@ -283,8 +333,6 @@
             password: password,
             email: email
         };
-
-        console.log(newMemberData);
 
         fetch("/addMember", {
             method: 'POST',
@@ -307,9 +355,9 @@
 
     // search device
     searchButton.addEventListener('click', function () {
-        var searchValue = document.querySelector('.form-control.rounded').value;
+        let searchValue = searchInput.value;
 
-        var searchData = {
+        let searchData = {
             searchValue: searchValue
         };
         console.log(JSON.stringify(searchData));
@@ -325,7 +373,8 @@
                 document.getElementById('memberList').innerHTML = '';
 
                 data.forEach(function (member) {
-                    var tr = document.createElement('tr');
+                    console.log("test: "+JSON.stringify(member));
+                    let tr = document.createElement('tr');
                     tr.innerHTML = `
                     <td>${member.maTV}</td>
                     <td>${member.hoTen}</td>
@@ -348,59 +397,19 @@
             });
     });
 
-    // search device(enter)
-    var searchInput = document.querySelector('.form-control.rounded');
-
+    // search member(enter)
     searchInput.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
-
-            var searchValue = document.querySelector('.form-control.rounded').value;
-
-            var searchData = {
-                searchValue: searchValue
-            };
-            fetch("/searchDevice", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(searchData)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('memberList').innerHTML = '';
-
-                    data.forEach(function (member) {
-                        var tr = document.createElement('tr');
-                        tr.innerHTML = `
-                        <td>${member.maTV}</td>
-                        <td>${member.hoTen}</td>
-                        <td>${member.khoa}</td>
-                        <td>${member.nganh}</td>
-                        <td>${member.sdt}</td>
-                        <td>${member.password}</td>
-                        <td>${member.email}</td>
-                        <td>
-                            <i maTV="${member.maTV}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
-                            <i maTV="${member.maTV}" class="edit-btn fas fa-square-pen fa-2x"></i>
-                        </td>
-                    `;
-                        document.getElementById('deviceList').appendChild(tr);
-                    });
-                    searchReload();
-                })
-                .catch(error => {
-                    console.log("error: " + error);
-                });
+            searchButton.click();
         }
     });
 
     // search by year
     searchButtonYear.addEventListener('click', function () {
-        var searchValue = searchInputYear.value;
+        let searchValue = searchInputYear.value;
 
-        var searchData = {
+        let searchData = {
             searchValue: searchValue
         };
 
@@ -416,7 +425,7 @@
                 document.getElementById('memberList').innerHTML = '';
 
                 data.forEach(function (member) {
-                    var tr = document.createElement('tr');
+                    let tr = document.createElement('tr');
                     tr.innerHTML = `
                 <td>${member.maTV}</td>
                 <td>${member.hoTen}</td>
@@ -439,10 +448,18 @@
             });
     });
 
-    deleteAll.addEventListener("click", function () {
-        var searchValue = searchInputYear.value;
+    // search by year(enter)
+    searchInputYear.addEventListener('keydown', function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            searchButtonYear.click();
+        }
+    });
 
-        var searchData = {
+    deleteAll.addEventListener("click", function () {
+        let searchValue = searchInputYear.value;
+
+        let searchData = {
             searchValue: searchValue
         };
         if (confirm("Bạn có chắc chắn muốn xóa hết?")) {
@@ -467,13 +484,13 @@
     });
 
     function searchReload() {
-        var editButtons = document.querySelectorAll('.edit-btn');
-        var deleteButtons = document.querySelectorAll('.delete-btn');
+        let editButtons = document.querySelectorAll('.edit-btn');
+        let deleteButtons = document.querySelectorAll('.delete-btn');
         //edit user
-        var editBtn = document.querySelectorAll('.edit-btn')
+        let editBtn = document.querySelectorAll('.edit-btn')
         editBtn.forEach(btn => {
             btn.addEventListener('click', function () {
-                var maTV = btn.getAttribute("maTV");
+                let maTV = btn.getAttribute("maTV");
                 fetch('/getMember', {
                     method: 'POST',
                     headers: {
@@ -497,17 +514,17 @@
         // edit device
         editButtons.forEach((btn) => {
             btn.addEventListener('click', function () {
-                var saveBtn = document.getElementById('saveBtn');
+                let saveBtn = document.getElementById('saveBtn');
                 saveBtn.addEventListener('click', () => {
-                    var maTV = btn.getAttribute('maTV');
-                    var tenTV = document.querySelector('.updateUser .name').value;
-                    var khoa = document.querySelector('.updateUser .khoa').value;
-                    var nganh = document.querySelector('.updateUser .nganh').value;
-                    var sdt = document.querySelector('.updateUser .phone').value;
-                    var password = document.querySelector('.updateUser .password').value;
-                    var email = document.querySelector('.updateUser .email').value;
+                    let maTV = btn.getAttribute('maTV');
+                    let tenTV = document.querySelector('.updateUser .name').value;
+                    let khoa = document.querySelector('.updateUser .khoa').value;
+                    let nganh = document.querySelector('.updateUser .nganh').value;
+                    let sdt = document.querySelector('.updateUser .phone').value;
+                    let password = document.querySelector('.updateUser .password').value;
+                    let email = document.querySelector('.updateUser .email').value;
 
-                    var data = {
+                    let data = {
                         maTV: maTV,
                         tenTV: tenTV,
                         khoa: khoa,
@@ -543,7 +560,7 @@
         deleteButtons.forEach((btn) => {
             btn.addEventListener('click', function () {
                 if (confirm("Bạn có chắc chắn muốn xóa thành viên này?")) {
-                    var maTV = btn.getAttribute("maTV");
+                    let maTV = btn.getAttribute("maTV");
 
                     fetch("/deleteMember", {
                         method: 'POST',

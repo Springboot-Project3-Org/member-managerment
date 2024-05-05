@@ -8,6 +8,25 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
+import java.util.List;
+
 @Repository
+<<<<<<< HEAD
 public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer> {   
+=======
+public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer> {
+    @Query("select max(ttsd.MaTT) + 1 from ThongTinSD ttsd")
+    Integer getMax();
+    ThongTinSD findByThanhvien(BigInteger thanhvien);
+    @Query("SELECT ttsd FROM ThongTinSD ttsd WHERE " +
+            "ttsd.MaTT LIKE CONCAT('%', :keyword, '%') " +
+            "OR ttsd.thanhvien LIKE CONCAT('%', :keyword, '%') " +
+            "OR ttsd.thietbi LIKE CONCAT('%', :keyword, '%') " +
+            "OR ttsd.TGVao LIKE CONCAT('%', :keyword, '%') " +
+            "OR ttsd.TGMuon LIKE CONCAT('%', :keyword, '%') " +
+            "OR ttsd.TGTra LIKE CONCAT('%', :keyword, '%') " +
+            "OR ttsd.TGDatCho LIKE CONCAT('%', :keyword, '%') ")
+    List<ThongTinSD> findByKeyword(String keyword);
+>>>>>>> 2e35bac254a31c472d4b585598d5c8a47d7a32b2
 }

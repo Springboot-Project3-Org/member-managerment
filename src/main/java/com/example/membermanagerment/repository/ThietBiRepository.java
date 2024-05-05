@@ -12,6 +12,13 @@ public interface ThietBiRepository extends JpaRepository<ThietBi, Integer> {
     @Query("select max(tb.MaTB) + 1 from ThietBi tb")
     Integer getMax();
     ThietBi findByTenTB(String tenTB);
-    @Query("SELECT tb FROM ThietBi tb WHERE tb.tenTB LIKE %:keyword% OR tb.moTaTB LIKE %:keyword%")
+    @Query("SELECT tb FROM ThietBi tb WHERE " +
+    "tb.MaTB LIKE CONCAT('%', :keyword, '%') " +
+    "OR tb.tenTB LIKE CONCAT('%', :keyword, '%') " +
+    "OR tb.moTaTB LIKE CONCAT('%', :keyword, '%')")
     List<ThietBi> findByKeyword(String keyword);
+    @Query("SELECT tb FROM ThietBi tb WHERE " +
+    "tb.MaTB LIKE CONCAT('%', :keyword, '%') ")
+    List<ThietBi> findByKeyword1(String keyword);
+
 }

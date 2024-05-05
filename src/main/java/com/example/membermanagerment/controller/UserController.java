@@ -7,7 +7,15 @@ import com.example.membermanagerment.model.XuLy;
 import com.example.membermanagerment.repository.ThanhVienRepository;
 import com.example.membermanagerment.repository.ThietBiRepository;
 import com.example.membermanagerment.repository.ThongTinSDRepository;
+<<<<<<< HEAD
+=======
+import com.example.membermanagerment.repository.XuLyRepository;
+>>>>>>> 2e35bac254a31c472d4b585598d5c8a47d7a32b2
 import com.example.membermanagerment.validate.validate;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +31,7 @@ import java.security.SecureRandom;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.List;
 
@@ -37,10 +46,21 @@ public class UserController {
     private ThietBiRepository thietBiRepository;
 
     @Autowired
+<<<<<<< HEAD
     private ThongTinSDRepository thongTinSDRepository;
 
     private ThietBi thietbi;
     private ThongTinSD thongTinSD;
+=======
+    private ThongTinSDRepository ThongTinSDRepository;
+
+    @Autowired
+        private XuLyRepository xuLyRepository;
+
+    @Autowired
+        private ThietBiRepository ThietBiRepository;
+
+>>>>>>> 2e35bac254a31c472d4b585598d5c8a47d7a32b2
     @GetMapping("/")
     public String index() {
         return "redirect:/home";
@@ -371,6 +391,9 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
+        String mssv = memberID.toString();
+        List<XuLy> errorList = xuLyRepository.findByKeyword(mssv);
+        model.addAttribute("errorList",errorList);
 
         return "user-violation-status";
     }
@@ -397,6 +420,23 @@ public class UserController {
         }
         model.addAttribute("member", member);
 
+        String mssv = memberID.toString();
+        List<ThongTinSD> borrowingList = ThongTinSDRepository.findByKeyword(mssv);
+        model.addAttribute("borrowingList",borrowingList);
+        
+        for(ThongTinSD ttsd: borrowingList){
+            String matb;
+            matb = ttsd.getThietbi().toString();
+            List<ThietBi> thietbiList = ThietBiRepository.findByKeyword1(matb);
+            model.addAttribute("thietbiList",thietbiList);
+
+            if(ttsd.getTGMuon() == null){
+                model.addAttribute("bookingList",null);
+                model.addAttribute("thietbiList",null);
+            }
+        }
+        
+
         return "user-borrowing-status";
     }
     @GetMapping("/booking-status")
@@ -420,6 +460,23 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
+
+        String mssv = memberID.toString();
+        List<ThongTinSD> bookingList = ThongTinSDRepository.findByKeyword(mssv);
+        model.addAttribute("bookingList",bookingList);
+        
+        for(ThongTinSD ttsd: bookingList){
+            String matb;
+            matb = ttsd.getThietbi().toString();
+            List<ThietBi> thietbiList = ThietBiRepository.findByKeyword1(matb);
+            model.addAttribute("thietbiList",thietbiList);
+
+            if(ttsd.getTGDatCho() == null){
+                model.addAttribute("bookingList",null);
+                model.addAttribute("thietbiList",null);
+            }
+        }
+
 
         return "user-booking-status";
     }
