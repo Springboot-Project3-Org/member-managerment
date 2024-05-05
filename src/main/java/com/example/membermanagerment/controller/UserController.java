@@ -1,8 +1,18 @@
 package com.example.membermanagerment.controller;
 
 import com.example.membermanagerment.model.ThanhVien;
+import com.example.membermanagerment.model.ThietBi;
+import com.example.membermanagerment.model.ThongTinSD;
+import com.example.membermanagerment.model.XuLy;
 import com.example.membermanagerment.repository.ThanhVienRepository;
+import com.example.membermanagerment.repository.ThietBiRepository;
+import com.example.membermanagerment.repository.ThongTinSDRepository;
+import com.example.membermanagerment.repository.XuLyRepository;
 import com.example.membermanagerment.validate.validate;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -15,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -24,6 +35,15 @@ public class UserController {
 
     @Autowired
     private JavaMailSender emailSender;
+
+    @Autowired
+    private ThongTinSDRepository ThongTinSDRepository;
+
+    @Autowired
+        private XuLyRepository xuLyRepository;
+
+    @Autowired
+        private ThietBiRepository ThietBiRepository;
 
     @GetMapping("/")
     public String index() {
@@ -293,6 +313,9 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
+        String mssv = memberID.toString();
+        List<XuLy> errorList = xuLyRepository.findByKeyword(mssv);
+        model.addAttribute("errorList",errorList);
 
         return "user-violation-status";
     }
@@ -343,6 +366,20 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
+
+        String mssv = memberID.toString();
+        List<ThongTinSD> bookingList = ThongTinSDRepository.findByKeyword(mssv);
+        model.addAttribute("bookingList",bookingList);
+        
+        for(ThongTinSD ttsd: bookingList){
+            String matb;
+            if (ttsd.getThietbi() != null) {
+                matb = ttsd.getThietbi().toString();
+                List<ThietBi> thietbiList = ThietBiRepository.findByKeyword(matb);
+                model.addAttribute("thietbiList",thietbiList);
+        }
+        }
+
 
         return "user-booking-status";
     }
