@@ -75,17 +75,17 @@
                 response.put("success", false);
                 return response;
             }
-            if (existingMemberByEmail != null && !existingMemberByEmail.getMaTV().equals(maTV)) {
+            if (existingMemberByEmail != null && !existingMemberByEmail.getEmail().equals(email)) {
                 response.put("message", "Email đã tồn tại");
                 response.put("success", false);
                 return response;
             }
-            if (existingMemberBySdt != null && !existingMemberBySdt.getMaTV().equals(maTV)) {
+            if (existingMemberBySdt != null && !existingMemberBySdt.getSdt().equals(sdt)) {
                 response.put("message", "Số điện thoại đã tồn tại");
                 response.put("success", false);
                 return response;
             }
-            if (existingMemberByTenTV != null && !existingMemberByTenTV.getMaTV().equals(maTV)) {
+            if (existingMemberByTenTV != null && !existingMemberByTenTV.getHoTen().equals(tenTV)) {
                 response.put("message", "Tên thành viên đã tồn tại");
                 response.put("success", false);
                 return response;
@@ -209,6 +209,7 @@
             if (searchValue.isEmpty()) {
                 return thanhVienRepository.findAll();
             }
+            System.out.println(thanhVienRepository.findByKeyword(searchValue));
             return thanhVienRepository.findByKeyword(searchValue);
         }
 

@@ -232,20 +232,25 @@
 
 <script type="text/javascript" src="js/mdb.min.js"></script>
 <script type="text/javascript"></script>
+<!-- MDB -->
+<script
+        type="text/javascript"
+        th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
+></script>
 
 <script>
-    var newUser = document.querySelector('.newUser');
-    var updateUser = document.querySelector('.updateUser');
-    var saveButton = document.querySelector('.newUser .btn-primary');
-    var editButtons = document.querySelectorAll('.edit-btn');
-    var deleteButtons = document.querySelectorAll('.delete-btn');
-    var searchButton = document.querySelector('.btn-outline-primary');
-    var searchButtonYear = document.querySelector('.btn-outline-primary1');
-    var searchInputYear = document.querySelector('.form-control1.rounded');
-    var deleteAll = document.getElementById('deleteAllButton');
+    let newUser = document.querySelector('.newUser');
+    let updateUser = document.querySelector('.updateUser');
+    let saveButton = document.querySelector('.newUser .btn-primary');
+    let editButtons = document.querySelectorAll('.edit-btn');
+    let deleteButtons = document.querySelectorAll('.delete-btn');
+    let searchButton = document.querySelector('.btn-outline-primary');
+    let searchButtonYear = document.querySelector('.btn-outline-primary1');
+    let searchInputYear = document.querySelector('.form-control1.rounded');
+    let deleteAll = document.getElementById('deleteAllButton');
 
     //open form new user
-    var newUserBtn = document.querySelector('.btn-newUser');
+    let newUserBtn = document.querySelector('.btn-newUser');
     newUserBtn.addEventListener('click', function () {
         newUser.style.display = ' flex';
         newUser.querySelector('.name').value = ''
@@ -257,7 +262,7 @@
     })
 
     //close form new user
-    var closeNewUser = document.querySelector('.closeNewUser-btn');
+    let closeNewUser = document.querySelector('.closeNewUser-btn');
     closeNewUser.addEventListener('click', function () {
         newUser.style.display = ' none';
     })
@@ -266,15 +271,15 @@
     searchReload();
     // add device
     saveButton.addEventListener('click', () => {
-        var maTV = document.querySelector('.id').value;
-        var tenTV = document.querySelector('.name').value;
-        var khoa = document.querySelector('.khoa').value;
-        var nganh = document.querySelector('.nganh').value;
-        var sdt = document.querySelector('.phone').value;
-        var password = document.querySelector('.password').value;
-        var email = document.querySelector('.email').value;
+        let maTV = document.querySelector('.id').value;
+        let tenTV = document.querySelector('.name').value;
+        let khoa = document.querySelector('.khoa').value;
+        let nganh = document.querySelector('.nganh').value;
+        let sdt = document.querySelector('.phone').value;
+        let password = document.querySelector('.password').value;
+        let email = document.querySelector('.email').value;
 
-        var newMemberData = {
+        let newMemberData = {
             maTV: maTV,
             tenTV: tenTV,
             khoa: khoa,
@@ -283,8 +288,6 @@
             password: password,
             email: email
         };
-
-        console.log(newMemberData);
 
         fetch("/addMember", {
             method: 'POST',
@@ -307,9 +310,9 @@
 
     // search device
     searchButton.addEventListener('click', function () {
-        var searchValue = document.querySelector('.form-control.rounded').value;
+        let searchValue = document.querySelector('.form-control.rounded').value;
 
-        var searchData = {
+        let searchData = {
             searchValue: searchValue
         };
         console.log(JSON.stringify(searchData));
@@ -325,7 +328,8 @@
                 document.getElementById('memberList').innerHTML = '';
 
                 data.forEach(function (member) {
-                    var tr = document.createElement('tr');
+                    console.log("test: "+JSON.stringify(member));
+                    let tr = document.createElement('tr');
                     tr.innerHTML = `
                     <td>${member.maTV}</td>
                     <td>${member.hoTen}</td>
@@ -348,16 +352,16 @@
             });
     });
 
-    // search device(enter)
-    var searchInput = document.querySelector('.form-control.rounded');
+    // search member(enter)
+    let searchInput = document.querySelector('.form-control.rounded');
 
     searchInput.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
 
-            var searchValue = document.querySelector('.form-control.rounded').value;
+            let searchValue = document.querySelector('.form-control.rounded').value;
 
-            var searchData = {
+            let searchData = {
                 searchValue: searchValue
             };
             fetch("/searchDevice", {
@@ -372,7 +376,7 @@
                     document.getElementById('memberList').innerHTML = '';
 
                     data.forEach(function (member) {
-                        var tr = document.createElement('tr');
+                        let tr = document.createElement('tr');
                         tr.innerHTML = `
                         <td>${member.maTV}</td>
                         <td>${member.hoTen}</td>
@@ -398,9 +402,9 @@
 
     // search by year
     searchButtonYear.addEventListener('click', function () {
-        var searchValue = searchInputYear.value;
+        let searchValue = searchInputYear.value;
 
-        var searchData = {
+        let searchData = {
             searchValue: searchValue
         };
 
@@ -416,7 +420,7 @@
                 document.getElementById('memberList').innerHTML = '';
 
                 data.forEach(function (member) {
-                    var tr = document.createElement('tr');
+                    let tr = document.createElement('tr');
                     tr.innerHTML = `
                 <td>${member.maTV}</td>
                 <td>${member.hoTen}</td>
@@ -440,9 +444,9 @@
     });
 
     deleteAll.addEventListener("click", function () {
-        var searchValue = searchInputYear.value;
+        let searchValue = searchInputYear.value;
 
-        var searchData = {
+        let searchData = {
             searchValue: searchValue
         };
         if (confirm("Bạn có chắc chắn muốn xóa hết?")) {
@@ -467,13 +471,13 @@
     });
 
     function searchReload() {
-        var editButtons = document.querySelectorAll('.edit-btn');
-        var deleteButtons = document.querySelectorAll('.delete-btn');
+        let editButtons = document.querySelectorAll('.edit-btn');
+        let deleteButtons = document.querySelectorAll('.delete-btn');
         //edit user
-        var editBtn = document.querySelectorAll('.edit-btn')
+        let editBtn = document.querySelectorAll('.edit-btn')
         editBtn.forEach(btn => {
             btn.addEventListener('click', function () {
-                var maTV = btn.getAttribute("maTV");
+                let maTV = btn.getAttribute("maTV");
                 fetch('/getMember', {
                     method: 'POST',
                     headers: {
@@ -497,17 +501,17 @@
         // edit device
         editButtons.forEach((btn) => {
             btn.addEventListener('click', function () {
-                var saveBtn = document.getElementById('saveBtn');
+                let saveBtn = document.getElementById('saveBtn');
                 saveBtn.addEventListener('click', () => {
-                    var maTV = btn.getAttribute('maTV');
-                    var tenTV = document.querySelector('.updateUser .name').value;
-                    var khoa = document.querySelector('.updateUser .khoa').value;
-                    var nganh = document.querySelector('.updateUser .nganh').value;
-                    var sdt = document.querySelector('.updateUser .phone').value;
-                    var password = document.querySelector('.updateUser .password').value;
-                    var email = document.querySelector('.updateUser .email').value;
+                    let maTV = btn.getAttribute('maTV');
+                    let tenTV = document.querySelector('.updateUser .name').value;
+                    let khoa = document.querySelector('.updateUser .khoa').value;
+                    let nganh = document.querySelector('.updateUser .nganh').value;
+                    let sdt = document.querySelector('.updateUser .phone').value;
+                    let password = document.querySelector('.updateUser .password').value;
+                    let email = document.querySelector('.updateUser .email').value;
 
-                    var data = {
+                    let data = {
                         maTV: maTV,
                         tenTV: tenTV,
                         khoa: khoa,
@@ -543,7 +547,7 @@
         deleteButtons.forEach((btn) => {
             btn.addEventListener('click', function () {
                 if (confirm("Bạn có chắc chắn muốn xóa thành viên này?")) {
-                    var maTV = btn.getAttribute("maTV");
+                    let maTV = btn.getAttribute("maTV");
 
                     fetch("/deleteMember", {
                         method: 'POST',
