@@ -351,8 +351,13 @@ public class UserController {
             matb = ttsd.getThietbi().toString();
             List<ThietBi> thietbiList = ThietBiRepository.findByKeyword1(matb);
             model.addAttribute("thietbiList",thietbiList);
-        }
 
+            if(ttsd.getTGMuon() == null){
+                model.addAttribute("bookingList",null);
+                model.addAttribute("thietbiList",null);
+            }
+        }
+        
 
         return "user-borrowing-status";
     }
@@ -388,6 +393,11 @@ public class UserController {
             matb = ttsd.getThietbi().toString();
             List<ThietBi> thietbiList = ThietBiRepository.findByKeyword1(matb);
             model.addAttribute("thietbiList",thietbiList);
+
+            if(ttsd.getTGDatCho() == null){
+                model.addAttribute("bookingList",null);
+                model.addAttribute("thietbiList",null);
+            }
         }
 
 
