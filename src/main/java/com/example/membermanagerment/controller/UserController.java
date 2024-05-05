@@ -1,9 +1,15 @@
 package com.example.membermanagerment.controller;
 
 import com.example.membermanagerment.model.ThanhVien;
+import com.example.membermanagerment.model.ThietBi;
+import com.example.membermanagerment.model.ThongTinSD;
+import com.example.membermanagerment.model.XuLy;
 import com.example.membermanagerment.repository.ThanhVienRepository;
+import com.example.membermanagerment.repository.ThietBiRepository;
+import com.example.membermanagerment.repository.ThongTinSDRepository;
 import com.example.membermanagerment.validate.validate;
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -14,8 +20,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -24,14 +33,26 @@ public class UserController {
 
     @Autowired
     private JavaMailSender emailSender;
+    @Autowired 
+    private ThietBiRepository thietBiRepository;
 
+    @Autowired
+    private ThongTinSDRepository thongTinSDRepository;
+
+    private ThietBi thietbi;
+    private ThongTinSD thongTinSD;
     @GetMapping("/")
     public String index() {
         return "redirect:/home";
     }
 
+    /**
+     * @param model
+     * @param session
+     * @return
+     */
     @GetMapping("/home")
-    public String home(Model model, HttpSession session) {
+    public String home(@RequestParam(name = "search", required = false)String search, Model model, HttpSession session) {
         Object memberObj = session.getAttribute("memberID");
         if (memberObj == null) {
             return "redirect:/login";
@@ -49,7 +70,64 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
+        String mssv = memberID.toString();
+        List<ThietBi> thietbiList;
+        if (search == null || search.isEmpty()) {
+            thietbiList = thietBiRepository.findAll();
+        } else {
+            thietbiList = thietBiRepository.findByKeyword(search);
+        }
+        model.addAttribute("thietbiList", thietbiList);
         return "user-homepage";
+    }
+    @RequestMapping(value = {"/home/save"}, method = RequestMethod.POST)
+    public String save(Model model,  HttpSession session , @ModelAttribute("home") ThongTinSD thongTinSD) {
+        Object memberObj = session.getAttribute("memberID");
+        if (memberObj == null) {
+            return "redirect:/login";
+        }
+
+        BigInteger memberID;
+        try {
+            memberID = new BigInteger(memberObj.toString());
+        } catch (NumberFormatException ex) {
+            return "redirect:/login";
+        }
+
+        ThanhVien member = thanhVienRepository.findById(memberID).orElse(null);
+        if (member == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("member", member);
+        String mssv = memberID.toString();
+        BigInteger msSV = new BigInteger(mssv);
+        int maTB = thietbi.getMaTB();
+        Timestamp tgdatcho = thongTinSD.getTGDatCho();
+        ThongTinSD v = new ThongTinSD(msSV, maTB, null, null, null, tgdatcho);
+        ThongTinSD add = thongTinSDRepository.save(v);
+        return "user-homepage";
+    }
+    @PostMapping("/addThongTinSD")
+    @ResponseBody
+    public Map<String, Object> addThongTinSD(@RequestBody Map<String, String> thongtinSD,HttpSession session,Model model) {
+        Map<String, Object> response = new HashMap<>();
+        Object memberObj = session.getAttribute("memberID");
+        BigInteger memberID;
+        memberID = new BigInteger(memberObj.toString());   
+        String mssv = memberID.toString();
+        BigInteger maTV = new BigInteger(mssv);
+        int maTB = Integer.parseInt(thongtinSD.get("maTB"));
+        Timestamp tgdatcho = Timestamp.valueOf(thongtinSD.get("tgdatcho"));
+ 
+        ThongTinSD newSD = new ThongTinSD(maTV,maTB,null,null,null,tgdatcho);
+        ThongTinSD addedDevice = thongTinSDRepository.save(newSD);
+        response.put("success", addedDevice != null);
+        if (addedDevice != null) {
+            response.put("message", "Dat cho thành công");
+        } else {
+            response.put("message", "Dat cho thất bại");
+        }
+        return response;
     }
 
     @GetMapping("/logout")
@@ -321,7 +399,6 @@ public class UserController {
 
         return "user-borrowing-status";
     }
-
     @GetMapping("/booking-status")
     public String bookingStatus(Model model, HttpSession session) {
 //        Lấy maTV từ session

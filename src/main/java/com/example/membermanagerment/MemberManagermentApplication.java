@@ -9,5 +9,5 @@ public class MemberManagermentApplication {
     public static void main(String[] args) {
         SpringApplication.run(MemberManagermentApplication.class, args);
     }
-
+    
 }

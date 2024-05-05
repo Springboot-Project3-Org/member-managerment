@@ -155,11 +155,10 @@
             <div class='col-lg-3'>
               <div class="input-group mb-3">
                 <label class="input-group-text" for="borrowDate">Ngày mượn</label>
-                <input id="borrowDate" class="form-control" type="date" />
+                <input id="borrowDate" class="form-control" type="date"  min="" />
               </div>
             </div>
-
-            <div class='col-lg-3'>
+             <div class='col-lg-3'>
               <div class="input-group mb-3">
                 <label class="input-group-text" for="borrowTime">Giờ mượn</label>
                 <input id="borrowTime" class="form-control" type="time" />
@@ -183,29 +182,16 @@
           <table class="table table-striped table-hover table-fixed">
             <thead>
             <tr>
-              <th scope="col">#</th>
               <th scope="col">Mã thiết bị</th>
               <th scope="col">Tên thiết bị</th>
               <th scope="col">Mô tả</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>Nulla vitae elit libero, a pharetra augue. Cras mattis consectetur purus sit amet fermentum. Vestibulum id ligula porta felis euismod semper.</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
+            <tbody id="thietbiList">
+            <tr th:each="thietbi : ${thietbiList}" >
+                <td scope="col" th:text="${thietbi.MaTB}"th:attr="data-device-id=${thietbi.MaTB}"></td>
+                <td scope="col" th:text="${thietbi.TenTB}"></td>
+                <td scope="col" th:text="${thietbi.MoTaTB}"></td>
             </tr>
             </tbody>
           </table>
@@ -222,31 +208,81 @@
 <script
         type="text/javascript"
         th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
+        
 ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <!-- Custom scripts -->
 <script>
+  var today = new Date().toISOString().split('T')[0];
+  // Đặt ngày hiện tại là giá trị mặc định và ngày tối đa
+  document.getElementById('borrowDate').value = today;  
+  // Đặt ngày hiện tại là ngày tối đa
+  document.getElementById('borrowDate').min = today;
   const searchButton = document.getElementById('search-button');
   const searchInput = document.getElementById('search-input');
-
+  const saveButton = document.getElementById('place-button');
   document.querySelectorAll('tbody > tr').forEach((row) => {
     row.addEventListener('click', (event) => {
       // Xóa class 'table-dark' khỏi dòng
-      let element = document.querySelector('tbody > tr.table-dark');
+      let element = document.querySelector('#thietbiList > tr.table-dark');
       if (element) {
           element.classList.remove('table-dark');
       }
 
       // Thêm class 'table-dark' vào hàng được nhấp
       event.currentTarget.classList.add('table-dark');
+      var maTB = event.currentTarget.querySelector('td').getAttribute("data-device-id");  
+      saveButton.addEventListener("click", function () {
+                // Lấy giá trị ngày và giờ từ các trường input
+        const borrowDateInput = document.getElementById('borrowDate').value;
+        const borrowTimeInput = document.getElementById('borrowTime').value;
+
+        // Kết hợp ngày và giờ thành một chuỗi datetime
+        const dateTimeString = borrowDateInput + ' ' + borrowTimeInput;
+
+        // Sử dụng Moment.js để chuyển đổi chuỗi datetime thành định dạng timestamp
+        const timestampString = moment(dateTimeString).format('YYYY-MM-DD HH:mm:ss');
+
+        console.log("Timestamp:", timestampString);
+
+
+        console.log(maTB)
+        var newdata = {
+          maTB: maTB,
+          tgdatcho: timestampString
+        };
+        console.log(newdata);
+
+        fetch("/addThongTinSD", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newdata)
+        })
+          .then(res => res.json())
+          .then(data => {
+            alert(data.message);
+            if (data.success === true) {
+              window.location.reload();
+            }
+          })
+          .catch(error => {
+            console.log("error: " + error);
+          });
+      });
     });
   });
 
   searchButton.addEventListener('click', () => {
     let inputValue = searchInput.value;
     alert(inputValue);
+    let encodedValue = encodeURIComponent(inputValue); // Mã hóa giá trị nhập liệu
+    window.location.href = '/home?search=' + encodedValue; // Chuyển hướng đến trang /home với tham số search đã mã hóa
   });
-</script>
 
-</body>
-</html>
+  </script>
+
+  </body>
+  </html>
