@@ -277,7 +277,6 @@
 
   searchButton.addEventListener('click', () => {
     let inputValue = searchInput.value;
-    alert(inputValue);
     let encodedValue = encodeURIComponent(inputValue); // Mã hóa giá trị nhập liệu
     window.location.href = '/home?search=' + encodedValue; // Chuyển hướng đến trang /home với tham số search đã mã hóa
   });

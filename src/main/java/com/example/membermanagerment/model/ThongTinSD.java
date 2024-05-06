@@ -94,6 +94,9 @@ public class ThongTinSD {
         this.TGDatCho = TGDatCho;
     }
 
+    public ThongTinSD() {
+    }
+
     public ThongTinSD(BigInteger thanhvien, Integer thietbi, Timestamp TGVao, Timestamp TGMuon, Timestamp TGTra, Timestamp TGDatCho) {
         this.thanhvien = thanhvien;
         this.thietbi = thietbi;

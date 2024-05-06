@@ -31,24 +31,17 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private ThanhVienRepository thanhVienRepository;
-
     @Autowired
     private JavaMailSender emailSender;
     @Autowired 
     private ThietBiRepository thietBiRepository;
-
     @Autowired
     private ThongTinSDRepository thongTinSDRepository;
+    @Autowired
+    private XuLyRepository xuLyRepository;
 
     private ThietBi thietbi;
     private ThongTinSD thongTinSD;
-    private ThongTinSDRepository ThongTinSDRepository;
-
-    @Autowired
-        private XuLyRepository xuLyRepository;
-
-    @Autowired
-        private ThietBiRepository ThietBiRepository;
 
     @GetMapping("/")
     public String index() {
@@ -410,13 +403,13 @@ public class UserController {
         model.addAttribute("member", member);
 
         String mssv = memberID.toString();
-        List<ThongTinSD> borrowingList = ThongTinSDRepository.findByKeyword(mssv);
+        List<ThongTinSD> borrowingList = thongTinSDRepository.findByKeyword(mssv);
         model.addAttribute("borrowingList",borrowingList);
         
         for(ThongTinSD ttsd: borrowingList){
             String matb;
             matb = ttsd.getThietbi().toString();
-            List<ThietBi> thietbiList = ThietBiRepository.findByKeyword1(matb);
+            List<ThietBi> thietbiList = thietBiRepository.findByKeyword1(matb);
             model.addAttribute("thietbiList",thietbiList);
 
             if(ttsd.getTGMuon() == null){
@@ -451,13 +444,13 @@ public class UserController {
         model.addAttribute("member", member);
 
         String mssv = memberID.toString();
-        List<ThongTinSD> bookingList = ThongTinSDRepository.findByKeyword(mssv);
+        List<ThongTinSD> bookingList = thongTinSDRepository.findByKeyword(mssv);
         model.addAttribute("bookingList",bookingList);
         
         for(ThongTinSD ttsd: bookingList){
             String matb;
             matb = ttsd.getThietbi().toString();
-            List<ThietBi> thietbiList = ThietBiRepository.findByKeyword1(matb);
+            List<ThietBi> thietbiList = thietBiRepository.findByKeyword1(matb);
             model.addAttribute("thietbiList",thietbiList);
 
             if(ttsd.getTGDatCho() == null){
