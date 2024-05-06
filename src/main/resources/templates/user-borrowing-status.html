@@ -146,14 +146,13 @@
                             </tr>
                             </thead>
                             <tbody id="thietbiList">
-                            <tr th:each="thietbil : ${thietbiList}">
-                                <td scope="col" th:text="${thietbil.TenTB}"></td>
-                                <td scope="col" th:text="${thietbil.moTaTB}"></td>
-                                <td scope="col">
-                                    <span th:each="borrowing : ${borrowingList}" th:text="${borrowing.TGMuon}"></span>
-                                </td>
-                            </tr>
-                            </tbody>
+                                <tbody id="thietbiList">
+                                    <tr th:each="thietbi : ${thietbiList}">
+                                        <td scope="col" th:text="${thietbi.keySet().iterator().next().getTenTB()}"></td>
+                                        <td scope="col" th:text="${thietbi.keySet().iterator().next().getMoTaTB()}"></td>
+                                        <td scope="col" th:text="${thietbi.values().iterator().next()}"></td>
+                                    </tr>
+                                </tbody>
                         </table>
                         <!--            Table -->
     

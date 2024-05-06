@@ -14,7 +14,7 @@ import java.util.List;
 public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer> {
     @Query("select max(ttsd.MaTT) + 1 from ThongTinSD ttsd")
     Integer getMax();
-    ThongTinSD findByThanhvien(BigInteger thanhvien);
+    //ThongTinSD findByThanhvien(BigInteger thanhvien);
     @Query("SELECT ttsd FROM ThongTinSD ttsd WHERE " +
             "ttsd.MaTT LIKE CONCAT('%', :keyword, '%') " +
             "OR ttsd.thanhvien LIKE CONCAT('%', :keyword, '%') " +
@@ -24,4 +24,8 @@ public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer>
             "OR ttsd.TGTra LIKE CONCAT('%', :keyword, '%') " +
             "OR ttsd.TGDatCho LIKE CONCAT('%', :keyword, '%') ")
     List<ThongTinSD> findByKeyword(String keyword);
+
+
+    List<ThongTinSD> findByThanhvien(BigInteger thanhvien);
+
 }

@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -401,28 +403,21 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
-
-        String mssv = memberID.toString();
-        List<ThongTinSD> borrowingList = thongTinSDRepository.findByKeyword(mssv);
-        model.addAttribute("borrowingList",borrowingList);
-        
-        for(ThongTinSD ttsd: borrowingList){
-            String matb;
-
-            if(ttsd.getThietbi() == null){
-                matb = "";
-            }
-            else {
-                matb = ttsd.getThietbi().toString();
-            } 
-            List<ThietBi> thietbiList = thietBiRepository.findByKeyword1(matb);
-            model.addAttribute("thietbiList",thietbiList);
-
-            if(ttsd.getTGMuon() == null){
-                model.addAttribute("bookingList",null);
-                model.addAttribute("thietbiList",null);
+        List<ThongTinSD> borrowingList = thongTinSDRepository.findByThanhvien(memberID);
+        List<Map<ThietBi, Timestamp>> thietbiList = new ArrayList<>();
+        for (ThongTinSD ttsd : borrowingList) {
+            if (ttsd.getThietbi() != null) {
+                ThietBi getThietBi = thietBiRepository.findById(ttsd.getThietbi()).orElse(null);
+                
+                if (getThietBi != null) {
+                    Map<ThietBi, Timestamp> map = new HashMap<>();
+                    map.put(getThietBi, ttsd.getTGMuon());
+                    thietbiList.add(map);
+                }
             }
         }
+        model.addAttribute("thietbiList",thietbiList.toArray());
+        System.out.println(thietbiList.toArray());
         
 
         return "user-borrowing-status";
@@ -448,30 +443,21 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
-
-        String mssv = memberID.toString();
-        List<ThongTinSD> bookingList = thongTinSDRepository.findByKeyword(mssv);
-        model.addAttribute("bookingList",bookingList);
-        
-        for(ThongTinSD ttsd: bookingList){
-            String matb;
-            
-            if(ttsd.getThietbi() == null){
-                matb = "";
-            }
-            else {
-                matb = ttsd.getThietbi().toString();
-            }
-            List<ThietBi> thietbiList = thietBiRepository.findByKeyword1(matb);
-            model.addAttribute("thietbiList",thietbiList);
-
-            if(ttsd.getTGDatCho() == null){
-                model.addAttribute("bookingList",null);
-                model.addAttribute("thietbiList",null);
+        List<ThongTinSD> bookingList = thongTinSDRepository.findByThanhvien(memberID);
+        List<Map<ThietBi, Timestamp>> thietbiList = new ArrayList<>();
+        for (ThongTinSD ttsd : bookingList) {
+            if (ttsd.getThietbi() != null) {
+                ThietBi getThietBi = thietBiRepository.findById(ttsd.getThietbi()).orElse(null);
+                
+                if (getThietBi != null) {
+                    Map<ThietBi, Timestamp> map = new HashMap<>();
+                    map.put(getThietBi, ttsd.getTGDatCho());
+                    thietbiList.add(map);
+                }
             }
         }
-
-
+        model.addAttribute("thietbiList",thietbiList.toArray());
+        System.out.println(thietbiList.toArray());
         return "user-booking-status";
     }
 }
