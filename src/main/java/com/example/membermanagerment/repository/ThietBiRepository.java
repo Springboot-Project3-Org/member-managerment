@@ -20,5 +20,8 @@ public interface ThietBiRepository extends JpaRepository<ThietBi, Integer> {
     @Query("SELECT tb FROM ThietBi tb WHERE " +
     "tb.MaTB LIKE CONCAT('%', :keyword, '%') ")
     List<ThietBi> findByKeyword1(String keyword);
+    @Query("SELECT tb FROM ThietBi tb WHERE " +
+    "tb.tenTB LIKE CONCAT('%', :keyword, '%') ")
+    List<ThietBi> findByKeyword2(String keyword);
 
 }

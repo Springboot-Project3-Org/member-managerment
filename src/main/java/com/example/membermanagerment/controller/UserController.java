@@ -79,7 +79,7 @@ public class UserController {
         if (search == null || search.isEmpty()) {
             thietbiList = thietBiRepository.findAll();
         } else {
-            thietbiList = thietBiRepository.findByKeyword(search);
+            thietbiList = thietBiRepository.findByKeyword2(search);
         }
         model.addAttribute("thietbiList", thietbiList);
         return "user-homepage";
@@ -120,20 +120,34 @@ public class UserController {
         memberID = new BigInteger(memberObj.toString());   
         String mssv = memberID.toString();
         BigInteger maTV = new BigInteger(mssv);
-        int maTB = Integer.parseInt(thongtinSD.get("maTB"));
-        Timestamp tgdatcho = Timestamp.valueOf(thongtinSD.get("tgdatcho"));
- 
-        ThongTinSD newSD = new ThongTinSD(maTV,maTB,null,null,null,tgdatcho);
-        ThongTinSD addedDevice = thongTinSDRepository.save(newSD);
-        response.put("success", addedDevice != null);
-        if (addedDevice != null) {
-            response.put("message", "Dat cho thành công");
+        List<XuLy> Xulylist = xuLyRepository.findByMaTVAndTrangThaiXL(maTV);
+        if (Xulylist != null && !Xulylist.isEmpty()) {
+            // Danh sách không rỗng, không được đặt chỗ
+            response.put("success", false);
+            response.put("message", "Bạn không được đặt chỗ vì vi phạm chưa được xử lý");
         } else {
-            response.put("message", "Dat cho thất bại");
+
+            // Danh sách rỗng, thực hiện đặt chỗ mới
+            int maTB = Integer.parseInt(thongtinSD.get("maTB"));
+            Timestamp tgdatcho = Timestamp.valueOf(thongtinSD.get("tgdatcho"));
+            List<ThongTinSD> existingDevices = thongTinSDRepository.findByMaTBAndTGDatCho(maTB, tgdatcho);
+            if (!existingDevices.isEmpty()) {
+                // Nếu đã tồn tại, ghi thông báo thiết bị đã được đặt chỗ
+                response.put("success", false);
+                response.put("message", "Thiết bị đã được đặt chỗ");
+            } else {
+                ThongTinSD newSD = new ThongTinSD(maTV, maTB, null, null, null, tgdatcho);
+                ThongTinSD addedDevice = thongTinSDRepository.save(newSD);
+                response.put("success", addedDevice != null);
+                if (addedDevice != null) {
+                    response.put("message", "Đặt chỗ thành công");
+                } else {
+                    response.put("message", "Đặt chỗ thất bại");
+                }
+            }
         }
         return response;
     }
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         // Xóa session

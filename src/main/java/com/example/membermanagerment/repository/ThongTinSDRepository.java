@@ -3,9 +3,11 @@ package com.example.membermanagerment.repository;
 import com.example.membermanagerment.model.ThongTinSD;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,5 +29,8 @@ public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer>
 
 
     List<ThongTinSD> findByThanhvien(BigInteger thanhvien);
+
+   @Query("SELECT ttsd FROM ThongTinSD ttsd WHERE ttsd.thietbi = :maTB AND DATE(ttsd.TGDatCho) = DATE(:TGDatCho)")
+    List<ThongTinSD> findByMaTBAndTGDatCho(@Param("maTB") int maTB, @Param("TGDatCho") Timestamp TGDatCho);
 
 }
