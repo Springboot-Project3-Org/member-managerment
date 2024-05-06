@@ -408,7 +408,13 @@ public class UserController {
         
         for(ThongTinSD ttsd: borrowingList){
             String matb;
-            matb = ttsd.getThietbi().toString();
+
+            if(ttsd.getThietbi() == null){
+                matb = "";
+            }
+            else {
+                matb = ttsd.getThietbi().toString();
+            } 
             List<ThietBi> thietbiList = thietBiRepository.findByKeyword1(matb);
             model.addAttribute("thietbiList",thietbiList);
 
@@ -449,7 +455,13 @@ public class UserController {
         
         for(ThongTinSD ttsd: bookingList){
             String matb;
-            matb = ttsd.getThietbi().toString();
+            
+            if(ttsd.getThietbi() == null){
+                matb = "";
+            }
+            else {
+                matb = ttsd.getThietbi().toString();
+            }
             List<ThietBi> thietbiList = thietBiRepository.findByKeyword1(matb);
             model.addAttribute("thietbiList",thietbiList);
 
