@@ -7,184 +7,172 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Forgot Password</title>
     <!-- Font Awesome -->
-    <link
-            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}"
-            rel="stylesheet"
-    />
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}" rel="stylesheet" />
     <!-- Google Fonts -->
-    <link
-            th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}"
-            rel="stylesheet"
-    />
+    <link th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}" rel="stylesheet" />
     <!-- MDB -->
-    <link
-            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}"
-            rel="stylesheet"
-    />
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}" rel="stylesheet" />
     <!--  CSS -->
-    <link
-            th:href="@{/css/style.css}"
-            rel="stylesheet"
-    />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 
 <body>
-<div>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-        <!-- Container wrapper -->
-        <div class="container-fluid">
-            <!-- Toggle button -->
-            <button data-mdb-collapse-init class="navbar-toggler" type="button"
+    <div>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+            <!-- Container wrapper -->
+            <div class="container-fluid">
+                <!-- Toggle button -->
+                <button data-mdb-collapse-init class="navbar-toggler" type="button"
                     data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
+                    <i class="fas fa-bars"></i>
+                </button>
 
-            <!-- Collapsible wrapper -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Navbar brand -->
-                <a class="navbar-brand mt-2 mt-lg-0" href="#">
-                    <img src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp" height="15"
-                         alt="MDB Logo" loading="lazy" />
-                </a>
-                <!-- Left links -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{admin}" href="#">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{admin-thanhvien}">Thành viên</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{admin-thietbi}">Thiết bị</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{admin-vipham}">Vi phạm</a>
-                    </li>
-                </ul>
-                <!-- Left links -->
-            </div>
-            <!-- Collapsible wrapper -->
-
-            <!-- Right elements -->
-            <div class="d-flex align-items-center">
-                <!-- Avatar -->
-                <div class="dropdown">
-                    <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                       href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
-                             height="25" alt="Black and White Portrait of a Man" loading="lazy" />
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Navbar brand -->
+                    <a class="navbar-brand mt-2 mt-lg-0" href="#">
+                        <img src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp" height="15"
+                            alt="MDB Logo" loading="lazy" />
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-                        <li>
-                            <a class="dropdown-item" href="#">My profile</a>
+                    <!-- Left links -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{admin}" href="#">Dashboard</a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Settings</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" th:href="@{admin-thanhvien}">Thành viên</a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Logout</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" th:href="@{admin-thietbi}">Thiết bị</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" th:href="@{admin-vipham}">Vi phạm</a>
                         </li>
                     </ul>
+                    <!-- Left links -->
                 </div>
-            </div>
-            <!-- Right elements -->
-        </div>
-        <!-- Container wrapper -->
-    </nav>
-    <!-- Navbar -->
-</div>
-<div>
-    <h2 class="text-uppercase text-center mt-5 mb-5">Quản lý thiết bị</h2>
+                <!-- Collapsible wrapper -->
 
+                <!-- Right elements -->
+                <div class="d-flex align-items-center">
+                    <!-- Avatar -->
+                    <div class="dropdown">
+                        <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                            href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
+                                height="25" alt="Black and White Portrait of a Man" loading="lazy" />
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                            <li>
+                                <a class="dropdown-item" href="#">My profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Settings</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Right elements -->
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+    </div>
+    <div>
+        <h2 class="text-uppercase text-center mt-5 mb-5">Quản lý thiết bị</h2>
+    </div>
+    <div style="display: flex;justify-content: right;">
+        <div class="form-outline w-50 mx-2" data-mdb-input-init>
+            <input type="search" id="searchByYear" class="form-control" />
+            <label class="form-label" for="searchByYear">Search</label>
+        </div>
+        <button type="button" class="btn-newThietbi btn btn-outline-primary" data-mdb-ripple-init
+            data-mdb-ripple-color="dark">Thêm</button>
+        <div class="col-md-1 mx-3">
+            <button id="excelBtn" type="button" class="btn btn-primary" data-mdb-ripple-init
+                data-mdb-ripple-color="dark">Excel</button>
+        </div>
+    </div>
     <!-- Table -->
     <table class="table table-striped table-hover">
         <thead>
-        <tr>
-            <th scope="col">Mã</th>
-            <th scope="col">Tên thiết bị</th>
-            <th scope="col">Mô tả</th>
-        </tr>
+            <tr>
+                <th scope="col">Mã</th>
+                <th scope="col">Tên thiết bị</th>
+                <th scope="col">Mô tả</th>
+            </tr>
         </thead>
         <tbody id="deviceList">
-        <tr th:each="thietBi : ${thietBiList}">
-            <td th:text="${thietBi.MaTB}"></td>
-            <td th:text="${thietBi.TenTB}"></td>
-            <td th:text="${thietBi.MoTaTB}"></td>
-            <td>
-                <i th:attr="maTB=${thietBi.MaTB}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
-                <i th:attr="maTB=${thietBi.MaTB}" class="edit-btn fas fa-square-pen fa-2x"></i>
-            </td>
-        </tr>
+            <tr th:each="thietBi : ${thietBiList}">
+                <td th:text="${thietBi.MaTB}"></td>
+                <td th:text="${thietBi.TenTB}"></td>
+                <td th:text="${thietBi.MoTaTB}"></td>
+                <td>
+                    <i th:attr="maTB=${thietBi.MaTB}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
+                    <i th:attr="maTB=${thietBi.MaTB}" class="edit-btn fas fa-square-pen fa-2x"></i>
+                </td>
+            </tr>
         </tbody>
 
     </table>
     <!-- Table -->
-</div>
-<div style="display: flex;justify-content: right;">
-    <div class="input-group w-50 mx-2">
-        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-               aria-describedby="search-addon" />
-        <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
-    </div>
-    <button type="button" class="btn-newThietbi btn btn-outline-primary" data-mdb-ripple-init
-            data-mdb-ripple-color="dark">Thêm</button>
-</div>
-<!-- new thiet bi -->
-<div class="newThietBi"
-     style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
-    <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-         class="rounded">
-        <span class="text-uppercase text-center mt-5 mb-5">Thiết bị mới</span>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Tên thiết bị</span>
-            <input type="text" class="name form-control" aria-label="name" aria-describedby="basic-addon1" />
-        </div>
+    <!-- new thiet bi -->
+    <div class="newThietBi"
+        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
+        <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
+            class="rounded">
+            <span class="text-uppercase text-center mt-5 mb-5">Thiết bị mới</span>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Tên thiết bị</span>
+                <input type="text" class="name form-control" aria-label="name" aria-describedby="basic-addon1" />
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-text">Mô tả</span>
-            <textarea class="decription form-control" aria-label="With textarea"></textarea>
-        </div>
+            <div class="input-group">
+                <span class="input-group-text">Mô tả</span>
+                <textarea class="decription form-control" aria-label="With textarea"></textarea>
+            </div>
 
-        <div style="display: flex; justify-content: right;">
-            <button type="button" class="closeNewThietBi-btn btn btn-link" data-mdb-ripple-init
+            <div style="display: flex; justify-content: right;">
+                <button type="button" class="closeNewThietBi-btn btn btn-link" data-mdb-ripple-init
                     data-mdb-ripple-color="dark">Hủy</button>
-            <button type="button" class="btn btn-primary" data-mdb-ripple-init>Lưu</button>
-        </div>
+                <button type="button" class="btn btn-primary" data-mdb-ripple-init>Lưu</button>
+            </div>
 
+        </div>
     </div>
-</div>
-<!-- edit thiet bi -->
-<div class="editThietBi"
-     style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
-    <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-         class="rounded">
-        <span class="text-uppercase text-center mt-5 mb-5">Sửa thiết bị</span>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon2">Tên thiết bị</span>
-            <input type="text" class="name form-control" aria-label="name" aria-describedby="basic-addon1" />
-        </div>
+    <!-- edit thiet bi -->
+    <div class="editThietBi"
+        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
+        <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
+            class="rounded">
+            <span class="text-uppercase text-center mt-5 mb-5">Sửa thiết bị</span>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">Tên thiết bị</span>
+                <input type="text" class="name form-control" aria-label="name" aria-describedby="basic-addon1" />
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-text">Mô tả</span>
-            <textarea class="decription form-control" aria-label="With textarea"></textarea>
-        </div>
+            <div class="input-group">
+                <span class="input-group-text">Mô tả</span>
+                <textarea class="decription form-control" aria-label="With textarea"></textarea>
+            </div>
 
-        <div style="display: flex; justify-content: right;">
-            <button type="button" class="closeNewThietBi-btn btn btn-link" data-mdb-ripple-init
+            <div style="display: flex; justify-content: right;">
+                <button type="button" class="closeNewThietBi-btn btn btn-link" data-mdb-ripple-init
                     data-mdb-ripple-color="dark">Hủy</button>
-            <button type="button" class="btn" id="saveBtn" data-mdb-ripple-init>Lưu</button>
-        </div>
+                <button type="button" class="btn" id="saveBtn" data-mdb-ripple-init>Lưu</button>
+            </div>
 
+        </div>
     </div>
-</div>
 </body>
 <!-- MDB -->
-<script
-        type="text/javascript"
-        th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
-></script>
+<script type="text/javascript"
+    th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"></script>
 
 <script>
     var newThietBi = document.querySelector('.newThietBi');
