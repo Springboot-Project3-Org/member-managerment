@@ -7,14 +7,8 @@ import com.example.membermanagerment.model.XuLy;
 import com.example.membermanagerment.repository.ThanhVienRepository;
 import com.example.membermanagerment.repository.ThietBiRepository;
 import com.example.membermanagerment.repository.ThongTinSDRepository;
-<<<<<<< HEAD
-=======
 import com.example.membermanagerment.repository.XuLyRepository;
->>>>>>> 2e35bac254a31c472d4b585598d5c8a47d7a32b2
 import com.example.membermanagerment.validate.validate;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,12 +22,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -46,12 +38,10 @@ public class UserController {
     private ThietBiRepository thietBiRepository;
 
     @Autowired
-<<<<<<< HEAD
     private ThongTinSDRepository thongTinSDRepository;
 
     private ThietBi thietbi;
     private ThongTinSD thongTinSD;
-=======
     private ThongTinSDRepository ThongTinSDRepository;
 
     @Autowired
@@ -60,7 +50,6 @@ public class UserController {
     @Autowired
         private ThietBiRepository ThietBiRepository;
 
->>>>>>> 2e35bac254a31c472d4b585598d5c8a47d7a32b2
     @GetMapping("/")
     public String index() {
         return "redirect:/home";

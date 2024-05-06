@@ -1,29 +1,25 @@
-    package com.example.membermanagerment.controller;
-    import com.example.membermanagerment.model.ThanhVien;
-    import com.example.membermanagerment.model.ThietBi;
-    import com.example.membermanagerment.model.XuLy;
-    import com.example.membermanagerment.repository.ThanhVienRepository;
-    import com.example.membermanagerment.repository.ThietBiRepository;
-    import com.example.membermanagerment.repository.XuLyRepository;
-    import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.stereotype.Controller;
-    import org.springframework.ui.Model;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestBody;
-    import org.springframework.web.bind.annotation.ResponseBody;
+package com.example.membermanagerment.controller;
+import com.example.membermanagerment.model.ThanhVien;
+import com.example.membermanagerment.model.ThietBi;
+import com.example.membermanagerment.model.XuLy;
+import com.example.membermanagerment.repository.ThanhVienRepository;
+import com.example.membermanagerment.repository.ThietBiRepository;
+import com.example.membermanagerment.repository.XuLyRepository;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-    import java.math.BigInteger;
-<<<<<<< HEAD
-    import java.util.HashMap;
-    import java.util.List;
-    import java.util.Map;
-=======
-    import java.sql.Timestamp;
-    import java.util.*;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.sql.Timestamp;
 
->>>>>>> 2e35bac254a31c472d4b585598d5c8a47d7a32b2
     @Controller
     public class AdminController {
         @Autowired
