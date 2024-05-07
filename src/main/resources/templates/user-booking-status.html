@@ -146,11 +146,11 @@
                             <th scope="col">Thời Gian Đặt</th>
                         </tr>
                         </thead>
-                        <tbody id="thietbiList">
+                        <tbody>
                             <tr th:each="thietbi : ${thietbiList}">
-                                <td scope="col" th:text="${thietbi.keySet().iterator().next().getTenTB()}"></td>
-                                <td scope="col" th:text="${thietbi.keySet().iterator().next().getMoTaTB()}"></td>
-                                <td scope="col" th:text="${thietbi.values().iterator().next()}"></td>
+                                <td scope="col" th:text="${thietbi.tenTB}"></td>
+                                <td scope="col" th:text="${thietbi.moTaTB}"></td>
+                                <td scope="col" th:text="${thietbi.TGDat}"></td>
                             </tr>
                         </tbody>
                     </table>

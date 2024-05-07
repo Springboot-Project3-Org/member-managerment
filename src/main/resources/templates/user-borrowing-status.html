@@ -145,14 +145,13 @@
                                 <th scope="col">Thời Gian Mượn</th>
                             </tr>
                             </thead>
-                            <tbody id="thietbiList">
-                                <tbody id="thietbiList">
-                                    <tr th:each="thietbi : ${thietbiList}">
-                                        <td scope="col" th:text="${thietbi.keySet().iterator().next().getTenTB()}"></td>
-                                        <td scope="col" th:text="${thietbi.keySet().iterator().next().getMoTaTB()}"></td>
-                                        <td scope="col" th:text="${thietbi.values().iterator().next()}"></td>
-                                    </tr>
-                                </tbody>
+                            <tbody>
+                                <tr th:each="thietbi : ${thietbiList}">
+                                    <td scope="col" th:text="${thietbi.tenTB}"></td>
+                                    <td scope="col" th:text="${thietbi.moTaTB}"></td>
+                                    <td scope="col" th:text="${thietbi.TGMuon}"></td>
+                                </tr>
+                            </tbody>
                         </table>
                         <!--            Table -->
     

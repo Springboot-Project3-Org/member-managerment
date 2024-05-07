@@ -417,25 +417,39 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
-        List<ThongTinSD> borrowingList = thongTinSDRepository.findByThanhvien(memberID);
-        List<Map<ThietBi, Timestamp>> thietbiList = new ArrayList<>();
-        for (ThongTinSD ttsd : borrowingList) {
-            if (ttsd.getThietbi() != null) {
-                ThietBi getThietBi = thietBiRepository.findById(ttsd.getThietbi()).orElse(null);
-                
-                if (getThietBi != null) {
-                    Map<ThietBi, Timestamp> map = new HashMap<>();
-                    map.put(getThietBi, ttsd.getTGMuon());
-                    thietbiList.add(map);
+
+        // Lấy danh sách thông tin sử dụng của user hiện tại
+        List<ThongTinSD> thongTinSDList = thongTinSDRepository.findByThanhvien(memberID);
+
+        // Tạo danh sách để lưu thông tin cần thiết
+        List<Map<String, Object>> thietbiList = new ArrayList<>();
+
+        for (ThongTinSD thongTinSD : thongTinSDList) {
+//            Nếu thông tin sử dụng có chứa thiết bị
+            if (thongTinSD.getThietbi() != null) {
+                // Tìm thiết bị tương ứng
+                ThietBi thietBi = thietBiRepository.findById(thongTinSD.getThietbi()).orElse(null);
+
+//            Chỉ lấy thiết bị có thời gian trả là null và thời gian mượn là khác null
+                if (thietBi != null && thongTinSD.getTGMuon() != null && thongTinSD.getTGTra() == null) {
+                    // Tạo map để lưu thông tin của mỗi thiết bị và thời gian mượn tương ứng
+                    Map<String, Object> deviceAndUsageInfo = new HashMap<>();
+                    deviceAndUsageInfo.put("tenTB", thietBi.getTenTB());
+                    deviceAndUsageInfo.put("moTaTB", thietBi.getMoTaTB());
+                    deviceAndUsageInfo.put("TGMuon", thongTinSD.getTGMuon());
+
+                    // Thêm map vào danh sách
+                    thietbiList.add(deviceAndUsageInfo);
                 }
             }
         }
-        model.addAttribute("thietbiList",thietbiList.toArray());
-        System.out.println(thietbiList.toArray());
-        
+
+        // Thêm danh sách vào model
+        model.addAttribute("thietbiList", thietbiList);
 
         return "user-borrowing-status";
     }
+
     @GetMapping("/booking-status")
     public String bookingStatus(Model model, HttpSession session) {
 //        Lấy maTV từ session
@@ -457,21 +471,39 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
-        List<ThongTinSD> bookingList = thongTinSDRepository.findByThanhvien(memberID);
-        List<Map<ThietBi, Timestamp>> thietbiList = new ArrayList<>();
-        for (ThongTinSD ttsd : bookingList) {
-            if (ttsd.getThietbi() != null) {
-                ThietBi getThietBi = thietBiRepository.findById(ttsd.getThietbi()).orElse(null);
-                
-                if (getThietBi != null) {
-                    Map<ThietBi, Timestamp> map = new HashMap<>();
-                    map.put(getThietBi, ttsd.getTGDatCho());
-                    thietbiList.add(map);
+
+        // Lấy danh sách thông tin sử dụng của user hiện tại
+        List<ThongTinSD> thongTinSDList = thongTinSDRepository.findByThanhvien(memberID);
+
+        // Tạo danh sách để lưu thông tin cần thiết
+        List<Map<String, Object>> thietbiList = new ArrayList<>();
+
+        for (ThongTinSD thongTinSD : thongTinSDList) {
+//            Nếu thông tin sử dụng có chứa thiết bị
+            if (thongTinSD.getThietbi() != null) {
+                // Tìm thiết bị tương ứng
+                ThietBi thietBi = thietBiRepository.findById(thongTinSD.getThietbi()).orElse(null);
+
+//            Chỉ lấy thiết bị đang đặt (thời gian trả = null, thời gian mượn = null)
+                if (thietBi != null
+                        && thongTinSD.getTGMuon() == null
+                        && thongTinSD.getTGTra() == null
+                        && thongTinSD.getTGDatCho() != null) {
+                    // Tạo map để lưu thông tin của mỗi thiết bị và thời gian mượn tương ứng
+                    Map<String, Object> deviceAndUsageInfo = new HashMap<>();
+                    deviceAndUsageInfo.put("tenTB", thietBi.getTenTB());
+                    deviceAndUsageInfo.put("moTaTB", thietBi.getMoTaTB());
+                    deviceAndUsageInfo.put("TGDat", thongTinSD.getTGDatCho());
+
+                    // Thêm map vào danh sách
+                    thietbiList.add(deviceAndUsageInfo);
                 }
             }
         }
-        model.addAttribute("thietbiList",thietbiList.toArray());
-        System.out.println(thietbiList.toArray());
+
+        // Thêm danh sách vào model
+        model.addAttribute("thietbiList", thietbiList);
+
         return "user-booking-status";
     }
 }
