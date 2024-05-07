@@ -385,7 +385,6 @@ import java.sql.Timestamp;
 
             if (errorData.get("maTV") == null || errorData.get("maTV").isEmpty() ||
                     errorData.get("hinhthuc") == null || errorData.get("hinhthuc").isEmpty() ||
-                    errorData.get("sotien") == null || errorData.get("sotien").isEmpty() ||
                     errorData.get("ngayxuly") == null || errorData.get("ngayxuly").isEmpty()) {
                 response.put("success", false);
                 response.put("message", "Không được để trống các trường hoặc trạng thái không hợp lệ");
@@ -394,9 +393,10 @@ import java.sql.Timestamp;
 
             BigInteger maTV = new BigInteger(errorData.get("maTV"));
             String hinhthuc = errorData.get("hinhthuc");
-            int sotien = Integer.parseInt(errorData.get("sotien"));
             Timestamp ngayxuly = Timestamp.valueOf(errorData.get("ngayxuly"));
             int status = Integer.parseInt(errorData.get("status"));
+            String sotienStr = errorData.get("sotien");
+            int sotien = 0;
 
             ThanhVien curMem = thanhVienRepository.findByMaTV(maTV);
             if (curMem == null) {
@@ -405,19 +405,67 @@ import java.sql.Timestamp;
                 return response;
             }
 
-
-
-            XuLy newXuly = new XuLy(xuLyRepository.getMax(),maTV,hinhthuc,sotien,ngayxuly,status);
-            XuLy addedXuly = xuLyRepository.save(newXuly);
-
-            response.put("success", addedXuly != null);
-            if (addedXuly != null) {
-                response.put("message", "Thêm xử lý thành công");
-            } else {
-                response.put("message", "Thêm xử lý thất bại");
+            for(XuLy xuly : xuLyRepository.findAll()) {
+                if(xuly.getHinhThucXL().equals(hinhthuc) && xuly.getTrangThaiXL() == 0) {
+                    response.put("success", false);
+                    response.put("message", "Thành viên đang có vi phạm này chưa được xử lý");
+                    return response;
+                }
             }
-            return response;
+
+            if (hinhthuc.contains("Khóa thẻ")) {
+                if(hinhthuc.contains("bồi thường")) {
+                    try {
+                        sotien = Integer.parseInt(sotienStr);
+                    } catch (NumberFormatException e) {
+                        response.put("success", false);
+                        response.put("message", "Số tiền phải là kiểu số nguyên");
+                        return response;
+                    }
+                    XuLy newXuly = new XuLy(xuLyRepository.getMax(), maTV, hinhthuc, sotien, ngayxuly, status);
+                    XuLy addedXuly = xuLyRepository.save(newXuly);
+
+                    response.put("success", addedXuly != null);
+                    if (addedXuly != null) {
+                        response.put("message", "Thêm xử lý thành công");
+                    } else {
+                        response.put("message", "Thêm xử lý thất bại");
+                    }
+                    return response;
+                }else {
+                    XuLy newXuly = new XuLy(xuLyRepository.getMax(), maTV, hinhthuc, null, ngayxuly, status);
+                    XuLy addedXuly = xuLyRepository.save(newXuly);
+
+                    response.put("success", addedXuly != null);
+                    if (addedXuly != null) {
+                        response.put("message", "Thêm xử lý thành công");
+                    } else {
+                        response.put("message", "Thêm xử lý thất bại");
+                    }
+                    return response;
+                }
+            } else {
+                try {
+                    sotien = Integer.parseInt(sotienStr);
+                } catch (NumberFormatException e) {
+                    response.put("success", false);
+                    response.put("message", "Số tiền phải là kiểu số nguyên");
+                    return response;
+                }
+                XuLy newXuly = new XuLy(xuLyRepository.getMax(), maTV, hinhthuc, sotien, ngayxuly, status);
+                XuLy addedXuly = xuLyRepository.save(newXuly);
+
+                response.put("success", addedXuly != null);
+                if (addedXuly != null) {
+                    response.put("message", "Thêm xử lý thành công");
+                } else {
+                    response.put("message", "Thêm xử lý thất bại");
+                }
+                return response;
+            }
         }
+
+
 
         @PostMapping("/getError")
         @ResponseBody
@@ -436,7 +484,6 @@ import java.sql.Timestamp;
 
             if (requestData.get("maTV") == null || requestData.get("maTV").isEmpty() ||
                     requestData.get("hinhthuc") == null || requestData.get("hinhthuc").isEmpty() ||
-                    requestData.get("sotien") == null || requestData.get("sotien").isEmpty() ||
                     requestData.get("ngayxuly") == null || requestData.get("ngayxuly").isEmpty()) {
                 response.put("success", false);
                 response.put("message", "Không được để trống các trường hoặc trạng thái không hợp lệ");
@@ -451,17 +498,10 @@ import java.sql.Timestamp;
             int maXL = Integer.parseInt(requestData.get("maXL"));
             BigInteger maTV = new BigInteger(requestData.get("maTV"));
             String hinhthuc = requestData.get("hinhthuc");
-            int sotien;
             Timestamp ngayxuly = Timestamp.valueOf(requestData.get("ngayxuly"));
             int status = Integer.parseInt(requestData.get("status"));
-
-            try{
-                sotien = Integer.parseInt(requestData.get("sotien"));
-            }catch(Exception e) {
-                response.put("success", false);
-                response.put("message", "Tiền không đúng định dạng");
-                return response;
-            }
+            String sotienStr = requestData.get("sotien");
+            int sotien = 0;
 
             ThanhVien curMem = thanhVienRepository.findByMaTV(maTV);
             if (curMem == null) {
@@ -476,16 +516,68 @@ import java.sql.Timestamp;
                 response.put("message", "Trạng thái đã được xử lý, không thể điều chỉnh được nữa!!!");
                 return response;
             }
-            XuLy curXuly = new XuLy(maXL,maTV,hinhthuc,sotien,ngayxuly,status);
-            XuLy updateXuly = xuLyRepository.save(curXuly);
 
-            response.put("success", updateXuly != null);
-            if (updateXuly != null) {
-                response.put("message", "Sửa xử lý thành công");
-            } else {
-                response.put("message", "Sửa xử lý thất bại");
+            for(XuLy xuly1 : xuLyRepository.findAll()) {
+                if(xuly1.getHinhThucXL().equals(hinhthuc) && xuly1.getTrangThaiXL() == 0 && xuly1.getMaXL() != maXL) {
+                    response.put("success", false);
+                    response.put("message", "Thành viên đang có vi phạm này chưa được xử lý");
+                    return response;
+                }
             }
-            return response;
+
+            if (hinhthuc.contains("Khóa thẻ")) {
+                if(hinhthuc.contains("bồi thường")) {
+                    try {
+                        sotien = Integer.parseInt(sotienStr);
+                    } catch (NumberFormatException e) {
+                        response.put("success", false);
+                        response.put("message", "Số tiền phải là kiểu số nguyên");
+                        return response;
+                    }
+                    XuLy curXuly = new XuLy(maXL,maTV,hinhthuc,sotien,ngayxuly,status);
+                    XuLy updateXuly = xuLyRepository.save(curXuly);
+
+
+                    response.put("success", updateXuly != null);
+                    if (updateXuly != null) {
+                        response.put("message", "Sửa xử lý thành công");
+                    } else {
+                        response.put("message", "Sửa xử lý thất bại");
+                    }
+                    return response;
+                }else {
+                    XuLy curXuly = new XuLy(maXL,maTV,hinhthuc,null,ngayxuly,status);
+                    XuLy updateXuly = xuLyRepository.save(curXuly);
+
+
+                    response.put("success", updateXuly != null);
+                    if (updateXuly != null) {
+                        response.put("message", "Sửa xử lý thành công");
+                    } else {
+                        response.put("message", "Sửa xử lý thất bại");
+                    }
+                    return response;
+                }
+            } else {
+                try {
+                    sotien = Integer.parseInt(sotienStr);
+                } catch (NumberFormatException e) {
+                    response.put("success", false);
+                    response.put("message", "Số tiền phải là kiểu số nguyên");
+                    return response;
+                }
+                XuLy curXuly = new XuLy(maXL,maTV,hinhthuc,sotien,ngayxuly,status);
+                XuLy updateXuly = xuLyRepository.save(curXuly);
+
+
+                response.put("success", updateXuly != null);
+                if (updateXuly != null) {
+                    response.put("message", "Sửa xử lý thành công");
+                } else {
+                    response.put("message", "Sửa xử lý thất bại");
+                }
+                return response;
+            }
         }
 
         @PostMapping("/deleteError")
