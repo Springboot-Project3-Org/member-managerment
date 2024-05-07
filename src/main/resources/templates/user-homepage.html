@@ -175,14 +175,16 @@
 
   <!-- Custom scripts -->
   <script>
-    var today = new Date().toISOString().split('T')[0];
+    let today = new Date().toISOString().split('T')[0];
     // Đặt ngày hiện tại là giá trị mặc định và ngày tối đa
     document.getElementById('borrowDate').value = today;
     // Đặt ngày hiện tại là ngày tối đa
     document.getElementById('borrowDate').min = today;
-    const searchButton = document.getElementById('search-button');
-    const searchInput = document.getElementById('search-input');
-    const saveButton = document.getElementById('place-button');
+    let searchButton = document.getElementById('search-button');
+    let searchInput = document.getElementById('search-input');
+    let saveButton = document.getElementById('place-button');
+
+    // Sự kiện click vào bảng sẽ tô đen dòng
     document.querySelectorAll('tbody > tr').forEach((row) => {
       row.addEventListener('click', (event) => {
         // Xóa class 'table-dark' khỏi dòng
@@ -193,57 +195,68 @@
 
         // Thêm class 'table-dark' vào hàng được nhấp
         event.currentTarget.classList.add('table-dark');
-        var maTB = event.currentTarget.querySelector('td').getAttribute("data-device-id");
-        saveButton.addEventListener("click", function () {
-          // Lấy giá trị ngày và giờ từ các trường input
-          const borrowDateInput = document.getElementById('borrowDate').value;
-          const borrowTimeInput = document.getElementById('borrowTime').value;
-
-          // Kết hợp ngày và giờ thành một chuỗi datetime
-          const dateTimeString = borrowDateInput + ' ' + borrowTimeInput;
-
-          // Sử dụng Moment.js để chuyển đổi chuỗi datetime thành định dạng timestamp
-          const timestampString = moment(dateTimeString).format('YYYY-MM-DD HH:mm:ss');
-
-          // Thời gian hiện tại
-          const currentTime = moment();
-
-          // So sánh giờ cụ thể với thời gian hiện tại
-          const isAfterOrEqual = moment(timestampString).isSameOrAfter(currentTime);
-
-          // Kiểm tra kết quả
-          if (isAfterOrEqual) {
-            console.log("Giờ cụ thể lớn hơn hoặc bằng thời gian hiện tại.");
-          } else {
-            alert("Giờ cụ thể nhỏ hơn thời gian hiện tại.");
-            return;
-          } 
-          console.log(maTB)
-          var newdata = {
-            maTB: maTB,
-            tgdatcho: timestampString
-          };
-          console.log(newdata);
-
-          fetch("/addThongTinSD", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newdata)
-          })
-            .then(res => res.json())
-            .then(data => {
-              alert(data.message);
-              if (data.success === true) {
-                window.location.reload();
-              }
-            })
-            .catch(error => {
-              console.log("error: " + error);
-            });
-        });
       });
+    });
+
+// Sự kiện click đặt chỗ
+    saveButton.addEventListener("click", function () {
+
+      // Lấy dòng hiện tại
+      let selectedRow = document.querySelector('.table-dark > td');
+
+      if (!selectedRow) {
+        alert("Vui lòng chọn thiết bị");
+        return;
+      }
+
+      // Lấy mã thiết bị
+      let maTB = selectedRow.getAttribute("data-device-id");
+      // Lấy giá trị ngày và giờ từ các trường input
+      let borrowDateInput = document.getElementById('borrowDate').value;
+      let borrowTimeInput = document.getElementById('borrowTime').value;
+
+      // Kết hợp ngày và giờ thành một chuỗi datetime
+      let dateTimeString = borrowDateInput + ' ' + borrowTimeInput;
+
+      // Sử dụng Moment.js để chuyển đổi chuỗi datetime thành định dạng timestamp
+      let timestampString = moment(dateTimeString).format('YYYY-MM-DD HH:mm:ss');
+
+      // Thời gian hiện tại
+      let currentTime = moment();
+
+      // So sánh giờ cụ thể với thời gian hiện tại
+      let isAfterOrEqual = moment(timestampString).isSameOrAfter(currentTime);
+
+      // Kiểm tra kết quả
+      if (!isAfterOrEqual) {
+        alert("Giờ cụ thể nhỏ hơn thời gian hiện tại.");
+        return;
+      }
+
+      console.log(maTB)
+      let newdata = {
+        maTB: maTB,
+        tgdatcho: timestampString
+      };
+      console.log(newdata);
+
+      fetch("/addThongTinSD", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newdata)
+      })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          if (data.success === true) {
+            window.location.reload();
+          }
+        })
+        .catch(error => {
+          console.log("error: " + error);
+        });
     });
 
     searchButton.addEventListener('click', () => {
@@ -252,7 +265,7 @@
       window.location.href = '/home?search=' + encodedValue; // Chuyển hướng đến trang /home với tham số search đã mã hóa
     });
 
-  </script>
+</script>
 
 </body>
 
