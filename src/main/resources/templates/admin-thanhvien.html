@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Forgot Password</title>
+    <title>Admin Member</title>
     <!-- Font Awesome -->
     <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}" rel="stylesheet" />
     <!-- Google Fonts -->
@@ -130,13 +130,9 @@
                 </div>
             </div>
 
-            <div class="col-md-2">
-                <button id="deleteAllButton" type="button" class="btn btn-outline-primary" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Xóa tất cả</button>
-            </div>
-            <div class="col-md-1">
-                <button id="excelBtn" type="button" class="btn btn-primary" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Excel</button>
+            <div class="col-md-4 d-flex">
+                <button id="deleteAllButton" type="button" class="btn btn-outline-primary me-2" data-mdb-ripple-init data-mdb-ripple-color="dark">Xóa tất cả</button>
+                <button id="excelBtn" type="button" class="btn btn-primary" data-mdb-ripple-init data-mdb-ripple-color="dark">Excel</button>
             </div>
 
         </div>
@@ -191,7 +187,7 @@
     <div class="newUser"
         style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
         <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded">
+            class="rounded p-3">
             <span class="text-uppercase text-center mt-5 mb-5">Thành viên mới</span>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon">Mã thành viên</span>
@@ -238,7 +234,7 @@
     <div class="updateUser"
         style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
         <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded">
+            class="rounded p-3">
             <span class="text-uppercase text-center mt-5 mb-5">Sửa thành viên</span>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon8">Tên thành viên</span>
@@ -271,7 +267,7 @@
 
             <div style="display: flex; justify-content: right;">
                 <button type="button" class="closeNewUser-btn btn btn-link" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Hủy</button>
+                    data-mdb-ripple-color="dark" id="cancelEdit">Hủy</button>
                 <button type="button" class="btn btn-primary" id="saveBtn" data-mdb-ripple-init>Lưu</button>
             </div>
 
@@ -507,8 +503,8 @@
     <div id="warningMember"
         style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;z-index: 2;">
         <div style="position: absolute;height: 247px;width: 509px; background-color: white;top: 22%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded">
-            <span class="text-uppercase text-center mt-5 mb-5">Cánh báo thành viên</span>
+            class="rounded p-3">
+            <span class="text-uppercase text-center mt-5 mb-5">Cảnh báo thành viên</span>
 
             <div>
                 <div class="input-group mb-3">
@@ -574,7 +570,6 @@
         returnDevice.style.display = ' flex'
     }
     //close form return device
-
     document.querySelector('.closeReturnDevice-btn').addEventListener('click', function () {
         var returnDevice = document.getElementById('returnDevice');
         returnDevice.style.display = ' none'
@@ -614,6 +609,11 @@
     let closeNewUser = document.querySelector('.closeNewUser-btn');
     closeNewUser.addEventListener('click', function () {
         newUser.style.display = ' none';
+    })
+    // close form edit user
+    let cancelEditBtn = document.getElementById('cancelEdit');
+    cancelEditBtn.addEventListener('click', function () {
+        updateUser.style.display = ' none';
     })
 
     // fetch handle
