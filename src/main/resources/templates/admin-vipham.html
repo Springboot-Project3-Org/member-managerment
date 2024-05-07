@@ -116,8 +116,9 @@
                     <td scope="col" th:text="${error.SoTien}"></td>
                     <td scope="col" th:text="${error.NgayXL}"></td>
                     <td scope="col">
-                        <span th:if="${error.TrangThaiXL == 1}">Đã giải quyết</span>
-                        <span th:if="${error.TrangThaiXL != 1}">Chưa giải quyết</span>
+                        <span th:if="${error.TrangThaiXL == 1}" class="text-success">Đã giải quyết</span>
+                        <span th:if="${error.TrangThaiXL != 1}" class="text-danger">Chưa giải quyết</span>
+
                     </td>
                     <td>
                         <i th:attr="maXL=${error.MaXL}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
@@ -135,13 +136,21 @@
             class="rounded">
             <span class="text-uppercase text-center mt-5 mb-5">Vi phạm mới</span>
             <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon">Mã thành viên</span>
-                <input type="text" class="id form-control" aria-label="Username" aria-describedby="basic-addon1" />
+                <select class="form-select id">
+                    <option th:each="thanhVien : ${thanhVienList}"
+                            th:value="${thanhVien.maTV}"
+                            th:text="${thanhVien.maTV + ' - ' + thanhVien.tenTV}">
+                    </option>
+                </select>
             </div>
             <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon1">Hình thức xử lý</span>
-                <input type="text" class="hinhthuc form-control" aria-label="Username"
-                    aria-describedby="basic-addon1" />
+                <select class="form-select hinhthuc">
+                    <option value="Khóa thẻ 1 tháng">Khóa thẻ 1 tháng</option>
+                    <option value="Khóa thẻ 2 tháng">Khóa thẻ 2 tháng</option>
+                    <option value="Khóa thẻ vĩnh viễn">Khóa thẻ vĩnh viễn</option>
+                    <option value="Bồi thường">Bồi thường</option>
+                    <option value="Khóa thẻ 1 tháng và bồi thường">Khóa thẻ 1 tháng và bồi thường</option>
+                </select>
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text " id="basic-addon2">Số tiền</span>
@@ -152,10 +161,6 @@
                 <input type="text" class="ngayxuly form-control" aria-label="Username"
                     aria-describedby="basic-addon1" />
             </div>
-            <select class="select form-control">
-                <option value="0">Chưa giải quyết</option>
-                <option value="1">Giải quyết</option>
-            </select>
 
             <div style="display: flex; justify-content: right;">
                 <button type="button" class="closeNewViPham-btn btn btn-link" data-mdb-ripple-init
@@ -173,12 +178,16 @@
             <span class="text-uppercase text-center mt-5 mb-5">Vi phạm mới</span>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon4">Mã thành viên</span>
-                <input type="text" class="id form-control" aria-label="Username" aria-describedby="basic-addon1" />
+                <input type="text" class="id form-control" aria-label="Username" aria-describedby="basic-addon1" readonly/>
             </div>
             <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon5">Hình thức xử lý</span>
-                <input type="text" class="hinhthuc form-control" aria-label="Username"
-                    aria-describedby="basic-addon1" />
+                <select class="form-select hinhthuc">
+                    <option value="Khóa thẻ 1 tháng">Khóa thẻ 1 tháng</option>
+                    <option value="Khóa thẻ 2 tháng">Khóa thẻ 2 tháng</option>
+                    <option value="Khóa thẻ vĩnh viễn">Khóa thẻ vĩnh viễn</option>
+                    <option value="Bồi thường">Bồi thường</option>
+                    <option value="Khóa thẻ 1 tháng và bồi thường">Khóa thẻ 1 tháng và bồi thường</option>
+                </select>
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text " id="basic-addon6">Số tiền</span>
@@ -189,24 +198,24 @@
                 <input type="text" class="ngayxuly form-control" aria-label="Username"
                     aria-describedby="basic-addon1" />
             </div>
-            <select class="mdb-select status">
+            <select class="form-select status">
                 <option value="0">Chưa giải quyết</option>
                 <option value="1">Đã giải quyết</option>
             </select>
 
             <div style="display: flex; justify-content: right;">
-                <button type="button" class="closeNewViPham-btn btn btn-link" data-mdb-ripple-init
+                <button type="button" class="closeEditViPham-btn btn btn-link" data-mdb-ripple-init
                     data-mdb-ripple-color="dark">Hủy</button>
                 <button type="button" class="btn btn-primary" id="saveBtn" data-mdb-ripple-init>Lưu</button>
             </div>
 
         </div>
     </div>
-</body>
-<!-- MDB -->
-<script type="text/javascript"
-    th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"></script>
-<script>
+
+    <!-- MDB -->
+    <script type="text/javascript"
+            th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"></script>
+    <script>
     var newViPham = document.querySelector('.newViPham');
     var saveButton = document.querySelector('.newViPham .btn-primary');
     var updateError = document.querySelector('.updateViPham');
@@ -219,8 +228,6 @@
     var newViPhamBtn = document.querySelector('.btn-newViPham');
     newViPhamBtn.addEventListener('click', function () {
         newViPham.style.display = ' flex';
-        newViPham.querySelector('.id').value = ''
-        newViPham.querySelector('.hinhthuc').value = ''
         newViPham.querySelector('.sotien').value = ''
         newViPham.querySelector('.ngayxuly').value = ''
 
@@ -239,6 +246,12 @@
         newViPham.style.display = ' none';
     })
 
+    //close edit form
+    var closeEditViPham = document.querySelector('.closeEditViPham-btn');
+    closeEditViPham.addEventListener('click', function () {
+        updateError.style.display = ' none';
+    })
+
     // fetch handle
     searchReload();
     // add device
@@ -247,7 +260,7 @@
         var hinhthuc = document.querySelector('.hinhthuc').value;
         var sotien = document.querySelector('.sotien').value;
         var ngayxuly = document.querySelector('.ngayxuly').value;
-        var status = document.querySelector('.status').value;
+        var status = 0;
 
         var newErrorData = {
             maTV: maTV,
@@ -387,61 +400,14 @@
         });
     }
 
-    // search error
-    searchButton.addEventListener('click', function () {
-        var searchValue = document.querySelector('.form-control.rounded').value;
-
-        var searchData = {
-            searchValue: searchValue
-        };
-        console.log(JSON.stringify(searchData));
-        fetch("/searchError", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(searchData)
-        })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('errorList').innerHTML = '';
-
-
-                data.forEach(function (error) {
-                    var tr = document.createElement('tr');
-                    var currentDate = new Date(error.ngayXL);
-                    currentDate.setHours(currentDate.getHours() + 7);
-                    var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
-                    tr.innerHTML = `
-                    <td>${error.maTV}</td>
-                    <td>${error.hinhThucXL}</td>
-                    <td>${error.soTien === null ? "" : error.soTien}</td>
-                    <td>${formattedDate}</td>
-                    <td>
-                        ${error.trangThaiXL == 1 ? '<span>Đã giải quyết</span>' : '<span>Chưa giải quyết</span>'}
-                    </td>
-                     <td>
-                            <i maXL="${error.maXL}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
-                            <i maXL="${error.maXL}" class="edit-btn fas fa-square-pen fa-2x"></i>
-                     </td>
-                `;
-                    document.getElementById('errorList').appendChild(tr);
-                });
-                searchReload();
-            })
-            .catch(error => {
-                console.log("error: " + error);
-            });
-    });
-
     // search error(enter)
-    var searchInput = document.querySelector('.form-control.rounded');
+    var searchInput = document.querySelector('#searchByYear');
 
     searchInput.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
 
-            var searchValue = document.querySelector('.form-control.rounded').value;
+            var searchValue = searchInput.value;
 
             var searchData = {
                 searchValue: searchValue
@@ -487,4 +453,5 @@
 
 </script>
 
+</body>
 </html>

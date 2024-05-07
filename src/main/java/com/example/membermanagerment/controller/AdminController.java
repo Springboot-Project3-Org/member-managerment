@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -362,6 +363,18 @@ import java.sql.Timestamp;
         public String admin_vipham(Model model) {
             List<XuLy> errorList = xuLyRepository.findAll();
             model.addAttribute("errorList",errorList);
+
+            List<Map<String, Object>> thanhVienList = new ArrayList<>();
+
+            for (ThanhVien tv : thanhVienRepository.findAll()) {
+                Map<String, Object> thanhVien = new HashMap<>();
+                thanhVien.put("maTV", tv.getMaTV());
+                thanhVien.put("tenTV", tv.getHoTen());
+
+                thanhVienList.add(thanhVien);
+            }
+            model.addAttribute("thanhVienList", thanhVienList);
+
             return "admin-vipham";
         }
 

@@ -153,8 +153,8 @@
                             <td scope="col" th:text="${error.SoTien}"></td>
                             <td scope="col" th:text="${error.NgayXL}"></td>
                             <td scope="col">
-                                <span th:if="${error.TrangThaiXL == 1}">Đã giải quyết</span>
-                                <span th:if="${error.TrangThaiXL != 1}">Chưa giải quyết</span>
+                                <span th:if="${error.TrangThaiXL == 1}" class="text-success">Đã giải quyết</span>
+                                <span th:if="${error.TrangThaiXL != 1}" class="text-danger">Chưa giải quyết</span>
                             </td>
                         </tr>
                     </table>
