@@ -1014,16 +1014,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
   <script>
-    let newUser = document.querySelector(".newUser");
-    let updateUser = document.querySelector(".updateUser");
-    let saveButton = document.querySelector(".newUser .btn-primary");
-    let editButtons = document.querySelectorAll(".edit-btn");
-    let deleteButtons = document.querySelectorAll(".delete-btn");
-    let searchButton = document.getElementById("searchBtn");
-    let searchButtonYear = document.getElementById("searchByYearBtn");
-    let searchInputYear = document.getElementById("searchByYear");
-    let deleteAll = document.getElementById("deleteAllButton");
-    let searchInput = document.getElementById("search");
+    let newUser = document.querySelector('.newUser');
+    let updateUser = document.querySelector('.updateUser');
+    let saveButton = document.querySelector('.newUser .btn-primary');
+    let editButtons = document.querySelectorAll('.edit-btn');
+    let deleteButtons = document.querySelectorAll('.delete-btn');
+    let searchButton = document.getElementById('searchBtn');
+    let searchButtonYear = document.getElementById('searchByYearBtn');
+    let searchInputYear = document.getElementById('searchByYear');
+    let deleteAll = document.getElementById('deleteAllButton');
+    let searchInput = document.getElementById('search');
+    let currentMaTVEdit;
 
     //open form new user
     let newUserBtn = document.querySelector(".btn-newUser");
@@ -1269,69 +1270,97 @@
     });
 
     function searchReload() {
-      let editButtons = document.querySelectorAll(".edit-btn");
-      let deleteButtons = document.querySelectorAll(".delete-btn");
-      //edit user
-      let editBtn = document.querySelectorAll(".edit-btn");
-      editBtn.forEach((btn) => {
-        btn.addEventListener("click", function () {
-          let maTV = btn.getAttribute("maTV");
-          fetch("/getMember", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ maTV: maTV }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              updateUser.style.display = "flex";
-              updateUser.querySelector(".name").value = data.hoTen;
-              updateUser.querySelector(".khoa").value = data.khoa;
-              updateUser.querySelector(".nganh").value = data.nganh;
-              updateUser.querySelector(".phone").value = data.sdt;
-              updateUser.querySelector(".password").value = data.password;
-              updateUser.querySelector(".email").value = data.email;
+        let editButtons = document.querySelectorAll('.edit-btn');
+        let deleteButtons = document.querySelectorAll('.delete-btn');
+        //edit user
+        let editBtn = document.querySelectorAll('.edit-btn')
+        editBtn.forEach(btn => {
+            btn.addEventListener('click', function () {
+                currentMaTVEdit = btn.getAttribute("maTV");
+                fetch('/getMember', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ maTV: currentMaTVEdit })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        updateUser.style.display = 'flex';
+                        updateUser.querySelector('.name').value = data.hoTen;
+                        updateUser.querySelector('.khoa').value = data.khoa;
+                        updateUser.querySelector('.nganh').value = data.nganh;
+                        updateUser.querySelector('.phone').value = data.sdt;
+                        updateUser.querySelector('.password').value = data.password;
+                        updateUser.querySelector('.email').value = data.email;
+                    })
+                    .catch(error => console.error('Error:', error));
             })
             .catch((error) => console.error("Error:", error));
         });
-      });
-      // edit device
-      editButtons.forEach((btn) => {
-        btn.addEventListener("click", function () {
-          let saveBtn = document.getElementById("saveBtn");
-          saveBtn.addEventListener("click", () => {
-            let maTV = btn.getAttribute("maTV");
-            let tenTV = document.querySelector(".updateUser .name").value;
-            let khoa = document.querySelector(".updateUser .khoa").value;
-            let nganh = document.querySelector(".updateUser .nganh").value;
-            let sdt = document.querySelector(".updateUser .phone").value;
-            let password = document.querySelector(
-              ".updateUser .password"
-            ).value;
-            let email = document.querySelector(".updateUser .email").value;
+
+        // edit member
+        let saveBtn = document.getElementById('saveBtn');
+        saveBtn.addEventListener('click', () => {
+            let maTV = currentMaTVEdit;
+            let tenTV = document.querySelector('.updateUser .name').value;
+            let khoa = document.querySelector('.updateUser .khoa').value;
+            let nganh = document.querySelector('.updateUser .nganh').value;
+            let sdt = document.querySelector('.updateUser .phone').value;
+            let password = document.querySelector('.updateUser .password').value;
+            let email = document.querySelector('.updateUser .email').value;
 
             let data = {
-              maTV: maTV,
-              tenTV: tenTV,
-              khoa: khoa,
-              nganh: nganh,
-              sdt: sdt,
-              password: password,
-              email: email,
+                maTV: maTV,
+                tenTV: tenTV,
+                khoa: khoa,
+                nganh: nganh,
+                sdt: sdt,
+                password: password,
+                email: email
             };
-            fetch("/editMember", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
+            fetch('/editMember', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             })
-              .then((response) => response.json())
-              .then((data) => {
+            .then(response => response.json())
+            .then(data => {
                 alert(data.message);
                 if (data.success === true) {
-                  window.location.reload();
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+        });
+
+        // delete device
+        deleteButtons.forEach((btn) => {
+            btn.addEventListener('click', function () {
+                if (confirm("Bạn có chắc chắn muốn xóa thành viên này?")) {
+                    let maTV = btn.getAttribute("maTV");
+
+                    fetch("/deleteMember", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ maTV: maTV })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            alert(data.message);
+                            if (data.success === true) {
+                                window.location.reload();
+                            }
+                        })
+                        .catch(error => {
+                            console.log("error: " + error);
+                        });
                 }
               })
               .catch((error) => {
