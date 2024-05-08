@@ -1,685 +1,1166 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Admin Member</title>
     <!-- Font Awesome -->
-    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}" rel="stylesheet" />
+    <link
+      th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}"
+      rel="stylesheet"
+    />
     <!-- Google Fonts -->
-    <link th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}" rel="stylesheet" />
+    <link
+      th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap}"
+      rel="stylesheet"
+    />
     <!-- MDB -->
-    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}" rel="stylesheet" />
+    <link
+      th:href="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css}"
+      rel="stylesheet"
+    />
     <!--  CSS -->
     <link th:href="@{/css/style.css}" rel="stylesheet" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div>
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-            <!-- Container wrapper -->
-            <div class="container-fluid">
-                <!-- Toggle button -->
-                <button data-mdb-collapse-init class="navbar-toggler" type="button"
-                    data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+          <!-- Toggle button -->
+          <button
+            data-mdb-collapse-init
+            class="navbar-toggler"
+            type="button"
+            data-mdb-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
 
-                <!-- Collapsible wrapper -->
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Navbar brand -->
-                    <a class="navbar-brand mt-2 mt-lg-0" href="#">
-                        <img src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp" height="15"
-                            alt="MDB Logo" loading="lazy" />
-                    </a>
-                    <!-- Left links -->
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{admin}" href="#">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-thanhvien}">Thành viên</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-thietbi}">Thiết bị</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{admin-vipham}">Vi phạm</a>
-                        </li>
-                    </ul>
-                    <!-- Left links -->
-                </div>
-                <!-- Collapsible wrapper -->
+          <!-- Collapsible wrapper -->
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Navbar brand -->
+            <a class="navbar-brand mt-2 mt-lg-0" href="#">
+              <img
+                src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+                height="15"
+                alt="MDB Logo"
+                loading="lazy"
+              />
+            </a>
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{admin}" href="#">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" th:href="@{admin-thanhvien}"
+                  >Thành viên</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" th:href="@{admin-thietbi}"
+                  >Thiết bị</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" th:href="@{admin-vipham}"
+                  >Vi phạm</a
+                >
+              </li>
+            </ul>
+            <!-- Left links -->
+          </div>
+          <!-- Collapsible wrapper -->
 
-                <!-- Right elements -->
-                <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="dropdown">
-                        <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                            href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
-                                height="25" alt="Black and White Portrait of a Man" loading="lazy" />
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-                            <li>
-                                <a class="dropdown-item" href="#">My profile</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Settings</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Right elements -->
+          <!-- Right elements -->
+          <div class="d-flex align-items-center">
+            <!-- Avatar -->
+            <div class="dropdown">
+              <a
+                data-mdb-dropdown-init
+                class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                href="#"
+                id="navbarDropdownMenuAvatar"
+                role="button"
+                aria-expanded="false"
+              >
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                  class="rounded-circle"
+                  height="25"
+                  alt="Black and White Portrait of a Man"
+                  loading="lazy"
+                />
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdownMenuAvatar"
+              >
+                <li>
+                  <a class="dropdown-item" href="#">My profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">Settings</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">Logout</a>
+                </li>
+              </ul>
             </div>
-            <!-- Container wrapper -->
-        </nav>
-        <!-- Navbar -->
+          </div>
+          <!-- Right elements -->
+        </div>
+        <!-- Container wrapper -->
+      </nav>
+      <!-- Navbar -->
     </div>
     <div class="container">
-        <h2 class="text-uppercase text-center mt-5 mb-5">Quản lý thành viên</h2>
+      <h2 class="text-uppercase text-center mt-5 mb-5">Quản lý thành viên</h2>
 
-        <!--    Search and Add Btn -->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <!-- Search input -->
-                    <div class="form-outline" data-mdb-input-init>
-                        <input type="search" id="search" class="form-control" />
-                        <label class="form-label" for="search">Search</label>
-                    </div>
-                    <!-- Search input -->
+      <!--    Search and Add Btn -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="input-group">
+            <!-- Search input -->
+            <div class="form-outline" data-mdb-input-init>
+              <input type="search" id="search" class="form-control" />
+              <label class="form-label" for="search">Search</label>
+            </div>
+            <!-- Search input -->
 
-                    <!--                Btn search -->
-                    <button type="button" id="searchBtn" class="btn btn-primary" data-mdb-ripple-init>
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <!--                Btn search -->
-                </div>
-            </div>
-            <div class="col-md-4">
-                <button type="button" class="btn-newUser btn btn-outline-primary" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Thêm</button>
-            </div>
+            <!--                Btn search -->
+            <button
+              type="button"
+              id="searchBtn"
+              class="btn btn-primary"
+              data-mdb-ripple-init
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <!--                Btn search -->
+          </div>
         </div>
-        <!--    Search and Add Btn -->
-
-        <!-- search by year -->
-        <div class="row my-3">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <!-- Search by year input -->
-                    <div class="form-outline" data-mdb-input-init>
-                        <input type="search" id="searchByYear" class="form-control" />
-                        <label class="form-label" for="searchByYear">Search by year</label>
-                    </div>
-                    <!-- Search by year input -->
-
-                    <!--                Btn search by year  -->
-                    <button type="button" id="searchByYearBtn" class="btn btn-primary" data-mdb-ripple-init>
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <!--                Btn search by year -->
-                </div>
-            </div>
-
-            <div class="col-md-4 d-flex">
-                <button id="deleteAllButton" type="button" class="btn btn-outline-primary me-2" data-mdb-ripple-init data-mdb-ripple-color="dark">Xóa tất cả</button>
-                <button id="excelBtn" type="button" class="btn btn-primary" data-mdb-ripple-init data-mdb-ripple-color="dark">Excel</button>
-            </div>
-
+        <div class="col-md-4">
+          <button
+            type="button"
+            class="btn-newUser btn btn-outline-primary"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+          >
+            Thêm
+          </button>
         </div>
-        <!-- search by year -->
+      </div>
+      <!--    Search and Add Btn -->
 
-        <!--            Table -->
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Mã</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Khoa</th>
-                    <th scope="col">Ngành</th>
-                    <th scope="col">Số điện thoại</th>
-                    <th scope="col">Password</th>
-                    <th scope="col">Email</th>
-                </tr>
-            </thead>
-            <tbody id="memberList">
-                <tr th:each="member : ${memberList}">
-                    <td scope="col" th:text="${member.MaTV}"></td>
-                    <td scope="col" th:text="${member.hoTen}"></td>
-                    <td scope="col" th:text="${member.Khoa}"></td>
-                    <td scope="col" th:text="${member.Nganh}"></td>
-                    <td scope="col" th:text="${member.sdt}"></td>
-                    <td scope="col" th:text="${member.password}"></td>
-                    <td scope="col" th:text="${member.email}"></td>
-                    <td style="display: flex;justify-content: center;align-items: center;">
-                        <i style="color: yellow;" th:attr="maTV=${member.MaTV}" onclick="warningMember(1)"
-                            class="warning-btn fa-solid fa-triangle-exclamation fa-2x"></i>
-                        <i style="color: red;" th:attr="maTV=${member.MaTV}"
-                            class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
-                        <i th:attr="maTV=${member.MaTV}" class="edit-btn fas fa-square-pen fa-2x"></i>
-                        <div style="display: flex;flex-direction: column;margin-left: 15px;">
-                            <span class="center" onclick="openReturnDevice(1)" style="color: blue;">Trả
-                                thiết bị</span>
-                            <span class="center" onclick="openBorrowDevice(1)"
-                                style="color: rgb(152, 18, 18);margin-left: 5px;">Mượn thiết bị</span>
-                            <span class="center" onclick="openOrderDevice(1)"
-                                style="color: rgb(35, 222, 60);margin-left: 5px;">Đặt thiết bị</span>
-                        </div>
-                    </td>
-                </tr>
+      <!-- search by year -->
+      <div class="row my-3">
+        <div class="col-md-4">
+          <div class="input-group">
+            <!-- Search by year input -->
+            <div class="form-outline" data-mdb-input-init>
+              <input type="search" id="searchByYear" class="form-control" />
+              <label class="form-label" for="searchByYear"
+                >Search by year</label
+              >
+            </div>
+            <!-- Search by year input -->
 
-            </tbody>
-        </table>
-        <!--            Table -->
+            <!--                Btn search by year  -->
+            <button
+              type="button"
+              id="searchByYearBtn"
+              class="btn btn-primary"
+              data-mdb-ripple-init
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <!--                Btn search by year -->
+          </div>
+        </div>
+
+        <div class="col-md-4 d-flex">
+          <button
+            id="deleteAllButton"
+            type="button"
+            class="btn btn-outline-primary me-2"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+          >
+            Xóa tất cả
+          </button>
+          <form id="uploadForm">
+            <input
+              id="excelBtn"
+              type="file"
+              name="excelBtn"
+              accept=".xls,.xlsx"
+            />
+            <button type="button" id="uploadButton">Upload</button>
+          </form>
+        </div>
+      </div>
+      <!-- search by year -->
+
+      <!--            Table -->
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Mã</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Khoa</th>
+            <th scope="col">Ngành</th>
+            <th scope="col">Số điện thoại</th>
+            <th scope="col">Password</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody id="memberList">
+          <tr th:each="member : ${memberList}">
+            <td scope="col" th:text="${member.MaTV}"></td>
+            <td scope="col" th:text="${member.hoTen}"></td>
+            <td scope="col" th:text="${member.Khoa}"></td>
+            <td scope="col" th:text="${member.Nganh}"></td>
+            <td scope="col" th:text="${member.sdt}"></td>
+            <td scope="col" th:text="${member.password}"></td>
+            <td scope="col" th:text="${member.email}"></td>
+            <td
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <i
+                style="color: yellow"
+                th:attr="maTV=${member.MaTV}"
+                onclick="warningMember(1)"
+                class="warning-btn fa-solid fa-triangle-exclamation fa-2x"
+              ></i>
+              <i
+                style="color: red"
+                th:attr="maTV=${member.MaTV}"
+                class="delete-btn fas fa-trash-can fa-2x mx-2"
+              ></i>
+              <i
+                th:attr="maTV=${member.MaTV}"
+                class="edit-btn fas fa-square-pen fa-2x"
+              ></i>
+              <div
+                style="display: flex; flex-direction: column; margin-left: 15px"
+              >
+                <span
+                  class="center"
+                  onclick="openReturnDevice(1)"
+                  style="color: blue"
+                  >Trả thiết bị</span
+                >
+                <span
+                  class="center"
+                  onclick="openBorrowDevice(1)"
+                  style="color: rgb(152, 18, 18); margin-left: 5px"
+                  >Mượn thiết bị</span
+                >
+                <span
+                  class="center"
+                  onclick="openOrderDevice(1)"
+                  style="color: rgb(35, 222, 60); margin-left: 5px"
+                  >Đặt thiết bị</span
+                >
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!--            Table -->
     </div>
-
 
     <!-- new user -->
-    <div class="newUser"
-        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
-        <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded p-3">
-            <span class="text-uppercase text-center mt-5 mb-5">Thành viên mới</span>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon">Mã thành viên</span>
-                <input type="text" class="id form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Tên thành viên</span>
-                <input type="text" class="name form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon2">Khoa</span>
-                <input type="text" class="khoa form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon3">Ngành</span>
-                <input type="text" class="nganh form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon4">Số điện thoại</span>
-                <input type="text" class="phone form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon5">Mật khẩu</span>
-                <input type="text" class="password form-control" aria-label="Username"
-                    aria-describedby="basic-addon1" />
-            </div>
-
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon6">Email</span>
-                <input type="text" class="email form-control" placeholder="Recipient's username"
-                    aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                <span class="input-group-text" id="basic-addon7">@gmail.com</span>
-            </div>
-
-            <div style="display: flex; justify-content: right;">
-                <button type="button" class="closeNewUser-btn btn btn-link" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Hủy</button>
-                <button type="button" class="btn btn-primary" data-mdb-ripple-init>Lưu</button>
-            </div>
-
+    <div
+      class="newUser"
+      style="
+        height: 100%;
+        width: 100%;
+        background-color: rgba(189, 189, 189, 0.538);
+        position: fixed;
+        top: 0;
+        display: none;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          background-color: white;
+          top: 20%;
+          right: 50%;
+          transform: translate(50%, 0%);
+          padding: 3px;
+        "
+        class="rounded p-3"
+      >
+        <span class="text-uppercase text-center mt-5 mb-5">Thành viên mới</span>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon">Mã thành viên</span>
+          <input
+            type="text"
+            class="id form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
         </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Tên thành viên</span>
+          <input
+            type="text"
+            class="name form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon2">Khoa</span>
+          <input
+            type="text"
+            class="khoa form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon3">Ngành</span>
+          <input
+            type="text"
+            class="nganh form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon4">Số điện thoại</span>
+          <input
+            type="text"
+            class="phone form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon5">Mật khẩu</span>
+          <input
+            type="text"
+            class="password form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon6">Email</span>
+          <input
+            type="text"
+            class="email form-control"
+            placeholder="Recipient's username"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+          />
+          <span class="input-group-text" id="basic-addon7">@gmail.com</span>
+        </div>
+
+        <div style="display: flex; justify-content: right">
+          <button
+            type="button"
+            class="closeNewUser-btn btn btn-link"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+          >
+            Hủy
+          </button>
+          <button type="button" class="btn btn-primary" data-mdb-ripple-init>
+            Lưu
+          </button>
+        </div>
+      </div>
     </div>
     <!-- update user -->
-    <div class="updateUser"
-        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;">
-        <div style="position: absolute; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded p-3">
-            <span class="text-uppercase text-center mt-5 mb-5">Sửa thành viên</span>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon8">Tên thành viên</span>
-                <input type="text" class="name form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon9">Khoa</span>
-                <input type="text" class="khoa form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon10">Ngành</span>
-                <input type="text" class="nganh form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon11">Số điện thoại</span>
-                <input type="text" class="phone form-control" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon12">Mật khẩu</span>
-                <input type="text" class="password form-control" aria-label="Username"
-                    aria-describedby="basic-addon1" />
-            </div>
-
-            <div class="input-group mb-3">
-                <span class="input-group-text " id="basic-addon13">Email</span>
-                <input type="text" class="email form-control" placeholder="Recipient's username"
-                    aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                <span class="input-group-text" id="basic-addon14">@gmail.com</span>
-            </div>
-
-            <div style="display: flex; justify-content: right;">
-                <button type="button" class="closeNewUser-btn btn btn-link" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark" id="cancelEdit">Hủy</button>
-                <button type="button" class="btn btn-primary" id="saveBtn" data-mdb-ripple-init>Lưu</button>
-            </div>
-
+    <div
+      class="updateUser"
+      style="
+        height: 100%;
+        width: 100%;
+        background-color: rgba(189, 189, 189, 0.538);
+        position: fixed;
+        top: 0;
+        display: none;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          background-color: white;
+          top: 20%;
+          right: 50%;
+          transform: translate(50%, 0%);
+          padding: 3px;
+        "
+        class="rounded p-3"
+      >
+        <span class="text-uppercase text-center mt-5 mb-5">Sửa thành viên</span>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon8">Tên thành viên</span>
+          <input
+            type="text"
+            class="name form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
         </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon9">Khoa</span>
+          <input
+            type="text"
+            class="khoa form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon10">Ngành</span>
+          <input
+            type="text"
+            class="nganh form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon11">Số điện thoại</span>
+          <input
+            type="text"
+            class="phone form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon12">Mật khẩu</span>
+          <input
+            type="text"
+            class="password form-control"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon13">Email</span>
+          <input
+            type="text"
+            class="email form-control"
+            placeholder="Recipient's username"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+          />
+          <span class="input-group-text" id="basic-addon14">@gmail.com</span>
+        </div>
+
+        <div style="display: flex; justify-content: right">
+          <button
+            type="button"
+            class="closeNewUser-btn btn btn-link"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+            id="cancelEdit"
+          >
+            Hủy
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="saveBtn"
+            data-mdb-ripple-init
+          >
+            Lưu
+          </button>
+        </div>
+      </div>
     </div>
     <!-- Trả thiết bị -->
-    <div id="returnDevice"
-        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;z-index: 2;">
-        <div style="position: absolute;height: 500px;width: 600px; background-color: white;top: 20%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded">
-            <span class="text-uppercase text-center mt-5 mb-5">Trả thiết bị</span>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <!-- Search input -->
-                        <div class="form-outline" data-mdb-input-init>
-                            <input type="search" id="searchReturnDevice" class="form-control" />
-                            <label class="form-label" for="search">Search</label>
-                        </div>
-                        <!-- Search input -->
+    <div
+      id="returnDevice"
+      style="
+        height: 100%;
+        width: 100%;
+        background-color: rgba(189, 189, 189, 0.538);
+        position: fixed;
+        top: 0;
+        display: none;
+        z-index: 2;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          height: 500px;
+          width: 600px;
+          background-color: white;
+          top: 20%;
+          right: 50%;
+          transform: translate(50%, 0%);
+          padding: 3px;
+        "
+        class="rounded"
+      >
+        <span class="text-uppercase text-center mt-5 mb-5">Trả thiết bị</span>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="input-group">
+              <!-- Search input -->
+              <div class="form-outline" data-mdb-input-init>
+                <input
+                  type="search"
+                  id="searchReturnDevice"
+                  class="form-control"
+                />
+                <label class="form-label" for="search">Search</label>
+              </div>
+              <!-- Search input -->
 
-                        <!--                Btn search -->
-                        <button type="button" id="searchReturnDeviceBtn" class="btn btn-primary" data-mdb-ripple-init>
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <!--                Btn search -->
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <button type="button" class="btn-newUser btn btn-outline-primary" data-mdb-ripple-init
-                        data-mdb-ripple-color="dark">Refresh</button>
-                </div>
+              <!--                Btn search -->
+              <button
+                type="button"
+                id="searchReturnDeviceBtn"
+                class="btn btn-primary"
+                data-mdb-ripple-init
+              >
+                <i class="fas fa-search"></i>
+              </button>
+              <!--                Btn search -->
             </div>
-
-            <div class="card col-lg-4 col-md-6"
-                style="height: 393px; overflow-y: scroll; scrollbar-width: none; scroll-margin: 1px; width: 100%;">
-                <div class=" h-100">
-                    <table class="table align-items-center mb-0">
-                        <thead>
-                            <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Mã thiết bị</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                    Tên</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Mô tả</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Ngày mượn</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="align-middle text-left text-sm">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                                    <label class="form-check-label" for="flexCheckDefault">01</label>
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                    Thiết bị A
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                    Được làm băng nhôm
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                    30-2-1119
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div style="display: flex; justify-content: right; margin-top: 5px;">
-                <button type="button" class="closeReturnDevice-btn btn btn-link" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Hủy</button>
-                <button type="button" class="btn btn-primary" id="save-return-device-btn"
-                    data-mdb-ripple-init>Lưu</button>
-            </div>
+          </div>
+          <div class="col-md-4">
+            <button
+              type="button"
+              class="btn-newUser btn btn-outline-primary"
+              data-mdb-ripple-init
+              data-mdb-ripple-color="dark"
+            >
+              Refresh
+            </button>
+          </div>
         </div>
+
+        <div
+          class="card col-lg-4 col-md-6"
+          style="
+            height: 393px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            scroll-margin: 1px;
+            width: 100%;
+          "
+        >
+          <div class="h-100">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Mã thiết bị
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                  >
+                    Tên
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Mô tả
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Ngày mượn
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="align-middle text-left text-sm">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault"
+                      >01</label
+                    >
+                  </td>
+                  <td class="align-middle text-center text-sm">Thiết bị A</td>
+                  <td class="align-middle text-center text-sm">
+                    Được làm băng nhôm
+                  </td>
+                  <td class="align-middle text-center text-sm">30-2-1119</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: right; margin-top: 5px">
+          <button
+            type="button"
+            class="closeReturnDevice-btn btn btn-link"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+          >
+            Hủy
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="save-return-device-btn"
+            data-mdb-ripple-init
+          >
+            Lưu
+          </button>
+        </div>
+      </div>
     </div>
     <!-- Mượn thiết bị -->
-    <div id="borrowDevice"
-        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;z-index: 2;">
-        <div style="position: absolute;height: 566px;width: 600px; background-color: white;top: 12%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded">
-            <span class="text-uppercase text-center mt-5 mb-5">Mượn thiết bị</span>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <!-- Search input -->
-                        <div class="form-outline" data-mdb-input-init>
-                            <input type="search" id="searchBorrowDevice" class="form-control" />
-                            <label class="form-label" for="search">Search</label>
-                        </div>
-                        <!-- Search input -->
+    <div
+      id="borrowDevice"
+      style="
+        height: 100%;
+        width: 100%;
+        background-color: rgba(189, 189, 189, 0.538);
+        position: fixed;
+        top: 0;
+        display: none;
+        z-index: 2;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          height: 566px;
+          width: 600px;
+          background-color: white;
+          top: 12%;
+          right: 50%;
+          transform: translate(50%, 0%);
+          padding: 3px;
+        "
+        class="rounded"
+      >
+        <span class="text-uppercase text-center mt-5 mb-5">Mượn thiết bị</span>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="input-group">
+              <!-- Search input -->
+              <div class="form-outline" data-mdb-input-init>
+                <input
+                  type="search"
+                  id="searchBorrowDevice"
+                  class="form-control"
+                />
+                <label class="form-label" for="search">Search</label>
+              </div>
+              <!-- Search input -->
 
-                        <!--                Btn search -->
-                        <button type="button" id="searchBorrowDeviceBtn" class="btn btn-primary" data-mdb-ripple-init>
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <!--                Btn search -->
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <button type="button" class="btn-newUser btn btn-outline-primary" data-mdb-ripple-init
-                        data-mdb-ripple-color="dark">Refresh</button>
-                </div>
-                <div class='col-lg-5' style="margin-top: 10px;">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text" for="borrowDate">Ngày trả</label>
-                        <input class="form-control" type="date" min="" />
-                    </div>
-                </div>
+              <!--                Btn search -->
+              <button
+                type="button"
+                id="searchBorrowDeviceBtn"
+                class="btn btn-primary"
+                data-mdb-ripple-init
+              >
+                <i class="fas fa-search"></i>
+              </button>
+              <!--                Btn search -->
             </div>
-
-            <div class="card col-lg-4 col-md-6"
-                style="height: 393px; overflow-y: scroll; scrollbar-width: none; scroll-margin: 1px; width: 100%;">
-                <div class=" h-100">
-                    <table class="table align-items-center mb-0">
-                        <thead>
-                            <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Mã thiết bị</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                    Tên</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Mô tả</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="align-middle text-left text-sm">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                                    <label class="form-check-label" for="flexCheckDefault">01</label>
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                    Thiết bị A
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                    Được làm băng nhôm
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+          </div>
+          <div class="col-md-3">
+            <button
+              type="button"
+              class="btn-newUser btn btn-outline-primary"
+              data-mdb-ripple-init
+              data-mdb-ripple-color="dark"
+            >
+              Refresh
+            </button>
+          </div>
+          <div class="col-lg-5" style="margin-top: 10px">
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="borrowDate">Ngày trả</label>
+              <input class="form-control" type="date" min="" />
             </div>
-            <div style="display: flex; justify-content: right; margin-top: 5px;">
-                <button type="button" class="closeBorrowDevice-btn btn btn-link" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Hủy</button>
-                <button type="button" class="btn btn-primary" id="borrow-device-btn" data-mdb-ripple-init>Lưu</button>
-            </div>
+          </div>
         </div>
+
+        <div
+          class="card col-lg-4 col-md-6"
+          style="
+            height: 393px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            scroll-margin: 1px;
+            width: 100%;
+          "
+        >
+          <div class="h-100">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Mã thiết bị
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                  >
+                    Tên
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Mô tả
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="align-middle text-left text-sm">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault"
+                      >01</label
+                    >
+                  </td>
+                  <td class="align-middle text-center text-sm">Thiết bị A</td>
+                  <td class="align-middle text-center text-sm">
+                    Được làm băng nhôm
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: right; margin-top: 5px">
+          <button
+            type="button"
+            class="closeBorrowDevice-btn btn btn-link"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+          >
+            Hủy
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="borrow-device-btn"
+            data-mdb-ripple-init
+          >
+            Lưu
+          </button>
+        </div>
+      </div>
     </div>
     <!-- Đặt thiết bị -->
-    <div id="orderDevice"
-        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;z-index: 2;">
-        <div style="position: absolute;height: 566px;width: 600px; background-color: white;top: 12%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded">
-            <span class="text-uppercase text-center mt-5 mb-5">Đặt thiết bị</span>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <!-- Search input -->
-                        <div class="form-outline" data-mdb-input-init>
-                            <input type="search" id="searchOrderDevice" class="form-control" />
-                            <label class="form-label" for="search">Search</label>
-                        </div>
-                        <!-- Search input -->
+    <div
+      id="orderDevice"
+      style="
+        height: 100%;
+        width: 100%;
+        background-color: rgba(189, 189, 189, 0.538);
+        position: fixed;
+        top: 0;
+        display: none;
+        z-index: 2;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          height: 566px;
+          width: 600px;
+          background-color: white;
+          top: 12%;
+          right: 50%;
+          transform: translate(50%, 0%);
+          padding: 3px;
+        "
+        class="rounded"
+      >
+        <span class="text-uppercase text-center mt-5 mb-5">Đặt thiết bị</span>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="input-group">
+              <!-- Search input -->
+              <div class="form-outline" data-mdb-input-init>
+                <input
+                  type="search"
+                  id="searchOrderDevice"
+                  class="form-control"
+                />
+                <label class="form-label" for="search">Search</label>
+              </div>
+              <!-- Search input -->
 
-                        <!--                Btn search -->
-                        <button type="button" id="searchOrderDeviceBtn" class="btn btn-primary" data-mdb-ripple-init>
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <!--                Btn search -->
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <button type="button" class="btn-newUser btn btn-outline-primary" data-mdb-ripple-init
-                        data-mdb-ripple-color="dark">Refresh</button>
-                </div>
-                <div class='col-lg-5' style="margin-top: 10px;">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text" for="borrowDate">Ngày trả</label>
-                        <input class="form-control" type="date" min="" />
-                    </div>
-                </div>
+              <!--                Btn search -->
+              <button
+                type="button"
+                id="searchOrderDeviceBtn"
+                class="btn btn-primary"
+                data-mdb-ripple-init
+              >
+                <i class="fas fa-search"></i>
+              </button>
+              <!--                Btn search -->
             </div>
-
-            <div class="card col-lg-4 col-md-6"
-                style="height: 393px; overflow-y: scroll; scrollbar-width: none; scroll-margin: 1px; width: 100%;">
-                <div class=" h-100">
-                    <table class="table align-items-center mb-0">
-                        <thead>
-                            <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Mã thiết bị</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                    Tên</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Mô tả</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="align-middle text-left text-sm">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                                    <label class="form-check-label" for="flexCheckDefault">01</label>
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                    Thiết bị A
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                    Được làm băng nhôm
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+          </div>
+          <div class="col-md-3">
+            <button
+              type="button"
+              class="btn-newUser btn btn-outline-primary"
+              data-mdb-ripple-init
+              data-mdb-ripple-color="dark"
+            >
+              Refresh
+            </button>
+          </div>
+          <div class="col-lg-5" style="margin-top: 10px">
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="borrowDate">Ngày trả</label>
+              <input class="form-control" type="date" min="" />
             </div>
-            <div style="display: flex; justify-content: right; margin-top: 5px;">
-                <button type="button" class="closeOrderDevice-btn btn btn-link" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Hủy</button>
-                <button type="button" class="btn btn-primary" id="order-device-btn" data-mdb-ripple-init>Lưu</button>
-            </div>
+          </div>
         </div>
+
+        <div
+          class="card col-lg-4 col-md-6"
+          style="
+            height: 393px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            scroll-margin: 1px;
+            width: 100%;
+          "
+        >
+          <div class="h-100">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Mã thiết bị
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                  >
+                    Tên
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Mô tả
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="align-middle text-left text-sm">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault"
+                      >01</label
+                    >
+                  </td>
+                  <td class="align-middle text-center text-sm">Thiết bị A</td>
+                  <td class="align-middle text-center text-sm">
+                    Được làm băng nhôm
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: right; margin-top: 5px">
+          <button
+            type="button"
+            class="closeOrderDevice-btn btn btn-link"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+          >
+            Hủy
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="order-device-btn"
+            data-mdb-ripple-init
+          >
+            Lưu
+          </button>
+        </div>
+      </div>
     </div>
     <!-- Cảnh báo thành viên -->
-    <div id="warningMember"
-        style="height: 100%; width: 100%; background-color: rgba(189, 189, 189, 0.538); position: fixed; top: 0; display: none;z-index: 2;">
-        <div style="position: absolute;height: 247px;width: 509px; background-color: white;top: 22%; right: 50%;transform: translate(50%,0%);padding: 3px;"
-            class="rounded p-3">
-            <span class="text-uppercase text-center mt-5 mb-5">Cảnh báo thành viên</span>
+    <div
+      id="warningMember"
+      style="
+        height: 100%;
+        width: 100%;
+        background-color: rgba(189, 189, 189, 0.538);
+        position: fixed;
+        top: 0;
+        display: none;
+        z-index: 2;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          height: 247px;
+          width: 509px;
+          background-color: white;
+          top: 22%;
+          right: 50%;
+          transform: translate(50%, 0%);
+          padding: 3px;
+        "
+        class="rounded p-3"
+      >
+        <span class="text-uppercase text-center mt-5 mb-5"
+          >Cảnh báo thành viên</span
+        >
 
-            <div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon">Thành viên</span>
-                    <input type="text" class="name form-control" aria-describedby="basic-addon1" />
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon">Hình thức xử lý </span>
-                    <select class="select form-control">
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                    </select>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Số tiền</span>
-                    <input type="text" class="name form-control" aria-describedby="basic-addon1" />
-                </div>
-
-            </div>
-            <div style="display: flex; justify-content: right; margin-top: 5px;">
-                <button type="button" class="closeWarningMember-btn btn btn-link" data-mdb-ripple-init
-                    data-mdb-ripple-color="dark">Hủy</button>
-                <button type="button" class="btn btn-primary" id="warning-member-btn" data-mdb-ripple-init>Lưu</button>
-            </div>
+        <div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">Thành viên</span>
+            <input
+              type="text"
+              class="name form-control"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon"
+              >Hình thức xử lý
+            </span>
+            <select class="select form-control">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Số tiền</span>
+            <input
+              type="text"
+              class="name form-control"
+              aria-describedby="basic-addon1"
+            />
+          </div>
         </div>
+        <div style="display: flex; justify-content: right; margin-top: 5px">
+          <button
+            type="button"
+            class="closeWarningMember-btn btn btn-link"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+          >
+            Hủy
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="warning-member-btn"
+            data-mdb-ripple-init
+          >
+            Lưu
+          </button>
+        </div>
+      </div>
     </div>
-</body>
+  </body>
 
-<script type="text/javascript"></script>
-<!-- MDB -->
-<script type="text/javascript"
-    th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script type="text/javascript"></script>
+  <!-- MDB -->
+  <script
+    type="text/javascript"
+    th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js}"
+  ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-
-<script>
-    let newUser = document.querySelector('.newUser');
-    let updateUser = document.querySelector('.updateUser');
-    let saveButton = document.querySelector('.newUser .btn-primary');
-    let editButtons = document.querySelectorAll('.edit-btn');
-    let deleteButtons = document.querySelectorAll('.delete-btn');
-    let searchButton = document.getElementById('searchBtn');
-    let searchButtonYear = document.getElementById('searchByYearBtn');
-    let searchInputYear = document.getElementById('searchByYear');
-    let deleteAll = document.getElementById('deleteAllButton');
-    let searchInput = document.getElementById('search');
+  <script>
+    let newUser = document.querySelector(".newUser");
+    let updateUser = document.querySelector(".updateUser");
+    let saveButton = document.querySelector(".newUser .btn-primary");
+    let editButtons = document.querySelectorAll(".edit-btn");
+    let deleteButtons = document.querySelectorAll(".delete-btn");
+    let searchButton = document.getElementById("searchBtn");
+    let searchButtonYear = document.getElementById("searchByYearBtn");
+    let searchInputYear = document.getElementById("searchByYear");
+    let deleteAll = document.getElementById("deleteAllButton");
+    let searchInput = document.getElementById("search");
 
     //open form new user
-    let newUserBtn = document.querySelector('.btn-newUser');
-    newUserBtn.addEventListener('click', function () {
-        newUser.style.display = ' flex';
-        newUser.querySelector('.name').value = ''
-        newUser.querySelector('.khoa').value = ''
-        newUser.querySelector('.nganh').value = ''
-        newUser.querySelector('.phone').value = ''
-        newUser.querySelector('.password').value = ''
-        newUser.querySelector('.email').value = ''
-    })
+    let newUserBtn = document.querySelector(".btn-newUser");
+    newUserBtn.addEventListener("click", function () {
+      newUser.style.display = " flex";
+      newUser.querySelector(".name").value = "";
+      newUser.querySelector(".khoa").value = "";
+      newUser.querySelector(".nganh").value = "";
+      newUser.querySelector(".phone").value = "";
+      newUser.querySelector(".password").value = "";
+      newUser.querySelector(".email").value = "";
+    });
 
     //open form return device
     function openReturnDevice(user) {
-        var returnDevice = document.getElementById('returnDevice');
-        returnDevice.style.display = ' flex'
+      var returnDevice = document.getElementById("returnDevice");
+      returnDevice.style.display = " flex";
     }
     //close form return device
-    document.querySelector('.closeReturnDevice-btn').addEventListener('click', function () {
-        var returnDevice = document.getElementById('returnDevice');
-        returnDevice.style.display = ' none'
-    })
+    document
+      .querySelector(".closeReturnDevice-btn")
+      .addEventListener("click", function () {
+        var returnDevice = document.getElementById("returnDevice");
+        returnDevice.style.display = " none";
+      });
     //open form borrow device
     function openBorrowDevice(user) {
-        var borrowDevice = document.getElementById('borrowDevice');
-        borrowDevice.style.display = ' flex'
+      var borrowDevice = document.getElementById("borrowDevice");
+      borrowDevice.style.display = " flex";
     }
     //close form borrow device
-    document.querySelector('.closeBorrowDevice-btn').addEventListener('click', function () {
-        var borrowDevice = document.getElementById('borrowDevice');
-        borrowDevice.style.display = ' none'
-    })
+    document
+      .querySelector(".closeBorrowDevice-btn")
+      .addEventListener("click", function () {
+        var borrowDevice = document.getElementById("borrowDevice");
+        borrowDevice.style.display = " none";
+      });
     //open form order device
     function openOrderDevice(user) {
-        var orderDevice = document.getElementById('orderDevice');
-        orderDevice.style.display = ' flex'
+      var orderDevice = document.getElementById("orderDevice");
+      orderDevice.style.display = " flex";
     }
     //close form order device
-    document.querySelector('.closeOrderDevice-btn').addEventListener('click', function () {
-        var orderDevice = document.getElementById('orderDevice');
-        orderDevice.style.display = ' none'
-    })
+    document
+      .querySelector(".closeOrderDevice-btn")
+      .addEventListener("click", function () {
+        var orderDevice = document.getElementById("orderDevice");
+        orderDevice.style.display = " none";
+      });
 
     function warningMember(user) {
-        var warningMember = document.getElementById('warningMember');
-        warningMember.style.display = ' flex'
+      var warningMember = document.getElementById("warningMember");
+      warningMember.style.display = " flex";
     }
 
     //close form warning member
-    document.querySelector('.closeWarningMember-btn').addEventListener('click', function () {
-        var warningMember = document.getElementById('warningMember');
-        warningMember.style.display = ' none'
-    })
+    document
+      .querySelector(".closeWarningMember-btn")
+      .addEventListener("click", function () {
+        var warningMember = document.getElementById("warningMember");
+        warningMember.style.display = " none";
+      });
     //close form new user
-    let closeNewUser = document.querySelector('.closeNewUser-btn');
-    closeNewUser.addEventListener('click', function () {
-        newUser.style.display = ' none';
-    })
+    let closeNewUser = document.querySelector(".closeNewUser-btn");
+    closeNewUser.addEventListener("click", function () {
+      newUser.style.display = " none";
+    });
     // close form edit user
-    let cancelEditBtn = document.getElementById('cancelEdit');
-    cancelEditBtn.addEventListener('click', function () {
-        updateUser.style.display = ' none';
-    })
+    let cancelEditBtn = document.getElementById("cancelEdit");
+    cancelEditBtn.addEventListener("click", function () {
+      updateUser.style.display = " none";
+    });
 
     // fetch handle
     searchReload();
     // add member
-    saveButton.addEventListener('click', () => {
-        let maTV = document.querySelector('.id').value;
-        let tenTV = document.querySelector('.name').value;
-        let khoa = document.querySelector('.khoa').value;
-        let nganh = document.querySelector('.nganh').value;
-        let sdt = document.querySelector('.phone').value;
-        let password = document.querySelector('.password').value;
-        let email = document.querySelector('.email').value;
+    saveButton.addEventListener("click", () => {
+      let maTV = document.querySelector(".id").value;
+      let tenTV = document.querySelector(".name").value;
+      let khoa = document.querySelector(".khoa").value;
+      let nganh = document.querySelector(".nganh").value;
+      let sdt = document.querySelector(".phone").value;
+      let password = document.querySelector(".password").value;
+      let email = document.querySelector(".email").value;
 
-        let newMemberData = {
-            maTV: maTV,
-            tenTV: tenTV,
-            khoa: khoa,
-            nganh: nganh,
-            sdt: sdt,
-            password: password,
-            email: email
-        };
+      let newMemberData = {
+        maTV: maTV,
+        tenTV: tenTV,
+        khoa: khoa,
+        nganh: nganh,
+        sdt: sdt,
+        password: password,
+        email: email,
+      };
 
-        fetch("/addMember", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newMemberData)
+      fetch("/addMember", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newMemberData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          alert(data.message);
+          if (data.success === true) {
+            window.location.reload();
+          }
         })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message);
-                if (data.success === true) {
-                    window.location.reload();
-                }
-            })
-            .catch(error => {
-                console.log("error: " + error);
-            });
+        .catch((error) => {
+          console.log("error: " + error);
+        });
     });
 
     // search device
-    searchButton.addEventListener('click', function () {
-        let searchValue = searchInput.value;
+    searchButton.addEventListener("click", function () {
+      let searchValue = searchInput.value;
 
-        let searchData = {
-            searchValue: searchValue
-        };
-        console.log(JSON.stringify(searchData));
-        fetch("/searchMember", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(searchData)
-        })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('memberList').innerHTML = '';
+      let searchData = {
+        searchValue: searchValue,
+      };
+      console.log(JSON.stringify(searchData));
+      fetch("/searchMember", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(searchData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById("memberList").innerHTML = "";
 
-                data.forEach(function (member) {
-                    console.log("test: " + JSON.stringify(member));
-                    let tr = document.createElement('tr');
-                    tr.innerHTML = `
+          data.forEach(function (member) {
+            console.log("test: " + JSON.stringify(member));
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
                     <td>${member.maTV}</td>
                     <td>${member.hoTen}</td>
                     <td>${member.khoa}</td>
@@ -692,45 +1173,45 @@
                         <i maTV="${member.maTV}" class="edit-btn fas fa-square-pen fa-2x"></i>
                     </td>
                 `;
-                    document.getElementById('memberList').appendChild(tr);
-                });
-                searchReload();
-            })
-            .catch(error => {
-                console.log("error: " + error);
-            });
+            document.getElementById("memberList").appendChild(tr);
+          });
+          searchReload();
+        })
+        .catch((error) => {
+          console.log("error: " + error);
+        });
     });
 
     // search member(enter)
-    searchInput.addEventListener('keydown', function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            searchButton.click();
-        }
+    searchInput.addEventListener("keydown", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        searchButton.click();
+      }
     });
 
     // search by year
-    searchButtonYear.addEventListener('click', function () {
-        let searchValue = searchInputYear.value;
+    searchButtonYear.addEventListener("click", function () {
+      let searchValue = searchInputYear.value;
 
-        let searchData = {
-            searchValue: searchValue
-        };
+      let searchData = {
+        searchValue: searchValue,
+      };
 
-        fetch("/searchMemberByYear", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(searchData)
-        })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('memberList').innerHTML = '';
+      fetch("/searchMemberByYear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(searchData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById("memberList").innerHTML = "";
 
-                data.forEach(function (member) {
-                    let tr = document.createElement('tr');
-                    tr.innerHTML = `
+          data.forEach(function (member) {
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
                 <td>${member.maTV}</td>
                 <td>${member.hoTen}</td>
                 <td>${member.khoa}</td>
@@ -743,150 +1224,174 @@
                     <i maTV="${member.maTV}" class="edit-btn fas fa-square-pen fa-2x"></i>
                 </td>
             `;
-                    document.getElementById('memberList').appendChild(tr);
-                });
-                searchReload();
-            })
-            .catch(error => {
-                console.log("error: " + error);
-            });
+            document.getElementById("memberList").appendChild(tr);
+          });
+          searchReload();
+        })
+        .catch((error) => {
+          console.log("error: " + error);
+        });
     });
 
     // search by year(enter)
-    searchInputYear.addEventListener('keydown', function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            searchButtonYear.click();
-        }
+    searchInputYear.addEventListener("keydown", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        searchButtonYear.click();
+      }
     });
 
     deleteAll.addEventListener("click", function () {
-        let searchValue = searchInputYear.value;
+      let searchValue = searchInputYear.value;
 
-        let searchData = {
-            searchValue: searchValue
-        };
-        if (confirm("Bạn có chắc chắn muốn xóa hết?")) {
-            fetch('/deleteAll', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(searchData)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    alert(data.message);
-                    if (data.success === true) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.log("error: " + error);
-                });
-        }
+      let searchData = {
+        searchValue: searchValue,
+      };
+      if (confirm("Bạn có chắc chắn muốn xóa hết?")) {
+        fetch("/deleteAll", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(searchData),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data.message);
+            if (data.success === true) {
+              window.location.reload();
+            }
+          })
+          .catch((error) => {
+            console.log("error: " + error);
+          });
+      }
     });
 
     function searchReload() {
-        let editButtons = document.querySelectorAll('.edit-btn');
-        let deleteButtons = document.querySelectorAll('.delete-btn');
-        //edit user
-        let editBtn = document.querySelectorAll('.edit-btn')
-        editBtn.forEach(btn => {
-            btn.addEventListener('click', function () {
-                let maTV = btn.getAttribute("maTV");
-                fetch('/getMember', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ maTV: maTV })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        updateUser.style.display = 'flex';
-                        updateUser.querySelector('.name').value = data.hoTen;
-                        updateUser.querySelector('.khoa').value = data.khoa;
-                        updateUser.querySelector('.nganh').value = data.nganh;
-                        updateUser.querySelector('.phone').value = data.sdt;
-                        updateUser.querySelector('.password').value = data.password;
-                        updateUser.querySelector('.email').value = data.email;
-                    })
-                    .catch(error => console.error('Error:', error));
+      let editButtons = document.querySelectorAll(".edit-btn");
+      let deleteButtons = document.querySelectorAll(".delete-btn");
+      //edit user
+      let editBtn = document.querySelectorAll(".edit-btn");
+      editBtn.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          let maTV = btn.getAttribute("maTV");
+          fetch("/getMember", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ maTV: maTV }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              updateUser.style.display = "flex";
+              updateUser.querySelector(".name").value = data.hoTen;
+              updateUser.querySelector(".khoa").value = data.khoa;
+              updateUser.querySelector(".nganh").value = data.nganh;
+              updateUser.querySelector(".phone").value = data.sdt;
+              updateUser.querySelector(".password").value = data.password;
+              updateUser.querySelector(".email").value = data.email;
             })
+            .catch((error) => console.error("Error:", error));
         });
-        // edit device
-        editButtons.forEach((btn) => {
-            btn.addEventListener('click', function () {
-                let saveBtn = document.getElementById('saveBtn');
-                saveBtn.addEventListener('click', () => {
-                    let maTV = btn.getAttribute('maTV');
-                    let tenTV = document.querySelector('.updateUser .name').value;
-                    let khoa = document.querySelector('.updateUser .khoa').value;
-                    let nganh = document.querySelector('.updateUser .nganh').value;
-                    let sdt = document.querySelector('.updateUser .phone').value;
-                    let password = document.querySelector('.updateUser .password').value;
-                    let email = document.querySelector('.updateUser .email').value;
+      });
+      // edit device
+      editButtons.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          let saveBtn = document.getElementById("saveBtn");
+          saveBtn.addEventListener("click", () => {
+            let maTV = btn.getAttribute("maTV");
+            let tenTV = document.querySelector(".updateUser .name").value;
+            let khoa = document.querySelector(".updateUser .khoa").value;
+            let nganh = document.querySelector(".updateUser .nganh").value;
+            let sdt = document.querySelector(".updateUser .phone").value;
+            let password = document.querySelector(
+              ".updateUser .password"
+            ).value;
+            let email = document.querySelector(".updateUser .email").value;
 
-                    let data = {
-                        maTV: maTV,
-                        tenTV: tenTV,
-                        khoa: khoa,
-                        nganh: nganh,
-                        sdt: sdt,
-                        password: password,
-                        email: email
-                    };
-                    fetch('/editMember', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            alert(data.message);
-                            if (data.success === true) {
-                                window.location.reload();
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Fetch error:', error);
-                        });
-                });
-
-            });
-        });
-
-
-        // delete device
-        deleteButtons.forEach((btn) => {
-            btn.addEventListener('click', function () {
-                if (confirm("Bạn có chắc chắn muốn xóa thành viên này?")) {
-                    let maTV = btn.getAttribute("maTV");
-
-                    fetch("/deleteMember", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ maTV: maTV })
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            alert(data.message);
-                            if (data.success === true) {
-                                window.location.reload();
-                            }
-                        })
-                        .catch(error => {
-                            console.log("error: " + error);
-                        });
+            let data = {
+              maTV: maTV,
+              tenTV: tenTV,
+              khoa: khoa,
+              nganh: nganh,
+              sdt: sdt,
+              password: password,
+              email: email,
+            };
+            fetch("/editMember", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                alert(data.message);
+                if (data.success === true) {
+                  window.location.reload();
                 }
-            });
+              })
+              .catch((error) => {
+                console.error("Fetch error:", error);
+              });
+          });
         });
-    }
-</script>
+      });
 
+      // delete device
+      deleteButtons.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          if (confirm("Bạn có chắc chắn muốn xóa thành viên này?")) {
+            let maTV = btn.getAttribute("maTV");
+
+            fetch("/deleteMember", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ maTV: maTV }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                alert(data.message);
+                if (data.success === true) {
+                  window.location.reload();
+                }
+              })
+              .catch((error) => {
+                console.log("error: " + error);
+              });
+          }
+        });
+      });
+    }
+
+    document
+      .getElementById("uploadButton")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var fileInput = document.getElementById("excelBtn");
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append("excelBtn", file);
+
+        fetch("/uploadExcel", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert(data.message);
+            } else {
+              alert(data.message);
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      });
+  </script>
 </html>
