@@ -8,6 +8,7 @@ import com.example.membermanagerment.repository.ThietBiRepository;
 import com.example.membermanagerment.repository.XuLyRepository;
 import com.example.membermanagerment.utilities.ExcelUtil;
 import com.example.membermanagerment.utilities.thanhvienExcelUtil;
+import com.example.membermanagerment.utilities.thietbiExcelUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -641,6 +642,44 @@ public class AdminController {
                 // clear all data in table thanhvien
                 thanhVienRepository.deleteAll();
                 thanhvienList.forEach(thanhvien -> thanhVienRepository.save(thanhvien));
+
+                convertFile.delete();
+
+                response.put("success", true);
+                response.put("message", "File uploaded and processed successfully");
+
+                return response;
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.put("success", false);
+                response.put("message", "An error occurred while processing the file");
+                return response;
+            }
+        }
+        response.put("success", false);
+        response.put("message", "No file uploaded");
+        return response;
+    }
+
+    @PostMapping("/uploadDeviceExcel")
+    @ResponseBody
+    public Map<String, Object> handleDeviceFileUpload(@RequestParam("excelDeviceBtn") MultipartFile file) {
+        Map<String, Object> response = new HashMap<>();
+        if (!file.isEmpty()) {
+            try {
+                // Convert MultipartFile to File
+                File convertFile = new File(file.getOriginalFilename());
+                convertFile.createNewFile();
+                FileOutputStream fos = new FileOutputStream(convertFile);
+                fos.write(file.getBytes());
+                fos.close();
+
+                List<List<String>> data = ExcelUtil.readExcel(convertFile.getAbsolutePath(), 0);
+
+                List<ThietBi> thietbiList = thietbiExcelUtil.convertToThietbiList(data);
+                // clear all data in table thietbi
+                thietBiRepository.deleteAll();
+                thietbiList.forEach(thietbi -> thietBiRepository.save(thietbi));
 
                 convertFile.delete();
 
