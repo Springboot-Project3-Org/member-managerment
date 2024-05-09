@@ -144,8 +144,6 @@ public class UserController {
                 response.put("success", addedDevice != null);
                 if (addedDevice != null) {
                     response.put("message", "Đặt chỗ thành công");
-                } else {
-                    response.put("message", "Đặt chỗ thất bại");
                 }
             }
         }
@@ -263,8 +261,6 @@ public class UserController {
                 response.put("message", "Registration successful");
                 // Them memberID vao session
                 session.setAttribute("memberID", memberID);
-            } else {
-                response.put("message", "Registration failed");
             }
         }
 
