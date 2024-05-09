@@ -24,7 +24,6 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class UserController {
     private ThanhVienRepository thanhVienRepository;
     @Autowired
     private JavaMailSender emailSender;
-    @Autowired 
+    @Autowired
     private ThietBiRepository thietBiRepository;
     @Autowired
     private ThongTinSDRepository thongTinSDRepository;
@@ -56,7 +55,8 @@ public class UserController {
      * @return
      */
     @GetMapping("/home")
-    public String home(@RequestParam(name = "search", required = false)String search, Model model, HttpSession session) {
+    public String home(@RequestParam(name = "search", required = false) String search, Model model,
+            HttpSession session) {
         Object memberObj = session.getAttribute("memberID");
         if (memberObj == null) {
             return "redirect:/login";
@@ -84,8 +84,9 @@ public class UserController {
         model.addAttribute("thietbiList", thietbiList);
         return "user-homepage";
     }
-    @RequestMapping(value = {"/home/save"}, method = RequestMethod.POST)
-    public String save(Model model,  HttpSession session , @ModelAttribute("home") ThongTinSD thongTinSD) {
+
+    @RequestMapping(value = { "/home/save" }, method = RequestMethod.POST)
+    public String save(Model model, HttpSession session, @ModelAttribute("home") ThongTinSD thongTinSD) {
         Object memberObj = session.getAttribute("memberID");
         if (memberObj == null) {
             return "redirect:/login";
@@ -111,13 +112,15 @@ public class UserController {
         ThongTinSD add = thongTinSDRepository.save(v);
         return "user-homepage";
     }
+
     @PostMapping("/addThongTinSD")
     @ResponseBody
-    public Map<String, Object> addThongTinSD(@RequestBody Map<String, String> thongtinSD,HttpSession session,Model model) {
+    public Map<String, Object> addThongTinSD(@RequestBody Map<String, String> thongtinSD, HttpSession session,
+            Model model) {
         Map<String, Object> response = new HashMap<>();
         Object memberObj = session.getAttribute("memberID");
         BigInteger memberID;
-        memberID = new BigInteger(memberObj.toString());   
+        memberID = new BigInteger(memberObj.toString());
         String mssv = memberID.toString();
         BigInteger maTV = new BigInteger(mssv);
         List<XuLy> Xulylist = xuLyRepository.findByMaTVAndTrangThaiXL(maTV);
@@ -148,6 +151,7 @@ public class UserController {
         }
         return response;
     }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         // Xóa session
@@ -155,7 +159,6 @@ public class UserController {
 
         return "redirect:/login";
     }
-
 
     @GetMapping("/login")
     public String login(HttpSession session) {
@@ -173,18 +176,18 @@ public class UserController {
         ThanhVien member;
 
         try {
-//            Nếu mà là mã thành viên thì sẽ không có lỗi
+            // Nếu mà là mã thành viên thì sẽ không có lỗi
             BigInteger memberID = new BigInteger(idOrEmail);
             member = thanhVienRepository.findByMaTVAndPassword(memberID, password);
         } catch (NumberFormatException ex) {
             member = thanhVienRepository.findByEmailAndPassword(idOrEmail, password);
         }
 
-        if(member != null) {
+        if (member != null) {
             response.put("success", true);
             response.put("memberID", member.getMaTV());
-            response.put("message", "Xin chào: "+idOrEmail);
-//            Them memberID vao session
+            response.put("message", "Xin chào: " + idOrEmail);
+            // Them memberID vao session
             session.setAttribute("memberID", member.getMaTV());
             return response;
         }
@@ -258,7 +261,7 @@ public class UserController {
             response.put("success", addedMember != null);
             if (addedMember != null) {
                 response.put("message", "Registration successful");
-//                Them memberID vao session
+                // Them memberID vao session
                 session.setAttribute("memberID", memberID);
             } else {
                 response.put("message", "Registration failed");
@@ -267,7 +270,6 @@ public class UserController {
 
         return response;
     }
-
 
     @GetMapping("/forgot-password")
     public String forgotPassword() {
@@ -338,7 +340,7 @@ public class UserController {
     @PostMapping("/changeHandle/{memberID}")
     @ResponseBody
     public Map<String, Object> changePasswordHandle(@PathVariable BigInteger memberID,
-                                                    @RequestBody Map<String, String> changeData) {
+            @RequestBody Map<String, String> changeData) {
         Map<String, Object> response = new HashMap<>();
 
         String oldPassword = changeData.get("oldPassword");
@@ -370,9 +372,9 @@ public class UserController {
 
     @GetMapping("/violation-status")
     public String violationStatus(Model model, HttpSession session) {
-//        Lấy maTV từ session
+        // Lấy maTV từ session
         Object memberObj = session.getAttribute("memberID");
-//        Nếu không có maTV từ session chuyển hướng sang đăng nhập
+        // Nếu không có maTV từ session chuyển hướng sang đăng nhập
         if (memberObj == null) {
             return "redirect:/login";
         }
@@ -391,16 +393,16 @@ public class UserController {
         model.addAttribute("member", member);
         String mssv = memberID.toString();
         List<XuLy> errorList = xuLyRepository.findByKeyword(mssv);
-        model.addAttribute("errorList",errorList);
+        model.addAttribute("errorList", errorList);
 
         return "user-violation-status";
     }
 
     @GetMapping("/borrowing-status")
     public String borrowingStatus(Model model, HttpSession session) {
-//        Lấy maTV từ session
+        // Lấy maTV từ session
         Object memberObj = session.getAttribute("memberID");
-//        Nếu không có maTV từ session chuyển hướng sang đăng nhập
+        // Nếu không có maTV từ session chuyển hướng sang đăng nhập
         if (memberObj == null) {
             return "redirect:/login";
         }
@@ -425,12 +427,12 @@ public class UserController {
         List<Map<String, Object>> thietbiList = new ArrayList<>();
 
         for (ThongTinSD thongTinSD : thongTinSDList) {
-//            Nếu thông tin sử dụng có chứa thiết bị
+            // Nếu thông tin sử dụng có chứa thiết bị
             if (thongTinSD.getThietbi() != null) {
                 // Tìm thiết bị tương ứng
                 ThietBi thietBi = thietBiRepository.findById(thongTinSD.getThietbi()).orElse(null);
 
-//            Chỉ lấy thiết bị có thời gian trả là null và thời gian mượn là khác null
+                // Chỉ lấy thiết bị có thời gian trả là null và thời gian mượn là khác null
                 if (thietBi != null && thongTinSD.getTGMuon() != null && thongTinSD.getTGTra() == null) {
                     // Tạo map để lưu thông tin của mỗi thiết bị và thời gian mượn tương ứng
                     Map<String, Object> deviceAndUsageInfo = new HashMap<>();
@@ -452,9 +454,9 @@ public class UserController {
 
     @GetMapping("/booking-status")
     public String bookingStatus(Model model, HttpSession session) {
-//        Lấy maTV từ session
+        // Lấy maTV từ session
         Object memberObj = session.getAttribute("memberID");
-//        Nếu không có maTV từ session chuyển hướng sang đăng nhập
+        // Nếu không có maTV từ session chuyển hướng sang đăng nhập
         if (memberObj == null) {
             return "redirect:/login";
         }
@@ -479,12 +481,12 @@ public class UserController {
         List<Map<String, Object>> thietbiList = new ArrayList<>();
 
         for (ThongTinSD thongTinSD : thongTinSDList) {
-//            Nếu thông tin sử dụng có chứa thiết bị
+            // Nếu thông tin sử dụng có chứa thiết bị
             if (thongTinSD.getThietbi() != null) {
                 // Tìm thiết bị tương ứng
                 ThietBi thietBi = thietBiRepository.findById(thongTinSD.getThietbi()).orElse(null);
 
-//            Chỉ lấy thiết bị đang đặt (thời gian trả = null, thời gian mượn = null)
+                // Chỉ lấy thiết bị đang đặt (thời gian trả = null, thời gian mượn = null)
                 if (thietBi != null
                         && thongTinSD.getTGMuon() == null
                         && thongTinSD.getTGTra() == null

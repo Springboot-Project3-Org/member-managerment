@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -111,8 +110,6 @@ public class AdminController {
         response.put("success", addedMember != null);
         if (addedMember != null) {
             response.put("message", "Thêm thành viên thành công");
-        } else {
-            response.put("message", "Thêm thành viên thất bại");
         }
         return response;
     }
@@ -175,8 +172,6 @@ public class AdminController {
         response.put("success", result != null);
         if (result != null) {
             response.put("message", "Cập nhật thành viên thành công");
-        } else {
-            response.put("message", "Cập nhật thành viên thất bại");
         }
         return response;
     }
@@ -287,8 +282,6 @@ public class AdminController {
         response.put("success", addedDevice != null);
         if (addedDevice != null) {
             response.put("message", "Thêm thiết bị thành công");
-        } else {
-            response.put("message", "Thêm thiết bị thất bại");
         }
         return response;
     }
@@ -315,8 +308,6 @@ public class AdminController {
         response.put("success", result != null);
         if (result != null) {
             response.put("message", "Cập nhật thiết bị thành công");
-        } else {
-            response.put("message", "Cập nhật thiết bị thất bại");
         }
         return response;
     }
@@ -439,8 +430,6 @@ public class AdminController {
                 response.put("success", addedXuly != null);
                 if (addedXuly != null) {
                     response.put("message", "Thêm xử lý thành công");
-                } else {
-                    response.put("message", "Thêm xử lý thất bại");
                 }
                 return response;
             } else {
@@ -450,8 +439,6 @@ public class AdminController {
                 response.put("success", addedXuly != null);
                 if (addedXuly != null) {
                     response.put("message", "Thêm xử lý thành công");
-                } else {
-                    response.put("message", "Thêm xử lý thất bại");
                 }
                 return response;
             }
@@ -469,8 +456,6 @@ public class AdminController {
             response.put("success", addedXuly != null);
             if (addedXuly != null) {
                 response.put("message", "Thêm xử lý thành công");
-            } else {
-                response.put("message", "Thêm xử lý thất bại");
             }
             return response;
         }
@@ -549,8 +534,6 @@ public class AdminController {
                 response.put("success", updateXuly != null);
                 if (updateXuly != null) {
                     response.put("message", "Sửa xử lý thành công");
-                } else {
-                    response.put("message", "Sửa xử lý thất bại");
                 }
                 return response;
             } else {
@@ -560,8 +543,6 @@ public class AdminController {
                 response.put("success", updateXuly != null);
                 if (updateXuly != null) {
                     response.put("message", "Sửa xử lý thành công");
-                } else {
-                    response.put("message", "Sửa xử lý thất bại");
                 }
                 return response;
             }
@@ -579,8 +560,6 @@ public class AdminController {
             response.put("success", updateXuly != null);
             if (updateXuly != null) {
                 response.put("message", "Sửa xử lý thành công");
-            } else {
-                response.put("message", "Sửa xử lý thất bại");
             }
             return response;
         }
