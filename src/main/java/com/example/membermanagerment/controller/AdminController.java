@@ -2,9 +2,11 @@ package com.example.membermanagerment.controller;
 
 import com.example.membermanagerment.model.ThanhVien;
 import com.example.membermanagerment.model.ThietBi;
+import com.example.membermanagerment.model.ThongTinSD;
 import com.example.membermanagerment.model.XuLy;
 import com.example.membermanagerment.repository.ThanhVienRepository;
 import com.example.membermanagerment.repository.ThietBiRepository;
+import com.example.membermanagerment.repository.ThongTinSDRepository;
 import com.example.membermanagerment.repository.XuLyRepository;
 import com.example.membermanagerment.utilities.ExcelUtil;
 import com.example.membermanagerment.utilities.thanhvienExcelUtil;
@@ -28,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class AdminController {
@@ -35,7 +39,11 @@ public class AdminController {
     private ThietBiRepository thietBiRepository;
 
     @Autowired
+    private ThongTinSDRepository thongtinSdRepository;
+
+    @Autowired
     private ThanhVienRepository thanhVienRepository;
+
     @Autowired
     private XuLyRepository xuLyRepository;
 
@@ -676,5 +684,57 @@ public class AdminController {
         response.put("success", false);
         response.put("message", "No file uploaded");
         return response;
+    }
+
+    public Boolean isDatChoByMaTB(Integer maTB) {
+        List<ThongTinSD> thongTinSdList = thongtinSdRepository.findAll();
+        for (ThongTinSD tt : thongTinSdList) {
+            // Nếu có thiết bị trong db
+            if (tt.getThietbi() == maTB && tt.getTGDatCho() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime tg_datcho = LocalDateTime.parse(tt.getTGDatCho().toString(), formatter);
+                if (tg_datcho.isAfter(LocalDateTime.now().minusHours(1)))
+                    return true;
+            }
+        }
+        // Nếu không tìm thấy mã thiết bị
+        return false;
+    }
+
+    public boolean isDatChoYourSelf(BigInteger maTV, Integer maTB) {
+        // mình đang đặt chỗ
+        for (ThongTinSD tt : thongtinSdRepository.findAll()) {
+            if (tt.getThanhvien() == maTV && tt.getThietbi() == maTB && tt.getTGDatCho() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime tg_datcho = LocalDateTime.parse(tt.getTGDatCho().toString(), formatter);
+                if (tg_datcho.isAfter(LocalDateTime.now().minusHours(1)))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkMuon(Integer maTB) {
+        for (ThongTinSD tt : thongtinSdRepository.findAll()) {
+            if (tt.getThietbi() == maTB) {
+                if (isDatChoByMaTB(maTB) || (tt.getTGMuon() != null && tt.getTGTra() == null)) {
+                    // có ai đang đặt chỗ hoặc đang mượn thì ko được mượn
+                    return false;
+                }
+            }
+        }
+        // Thiết bị đang trống có thể mượn
+        return true;
+    }
+
+    public boolean checkTra(BigInteger maTV, Integer maTB) {
+        for (ThongTinSD tt : thongtinSdRepository.findAll()) {
+            if (tt.getThanhvien() == maTV && tt.getThietbi() == maTB) {
+                if (tt.getTGMuon() != null && tt.getTGTra() == null) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
