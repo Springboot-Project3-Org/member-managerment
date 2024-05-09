@@ -976,6 +976,7 @@
     let searchInputYear = document.getElementById("searchByYear");
     let deleteAll = document.getElementById("deleteAllButton");
     let searchInput = document.getElementById("search");
+    let warningButton = document.querySelectorAll(".warning-btn");
     let currentMaTVEdit;
 
     //open form new user
@@ -1272,6 +1273,27 @@
           .catch((error) => {
             console.error("Fetch error:", error);
           });
+      });
+
+      //warning member
+      warningButton.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          let maTV = currentMaTVEdit;
+          console.log(maTV);
+          console.log("warning");
+          fetch("/warningMember", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ maTV: currentMaTVEdit }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              document.querySelector(".warningMember .name").value = data.hoTen;
+            })
+            .catch((error) => console.error("Error:", error));
+        });
       });
 
       // delete device

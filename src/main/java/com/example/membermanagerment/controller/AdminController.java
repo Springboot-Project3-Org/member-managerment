@@ -762,4 +762,55 @@ public class AdminController {
         System.out.println("Returning bookedDevices");
         return bookedDevices;
     }
+
+    @PostMapping("/warningMember")
+    @ResponseBody
+    public Map<String, Object> warningMember(@RequestBody Map<String, String> warningData) {
+        Map<String, Object> response = new HashMap<>();
+
+        BigInteger maTV = new BigInteger(warningData.get("maTV"));
+        String hinhthuc = warningData.get("hinhthuc");
+        Timestamp ngayxuly = Timestamp.valueOf(warningData.get("ngayxuly"));
+        int status = Integer.parseInt(warningData.get("status"));
+        String sotienStr = warningData.get("sotien");
+        int sotien = 0;
+
+        ThanhVien curMem = thanhVienRepository.findByMaTV(maTV);
+        if (curMem == null) {
+            response.put("success", false);
+            response.put("message", "Không tồn tại thành viên này");
+            return response;
+        }
+
+        for (XuLy xuly : xuLyRepository.findAll()) {
+            if (xuly.getHinhThucXL().equals(hinhthuc) && xuly.getTrangThaiXL() == 0) {
+                response.put("success", false);
+                response.put("message", "Thành viên đang có vi phạm này chưa được xử lý");
+                return response;
+            }
+        }
+
+        if (hinhthuc.contains("Khóa thẻ")) {
+            if (hinhthuc.contains("bồi thường")) {
+                try {
+                    sotien = Integer.parseInt(sotienStr);
+                } catch (NumberFormatException e) {
+                    response.put("success", false);
+                    response.put("message", "Số tiền phải là kiểu số nguyên");
+                    return response;
+                }
+                XuLy newXuly = new XuLy(xuLyRepository.getMax(), maTV, hinhthuc, sotien, ngayxuly, status);
+                XuLy addedXuly = xuLyRepository.save(newXuly);
+
+                response.put("success", addedXuly != null);
+                if (addedXuly != null) {
+                    response.put("message", "Thêm xử lý thành công");
+                }
+                return response;
+            }
+        }
+        response.put("success", false);
+        response.put("message", "Hình thức không hợp lệ");
+        return response;
+    }
 }
