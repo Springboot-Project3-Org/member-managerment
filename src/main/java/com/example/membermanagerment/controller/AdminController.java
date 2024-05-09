@@ -737,4 +737,29 @@ public class AdminController {
         }
         return false;
     }
+
+    @GetMapping("/getBookedDevicesFromUser")
+    @ResponseBody
+    public Map<BigInteger, List<ThongTinSD>> getBookedDevices() {
+        System.out.println("Getting all ThongTinSD");
+        List<ThongTinSD> thongTinSdList = thongtinSdRepository.findAll();
+        System.out.println("Got " + thongTinSdList.size() + " ThongTinSD");
+
+        Map<BigInteger, List<ThongTinSD>> bookedDevices = new HashMap<>();
+
+        for (ThongTinSD tt : thongTinSdList) {
+            BigInteger maTV = tt.getThanhvien();
+            if (isDatChoYourSelf(maTV, tt.getThietbi())) {
+                List<ThongTinSD> list = bookedDevices.get(maTV);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    bookedDevices.put(maTV, list);
+                }
+                list.add(tt);
+            }
+        }
+
+        System.out.println("Returning bookedDevices");
+        return bookedDevices;
+    }
 }

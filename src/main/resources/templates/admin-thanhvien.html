@@ -29,6 +29,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--  CSS -->
     <link th:href="@{/css/style.css}" rel="stylesheet" />
   </head>
@@ -272,7 +273,6 @@
                   data-bs-toggle="modal"
                   data-bs-target="#returnDeviceModal"
                   th:attr="data-maTV=${member.MaTV}"
-                  onclick="openReturnDevice(this.getAttribute('data-maTV'))"
                   style="color: rgb(35, 222, 60); margin-left: 5px"
                 >
                   Trả thiết bị
@@ -585,157 +585,80 @@
                   </div>
                 </div>
                 <!-- Button trigger modal -->
+                <!-- Button trigger modal -->
                 <button
                   type="button"
                   class="btn btn-primary"
                   data-bs-toggle="modal"
-                  data-bs-target="#orderDeviceModal"
-                  th:attr="data-maTV=${member.MaTV}"
-                  onclick="openOrderDevice(this.getAttribute('data-maTV'))"
+                  th:attr="data-bs-target=${'#orderDeviceModal_' + member.MaTV}, data-maTV=${member.MaTV}"
                   style="color: rgb(35, 222, 60); margin-left: 5px"
+                  onclick="fetchBookedDevices(this.getAttribute('data-maTV'))"
                 >
                   Đặt thiết bị
                 </button>
                 <!-- Modal -->
                 <div
                   class="modal fade"
-                  id="orderDeviceModal"
+                  th:id="${'orderDeviceModal_' + member.MaTV}"
                   tabindex="-1"
                   aria-labelledby="orderDeviceModalLabel"
                   aria-hidden="true"
                 >
-                  <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="orderDeviceModalLabel">
-                          Đặt thiết bị
-                        </h5>
-                        <button
-                          type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                        ></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="col-md-8">
-                            <div class="input-group">
-                              <!-- Search input -->
-                              <div class="form-outline" data-mdb-input-init>
-                                <input
-                                  type="search"
-                                  id="searchOrderDevice"
-                                  class="form-control"
-                                />
-                                <label class="form-label" for="search"
-                                  >Search</label
-                                >
-                              </div>
-                              <!-- Search input -->
+                  <script>
+                    function fetchBookedDevices(maTV) {
+                      fetch("/fetchBookedDevices", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ maTV: maTV }),
+                      })
+                        .then((res) => res.json())
+                        .then((data) => {
+                          console.log(data);
+                          let modalBody = document.querySelector(".modal-body");
+                          modalBody.innerHTML = ""; // Clear the modal body
 
-                              <!-- Btn search -->
-                              <button
-                                type="button"
-                                id="searchOrderDeviceBtn"
-                                class="btn btn-primary"
-                                data-mdb-ripple-init
-                              >
-                                <i class="fas fa-search"></i>
-                              </button>
-                              <!-- Btn search -->
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <button
-                              type="button"
-                              class="btn-newUser btn btn-outline-primary"
-                              data-mdb-ripple-init
-                              data-mdb-ripple-color="dark"
-                            >
-                              Refresh
-                            </button>
-                          </div>
-                          <div class="col-lg-5" style="margin-top: 10px">
-                            <div class="input-group mb-3">
-                              <label class="input-group-text" for="borrowDate"
-                                >Ngày trả</label
-                              >
-                              <input class="form-control" type="date" min="" />
-                            </div>
-                          </div>
-                        </div>
+                          let cardDiv = document.createElement("div");
+                          cardDiv.className = "card col-lg-4 col-md-6";
+                          cardDiv.style =
+                            "height: 393px; overflow-y: scroll; scrollbar-width: none; scroll-margin: 1px; width: 100%;";
 
-                        <div
-                          class="card col-lg-4 col-md-6"
-                          style="
-                            height: 393px;
-                            overflow-y: scroll;
-                            scrollbar-width: none;
-                            scroll-margin: 1px;
-                            width: 100%;
-                          "
-                        >
-                          <div class="h-100">
-                            <table class="table align-items-center mb-0">
-                              <thead>
-                                <tr>
-                                  <th
-                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                                  >
-                                    Mã thiết bị
-                                  </th>
-                                  <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                  >
-                                    Tên
-                                  </th>
-                                  <th
-                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                                  >
-                                    Mô tả
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td class="align-middle text-left text-sm">
-                                    <input
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      value=""
-                                      id="flexCheckDefault"
-                                    />
-                                    <label
-                                      class="form-check-label"
-                                      for="flexCheckDefault"
-                                      >01</label
-                                    >
-                                  </td>
-                                  <td class="align-middle text-center text-sm">
-                                    Thiết bị A
-                                  </td>
-                                  <td class="align-middle text-center text-sm">
-                                    Được làm băng nhôm
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-primary"
-                          id="order-device-btn"
-                          data-mdb-ripple-init
-                        >
-                          Lưu
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                          let table = document.createElement("table");
+                          table.className = "table align-items-center mb-0";
+
+                          let thead = document.createElement("thead");
+                          thead.innerHTML = `
+                          <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mã thiết bị</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tên</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mô tả</th>
+                          </tr>
+                        `;
+
+                          let tbody = document.createElement("tbody");
+
+                          data.forEach((device) => {
+                            let tr = document.createElement("tr");
+                            tr.innerHTML = `
+                            <td class="align-middle text-left text-sm">
+                              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" />
+                              <label class="form-check-label" for="flexCheckDefault1">${device.maTB}</label>
+                            </td>
+                            <td class="align-middle text-center text-sm">${device.tenTB}</td>
+                            <td class="align-middle text-center text-sm">${device.moTa}</td>
+                            <td class="align-middle text-center text-sm">${device.ngayDat}</td>
+                          `;
+                            tbody.appendChild(tr);
+                          });
+
+                          table.appendChild(thead);
+                          table.appendChild(tbody);
+                          cardDiv.appendChild(table);
+                          modalBody.appendChild(cardDiv);
+                        });
+                    }
+                  </script>
                 </div>
               </div>
             </td>
@@ -1067,21 +990,6 @@
       newUser.querySelector(".email").value = "";
     });
 
-    document.addEventListener("DOMContentLoaded", (event) => {
-      var returnDeviceModalElement =
-        document.getElementById("returnDeviceModal");
-      if (returnDeviceModalElement) {
-        var returnDeviceModal = new bootstrap.Modal(returnDeviceModalElement);
-
-        window.openReturnDevice = function (id) {
-          returnDeviceModal.show();
-          returnDeviceModalElement.setAttribute("data-id", id);
-        };
-      } else {
-        console.log("No element found with id:", "returnDeviceModal");
-      }
-    });
-
     //open form borrow device
     function openBorrowDevice(user) {
       var borrowDevice = document.getElementById("borrowDevice");
@@ -1094,20 +1002,6 @@
         var borrowDevice = document.getElementById("borrowDevice");
         borrowDevice.style.display = " none";
       });
-
-    // Create Bootstrap Modal instance
-    var orderDeviceModalElement = document.getElementById("orderDeviceModal");
-    var orderDeviceModal = new bootstrap.Modal(orderDeviceModalElement);
-
-    // Open form order device
-    function openOrderDevice(id) {
-      if (orderDeviceModalElement) {
-        orderDeviceModal.show();
-        orderDeviceModalElement.setAttribute("data-id", id);
-      } else {
-        console.log("No element found with id:", "orderDeviceModal");
-      }
-    }
 
     // Close form order device
     document.querySelector(".btn-close").addEventListener("click", function () {
@@ -1432,6 +1326,32 @@
           })
           .catch((error) => console.error("Error:", error));
       });
+
+    $(document).ready(function () {
+      $("#orderDeviceForm").on("submit", function (e) {
+        e.preventDefault();
+        var modal = $(this).closest(".modal.fade");
+        var id = modal.attr("id");
+        var formData = new FormData(this);
+        formData.append("id", id);
+        console.log(id);
+        $.ajax({
+          url: "/orderDevice",
+          type: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            if (data.success === true) {
+              window.location.reload();
+            }
+          },
+          error: function (error) {
+            console.error(error);
+          },
+        });
+      });
+    });
   </script>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
