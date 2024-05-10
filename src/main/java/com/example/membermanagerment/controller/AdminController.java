@@ -157,7 +157,6 @@ public class AdminController {
         String email = memberData.get("email");
         String gmailRegex = "^[a-zA-Z0-9_]+@gmail\\.com$";
 
-        System.out.println("test cai ne: "+email);
         if (!email.matches(gmailRegex)) {
             System.out.println("kaka");
             response.put("success", false);
@@ -806,6 +805,33 @@ public class AdminController {
 
         response.put("success", true);
         response.put("data", list);
+        return response;
+    }
+
+    @PostMapping("/checkIn")
+    @ResponseBody
+    public Map<String, Object> checkInMember(@RequestBody Map<String, String> memberData) {
+        Map<String, Object> response = new HashMap<>();
+
+        BigInteger maTV = new BigInteger(memberData.get("maTV"));
+        ThanhVien thanhVien = thanhVienRepository.findByMaTV(maTV);
+
+        if(thanhVien == null) {
+            response.put("success", false);
+            response.put("message", "Không tìm thấy thành viên");
+            return response;
+        }
+        ThongTinSD info = new ThongTinSD(thanhVien.getMaTV(),null,new Timestamp(System.currentTimeMillis()),null,null,null);
+        ThongTinSD result = thongtinSdRepository.save(info);
+
+        if(result == null) {
+            response.put("success", false);
+            response.put("message", "Check-in thất bại");
+            return response;
+        }
+
+        response.put("success", true);
+        response.put("data", thanhVien);
         return response;
     }
 }
