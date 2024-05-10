@@ -11,6 +11,7 @@ import com.example.membermanagerment.repository.XuLyRepository;
 import com.example.membermanagerment.utilities.ExcelUtil;
 import com.example.membermanagerment.utilities.thanhvienExcelUtil;
 import com.example.membermanagerment.utilities.thietbiExcelUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -763,54 +764,32 @@ public class AdminController {
         return bookedDevices;
     }
 
+    @PostMapping("/checkError")
+    @ResponseBody
+    @JsonIgnoreProperties
+    public Map<String, Object> getXulyByMaSV(@RequestBody Map<String, String> warningData) {
+        Map<String, Object> response = new HashMap<>();
+        BigInteger maTV = new BigInteger(warningData.get("maTV"));
+        List<XuLy> list = xuLyRepository.findByMaTVAndTrangThaiXL(maTV);
+        if(list.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "Thành viên này chưa có vi phạm");
+        }else {
+            response.put("success", true);
+        }
+        return response;
+    }
+
     @PostMapping("/warningMember")
     @ResponseBody
     public Map<String, Object> warningMember(@RequestBody Map<String, String> warningData) {
         Map<String, Object> response = new HashMap<>();
 
         BigInteger maTV = new BigInteger(warningData.get("maTV"));
-        String hinhthuc = warningData.get("hinhthuc");
-        Timestamp ngayxuly = Timestamp.valueOf(warningData.get("ngayxuly"));
-        int status = Integer.parseInt(warningData.get("status"));
-        String sotienStr = warningData.get("sotien");
-        int sotien = 0;
+        List<XuLy> list = xuLyRepository.findByMaTVAndTrangThaiXL(maTV);
 
-        ThanhVien curMem = thanhVienRepository.findByMaTV(maTV);
-        if (curMem == null) {
-            response.put("success", false);
-            response.put("message", "Không tồn tại thành viên này");
-            return response;
-        }
-
-        for (XuLy xuly : xuLyRepository.findAll()) {
-            if (xuly.getHinhThucXL().equals(hinhthuc) && xuly.getTrangThaiXL() == 0) {
-                response.put("success", false);
-                response.put("message", "Thành viên đang có vi phạm này chưa được xử lý");
-                return response;
-            }
-        }
-
-        if (hinhthuc.contains("Khóa thẻ")) {
-            if (hinhthuc.contains("bồi thường")) {
-                try {
-                    sotien = Integer.parseInt(sotienStr);
-                } catch (NumberFormatException e) {
-                    response.put("success", false);
-                    response.put("message", "Số tiền phải là kiểu số nguyên");
-                    return response;
-                }
-                XuLy newXuly = new XuLy(xuLyRepository.getMax(), maTV, hinhthuc, sotien, ngayxuly, status);
-                XuLy addedXuly = xuLyRepository.save(newXuly);
-
-                response.put("success", addedXuly != null);
-                if (addedXuly != null) {
-                    response.put("message", "Thêm xử lý thành công");
-                }
-                return response;
-            }
-        }
-        response.put("success", false);
-        response.put("message", "Hình thức không hợp lệ");
+        response.put("success", true);
+        response.put("data", list);
         return response;
     }
 }

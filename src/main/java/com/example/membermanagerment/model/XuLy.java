@@ -20,7 +20,6 @@ public class XuLy {
     private int MaXL;
 
     @Column(name = "MaTV")
-    @JsonIgnore
     private BigInteger MaTV;
 
     @Column(name = "hinh_thucxl")
