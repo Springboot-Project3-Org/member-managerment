@@ -86,6 +86,13 @@ public class AdminController {
         String sdt = memberData.get("sdt");
         String password = memberData.get("password");
         String email = memberData.get("email");
+        String gmailRegex = "^[a-zA-Z0-9_]+@gmail\\.com$";
+
+        if (!email.matches(gmailRegex)) {
+            response.put("success", false);
+            response.put("message", "Email không đúng định dạng Gmail");
+            return response;
+        }
 
         ThanhVien existingMemberByMaTV = thanhVienRepository.findByMaTV(maTV);
         ThanhVien existingMemberByEmail = thanhVienRepository.findByEmail(email);
@@ -126,7 +133,6 @@ public class AdminController {
     @PostMapping("/editMember")
     @ResponseBody
     public Map<String, Object> editMember(@RequestBody Map<String, String> memberData) {
-        System.out.println(memberData);
         Map<String, Object> response = new HashMap<>();
 
         if (memberData.get("maTV") == null || memberData.get("maTV").isEmpty() ||
@@ -149,6 +155,15 @@ public class AdminController {
         String sdt = memberData.get("sdt");
         String password = memberData.get("password");
         String email = memberData.get("email");
+        String gmailRegex = "^[a-zA-Z0-9_]+@gmail\\.com$";
+
+        System.out.println("test cai ne: "+email);
+        if (!email.matches(gmailRegex)) {
+            System.out.println("kaka");
+            response.put("success", false);
+            response.put("message", "Email không đúng định dạng Gmail");
+            return response;
+        }
 
         ThanhVien existingMemberByMaTV = thanhVienRepository.findByMaTV(maTV);
         ThanhVien existingMemberByEmail = thanhVienRepository.findByEmail(email);

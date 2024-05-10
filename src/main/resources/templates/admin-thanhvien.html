@@ -1012,10 +1012,9 @@
             })
                 .then((response) => response.json())
                 .then((data) => {
+                    alert(data.message);
                     if (data.success === true) {
-                        alert(data.message);
                         window.location.reload();
-                        return;
                     }
                 })
                 .catch((error) => {
