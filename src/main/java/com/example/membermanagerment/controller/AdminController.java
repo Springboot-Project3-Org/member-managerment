@@ -126,6 +126,7 @@ public class AdminController {
     @PostMapping("/editMember")
     @ResponseBody
     public Map<String, Object> editMember(@RequestBody Map<String, String> memberData) {
+        System.out.println(memberData);
         Map<String, Object> response = new HashMap<>();
 
         if (memberData.get("maTV") == null || memberData.get("maTV").isEmpty() ||
