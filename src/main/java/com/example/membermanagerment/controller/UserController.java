@@ -134,11 +134,17 @@ public class UserController {
             int maTB = Integer.parseInt(thongtinSD.get("maTB"));
             Timestamp tgdatcho = Timestamp.valueOf(thongtinSD.get("tgdatcho"));
             List<ThongTinSD> existingDevices = thongTinSDRepository.findByMaTBAndTGDatCho(maTB, tgdatcho);
+            List<ThongTinSD> trathietbi = thongTinSDRepository.findTraThietBi(maTB);
             if (!existingDevices.isEmpty()) {
                 // Nếu đã tồn tại, ghi thông báo thiết bị đã được đặt chỗ
                 response.put("success", false);
-                response.put("message", "Thiết bị đã được đặt chỗ");
-            } else {
+                response.put("message", "Thiết bị đã được đặt chỗ, vui lòng chọn thiết bị khác");
+            } 
+            else if(!trathietbi.isEmpty()){
+                // Nếu đã tồn tại, ghi thông báo thiết bị chưa được hoàn trả
+                response.put("success", false);
+                response.put("message", "Thiết bị này chưa được hoàn trả, vui lòng chọn thiết bị khác!!!");
+            }else {
                 ThongTinSD newSD = new ThongTinSD(maTV, maTB, null, null, null, tgdatcho);
                 ThongTinSD addedDevice = thongTinSDRepository.save(newSD);
                 response.put("success", addedDevice != null);

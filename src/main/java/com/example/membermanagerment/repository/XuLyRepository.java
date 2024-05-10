@@ -24,5 +24,4 @@ public interface XuLyRepository extends JpaRepository<XuLy, Integer> {
 
     @Query("SELECT xl FROM XuLy xl WHERE xl.MaTV = :maTV AND xl.TrangThaiXL = 0")
     List<XuLy> findByMaTVAndTrangThaiXL(@Param("maTV") BigInteger maTV);
-
 }

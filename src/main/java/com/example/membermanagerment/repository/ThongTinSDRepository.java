@@ -29,8 +29,11 @@ public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer>
     List<ThongTinSD> findByKeyword(String keyword);
 
     List<ThongTinSD> findByThanhvien(BigInteger thanhvien);
-
+    // Kiem tra xem thiet bi da duoc dat cho hay chua
     @Query("SELECT ttsd FROM ThongTinSD ttsd WHERE ttsd.thietbi = :maTB AND DATE(ttsd.TGDatCho) = DATE(:TGDatCho)")
     List<ThongTinSD> findByMaTBAndTGDatCho(@Param("maTB") int maTB, @Param("TGDatCho") Timestamp TGDatCho);
+    // Kiem tra xem thiet bi duoc tra hay chua
+    @Query("SELECT ttsd FROM ThongTinSD ttsd WHERE ttsd.thietbi = :maTB AND ttsd.TGMuon IS NOT NULL AND ttsd.TGTra IS NULL")
+    List<ThongTinSD> findTraThietBi(@Param("maTB") int maTB);
 
 }
