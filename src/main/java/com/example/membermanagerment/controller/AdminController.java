@@ -49,7 +49,32 @@ public class AdminController {
     private XuLyRepository xuLyRepository;
 
     @GetMapping("/admin")
-    public String admin() {
+    public String admin(Model model) {
+
+        // show list thanhvien with TGVao != null
+        List<ThongTinSD> list = new ArrayList<>();
+        for(ThongTinSD info : thongtinSdRepository.findAll()) {
+            if(info.getTGVao() != null) {
+                ThanhVien thanhvien = thanhVienRepository.findByMaTV(info.getThanhvien());
+                if(thanhvien != null) {
+                    info.setMember(thanhvien);
+                }
+                list.add(info);
+            }
+        }
+        model.addAttribute("checkInList", list);
+
+        // show total member + total member with TGVao != null
+        int totalMember = (int) thanhVienRepository.count();
+        int totalMemberWithTGVao = 0;
+        for(ThongTinSD info : thongtinSdRepository.findAll()) {
+            if(info.getTGVao() != null) {
+                totalMemberWithTGVao++;
+            }
+        }
+        model.addAttribute("totalMember", totalMember);
+        model.addAttribute("totalMemberWithTGVao", totalMemberWithTGVao);
+
         return "admin";
     }
 
@@ -834,4 +859,52 @@ public class AdminController {
         response.put("data", thanhVien);
         return response;
     }
+
+    @PostMapping("/searchCheckIn")
+    @ResponseBody
+    @JsonIgnoreProperties
+    public Map<String, Object> searchCheckIn(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> response = new HashMap<>();
+
+        String fromDateString = requestData.get("fromDate");
+        String toDateString = requestData.get("toDate");
+        String khoa = requestData.get("khoa");
+        String nganh = requestData.get("nganh");
+
+        LocalDateTime now = LocalDateTime.now();
+        int currentSecond = now.getSecond();
+
+        if (fromDateString.isEmpty() && toDateString.isEmpty()) {
+            fromDateString = "1970-01-01 00:00";
+            toDateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        } else {
+            if (fromDateString.isEmpty()) {
+                fromDateString = "1970-01-01 00:00";
+            }
+
+            if (toDateString.isEmpty()) {
+                toDateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            }
+        }
+
+
+        fromDateString += ":" + currentSecond;
+        toDateString += ":" + currentSecond;
+
+        Timestamp fromDate = Timestamp.valueOf(fromDateString);
+        Timestamp toDate = Timestamp.valueOf(toDateString);
+
+        List<ThongTinSD> result = thongtinSdRepository.findByKeywordCheckIn(fromDate, toDate, khoa, nganh);
+        System.out.println(result);
+        if (result.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "Không có sinh viên thỏa điều kiện");
+            return response;
+        }
+        response.put("success", true);
+        response.put("result", result);
+        return response;
+    }
+
 }

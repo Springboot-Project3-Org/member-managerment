@@ -1,8 +1,10 @@
 package com.example.membermanagerment.repository;
 
 import com.example.membermanagerment.model.ThanhVien;
+import com.example.membermanagerment.model.ThongTinSD;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
@@ -33,5 +35,8 @@ public interface ThanhVienRepository extends JpaRepository<ThanhVien, BigInteger
 
     @Query("SELECT tv FROM ThanhVien tv WHERE SUBSTRING(CAST(tv.maTV AS string), 3, 2) = :year")
     List<ThanhVien> findByYear(String year);
+
+    @Query("SELECT tv FROM ThanhVien tv WHERE tv.khoa LIKE CONCAT('%', :khoa, '%') AND tv.nganh LIKE CONCAT('%', :nganh, '%')")
+    List<ThanhVien> findByKeywordCheckIn(@Param("khoa") String khoa, @Param("nganh") String nganh);
 
 }

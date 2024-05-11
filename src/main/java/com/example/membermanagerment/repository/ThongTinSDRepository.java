@@ -36,4 +36,6 @@ public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer>
     @Query("SELECT ttsd FROM ThongTinSD ttsd WHERE ttsd.thietbi = :maTB AND ttsd.TGMuon IS NOT NULL AND ttsd.TGTra IS NULL")
     List<ThongTinSD> findTraThietBi(@Param("maTB") int maTB);
 
+    @Query("SELECT s FROM ThongTinSD s JOIN s.member tv WHERE s.TGVao BETWEEN :from AND :to AND tv.khoa LIKE CONCAT('%', UPPER(:khoa), '%') AND tv.nganh LIKE CONCAT('%', UPPER(:nganh), '%')")
+    List<ThongTinSD> findByKeywordCheckIn(@Param("from") Timestamp from, @Param("to") Timestamp to, @Param("khoa") String khoa, @Param("nganh") String nganh);
 }

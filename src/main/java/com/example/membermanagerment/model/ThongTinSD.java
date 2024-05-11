@@ -1,6 +1,7 @@
 package com.example.membermanagerment.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,8 @@ import java.sql.Timestamp;
 @Table(name = "thongtinsd")
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class ThongTinSD {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,6 +97,14 @@ public class ThongTinSD {
         this.TGDatCho = TGDatCho;
     }
 
+    public ThanhVien getMember() {
+        return member;
+    }
+
+    public void setMember(ThanhVien member) {
+        this.member = member;
+    }
+
     public ThongTinSD() {
     }
 
@@ -108,7 +119,7 @@ public class ThongTinSD {
 
     @Override
     public String toString() {
-        return "thongtinsd{" +
+        return "ThongTinSD{" +
                 "MaTT=" + MaTT +
                 ", thanhvien=" + thanhvien +
                 ", thietbi=" + thietbi +
@@ -116,11 +127,13 @@ public class ThongTinSD {
                 ", TGMuon=" + TGMuon +
                 ", TGTra=" + TGTra +
                 ", TGDatCho=" + TGDatCho +
+                ", member=" + member +
                 '}';
     }
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MaTB", insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_thongtinsd_device"))
+    @JsonIgnore
     private ThietBi device;
 
     @ManyToOne(fetch = FetchType.LAZY)
