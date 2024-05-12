@@ -295,7 +295,7 @@
                             <span style="    font-size: 19px;font-weight: bold; color: #614cd7;">Tổng số tiền bồi
                                 thường</span>
                         <div
-                                style="height: 90px;width: 90px;border-radius: 90px;background-color: #05ad8d;display: flex;justify-content: center;align-items: center; font-size: 19px; margin: 10px;font-weight: bold;">
+                                style="height: 90px;width: 90px;border-radius: 90px;background-color: #05ad8d;display: flex;justify-content: center;align-items: center; font-size: 19px; margin: 10px;font-weight: bold;" id="totalPrice">
                             5</div>
                     </div>
 
@@ -510,7 +510,7 @@ fetch('/getXuLy', {
     var xuLyList = data.data;
     var tbody = document.getElementById('xuLyList');
     tbody.innerHTML = '';
-
+    var total = 0;
     xuLyList.forEach(function(xuLy) {
         var tr = document.createElement('tr');
         tr.innerHTML = '<td>' + xuLy.maTV + '</td>' +
@@ -520,8 +520,12 @@ fetch('/getXuLy', {
                        '<td class="align-middle text-center text-sm">' + xuLy.ngayXuLy + '</td>' +
                        '<td class="align-middle text-center text-sm">' + xuLy.trangThai + '</td>';
         tbody.appendChild(tr);
+        if(xuLy.soTien !== 'N/A') {
+            total += parseInt(xuLy.soTien);
+        }
     });
-
+    document.getElementById('totalPrice').textContent = total;
+    
     var select = document.getElementById('filterStatus');
     select.addEventListener('change', function() {
         var selectedOption = this.value;
