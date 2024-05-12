@@ -1019,4 +1019,27 @@ public class AdminController {
         response.put("data", thongtinsdInfoList);
         return response;
     }
+
+    @PostMapping("/getXuLy")
+    @ResponseBody
+    public Map<String, Object> getXuLyList() {
+        Map<String, Object> response = new HashMap<>();
+        List<XuLy> xuLyList = xuLyRepository.findAll();
+        List<Map<String, String>> xuLyInfoList = new ArrayList<>();
+        for (XuLy xl : xuLyList) {
+            ThanhVien thanhVien = thanhVienRepository.findByMaTV(xl.getMaTV());
+            Map<String, String> xuLyInfo = new HashMap<>();
+            xuLyInfo.put("maXL", String.valueOf(xl.getMaXL()));
+            xuLyInfo.put("maTV", thanhVien.getMaTV().toString());
+            xuLyInfo.put("tenTV", thanhVien.getHoTen());
+            xuLyInfo.put("hinhThuc", xl.getHinhThucXL());
+            xuLyInfo.put("soTien", xl.getSoTien() != null ? String.valueOf(xl.getSoTien()) : "N/A");
+            xuLyInfo.put("ngayXuLy", String.valueOf(xl.getNgayXL()));
+            xuLyInfo.put("trangThai", xl.getTrangThaiXL() == 0 ? "Đang xử lý" : "Đã xử lý");
+            xuLyInfoList.add(xuLyInfo);
+        }
+        response.put("success", true);
+        response.put("data", xuLyInfoList);
+        return response;
+    }
 }

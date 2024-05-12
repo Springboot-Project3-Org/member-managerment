@@ -257,7 +257,7 @@
                 <div style="display: flex;justify-content: space-between;padding: 5px;">
                     <span style="font-size: 20px;font-weight: bold;">Vi phạm</span>
                     <div style="display: flex; width: 40%; height: 35px;">
-                        <select class="form-select">
+                        <select class="form-select" id="filterStatus">
                             <option>Tất cả</option>
                             <option>Đang xử lý</option>
                             <option>Đã xử lý</option>
@@ -285,30 +285,9 @@
                             <th
                                     class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                 Trạng thái</th>
-                           
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                01
-                            </td>
-                            <td>
-                                Ngọc Triều
-                            </td>
-                            <td class="align-middle text-center text-sm">
-                                Đuổi học
-                            </td>
-                            <td class="align-middle text-center text-sm">
-                                1.000.000 đ
-                            </td>
-                            <td class="align-middle text-center text-sm">
-                                21-12-2022
-                            </td>
-                            <td class="align-middle text-center text-sm">
-                                Chưa xử lý
-                            </td>
-                        </tr>
+                        <tbody id="xuLyList">
                         </tbody>
                     </table>
 
@@ -519,6 +498,47 @@ document.querySelector('#locVaoKhuHocTap').addEventListener('click', function() 
     .catch((error) => {
         console.error('Error:', error);
     });
+});
+fetch('/getXuLy', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => {
+    var xuLyList = data.data;
+    var tbody = document.getElementById('xuLyList');
+    tbody.innerHTML = '';
+
+    xuLyList.forEach(function(xuLy) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + xuLy.maTV + '</td>' +
+                       '<td>' + xuLy.tenTV + '</td>' +
+                       '<td class="align-middle text-center text-sm">' + xuLy.hinhThuc + '</td>' +
+                       '<td class="align-middle text-center text-sm">' + xuLy.soTien + '</td>' +
+                       '<td class="align-middle text-center text-sm">' + xuLy.ngayXuLy + '</td>' +
+                       '<td class="align-middle text-center text-sm">' + xuLy.trangThai + '</td>';
+        tbody.appendChild(tr);
+    });
+
+    var select = document.getElementById('filterStatus');
+    select.addEventListener('change', function() {
+        var selectedOption = this.value;
+        var rows = tbody.getElementsByTagName('tr');
+
+        for (var i = 0; i < rows.length; i++) {
+            var statusCell = rows[i].getElementsByTagName('td')[5]; // Assuming the status is in the 6th column
+            if (selectedOption === 'Tất cả' || statusCell.textContent === selectedOption) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    });
+})
+.catch((error) => {
+    console.error('Error:', error);
 });
 </script>
 
