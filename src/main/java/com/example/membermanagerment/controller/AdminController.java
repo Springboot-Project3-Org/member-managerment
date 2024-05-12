@@ -14,13 +14,11 @@ import com.example.membermanagerment.utilities.thietbiExcelUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -79,6 +77,12 @@ public class AdminController {
     }
 
     // --------------------MEMBER----------------------
+    @GetMapping("/admin-ttsd/{id}")
+    public ResponseEntity<List<ThongTinSD>> getMaTVMuonThietBi(@PathVariable("id") BigInteger maTV) {
+        List<ThongTinSD> thongTinSDList = thongtinSdRepository.findByMaTVMuonThietBi(maTV);
+        return new ResponseEntity<>(thongTinSDList, HttpStatus.OK);
+    }
+
     @GetMapping("/admin-thanhvien")
     public String admin_thanhvien(Model model) {
         List<ThanhVien> memberList = thanhVienRepository.findAll();
