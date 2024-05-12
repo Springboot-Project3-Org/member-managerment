@@ -82,6 +82,14 @@ public class XuLy {
         TrangThaiXL = trangThaiXL;
     }
 
+    public ThanhVien getThanhvien() {
+        return thanhvien;
+    }
+
+    public void setThanhvien(ThanhVien thanhvien) {
+        this.thanhvien = thanhvien;
+    }
+
     public XuLy() {
     }
 
@@ -118,6 +126,7 @@ public class XuLy {
                 ", SoTien=" + SoTien +
                 ", NgayXL=" + NgayXL +
                 ", TrangThaiXL=" + TrangThaiXL +
+                ", thanhvien=" + thanhvien +
                 '}';
     }
 

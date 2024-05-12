@@ -412,7 +412,13 @@ public class AdminController {
     // --------------------VI PHAM----------------------
     @GetMapping("/admin-vipham")
     public String admin_vipham(Model model) {
-        List<XuLy> errorList = xuLyRepository.findAll();
+        List<XuLy> errorList = new ArrayList<>();
+        for(XuLy error : xuLyRepository.findAll()) {
+            ThanhVien thanhvien = thanhVienRepository.findByMaTV(error.getMaTV());
+            error.setThanhvien(thanhvien);
+            errorList.add(error);
+        }
+        System.out.println(errorList);
         model.addAttribute("errorList", errorList);
 
         List<Map<String, Object>> thanhVienList = new ArrayList<>();

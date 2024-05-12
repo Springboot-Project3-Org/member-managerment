@@ -103,6 +103,7 @@
             <thead>
                 <tr>
                     <th scope="col">Mã thành viên</th>
+                    <th scope="col">Tên thành viên</th>
                     <th scope="col">Hình thức xử lý</th>
                     <th scope="col">Số tiền</th>
                     <th scope="col">Ngày xử lý</th>
@@ -112,6 +113,7 @@
             <tbody id="errorList">
                 <tr th:each="error : ${errorList}">
                     <td scope="col" th:text="${error.MaTV}"></td>
+                    <td scope="col" th:text="${error.thanhvien.hoTen}"></td>
                     <td scope="col" th:text="${error.HinhThucXL}"></td>
                     <td scope="col" th:text="${error.SoTien}"></td>
                     <td scope="col" th:text="${error.NgayXL}"></td>
