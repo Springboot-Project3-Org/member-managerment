@@ -92,13 +92,14 @@
                 <div style="display: flex;justify-content: space-between;padding: 5px;">
                     <span style="font-size: 20px;font-weight: bold;">Thiết bị</span>
                     <div style="display: flex; width: 64%; height: 35px;">
-                        <select class="form-select me-3">
+                        <select class="form-select me-3" id="statusSelect">
                             <option>Tất cả</option>
-                            <option>Đang được mượn</option>
-                            <option>Đã mượn</option>
+                            <option>Đang mượn</option>
+                            <option>Chưa mượn</option>
                         </select>
 
                         <select class="form-select" id="monthSelect">
+                            <option value="0">Tất cả</option>
                             <option value="1">Tháng 1</option>
                             <option value="2">Tháng 2</option>
                             <option value="3">Tháng 3</option>
@@ -376,7 +377,76 @@
                 console.log("error: " + error);
             });
     });
+var devices = [];
 
+fetch('/getDeviceAvailability', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => {
+    devices = data.devices;
+    var tbody = document.querySelector('table tbody');
+    tbody.innerHTML = '';
+
+    devices.forEach(function(device) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + device.maTB + '</td>' +
+                       '<td>' + device.name + '</td>' +
+                       '<td>' + device.description + '</td>' +
+                       '<td>' + device.availability + '</td>';
+        tbody.appendChild(tr);
+    });
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
+
+var statusSelect = document.getElementById('statusSelect');
+var monthSelect = document.getElementById('monthSelect');
+
+statusSelect.addEventListener('change', updateTable);
+monthSelect.addEventListener('change', updateTable);
+
+function updateTable() {
+    var status = statusSelect.value;
+    var month = monthSelect.value;
+
+    var filteredDevices = devices.filter(function(device) {
+        if (status === 'Tất cả') {
+            return true;
+        } else if (status === 'Đang mượn') {
+            return device.availability === 'Đang mượn';
+        } else {
+            return device.availability === 'Chưa mượn';
+        }
+    });
+
+    //after filtering by status, filter by month:
+    if (month !== '0') {
+        var currentMonth = new Date().getMonth() + 1;
+        var currentYear = new Date().getFullYear();
+        var filteredDevices = filteredDevices.filter(function(device) {
+            var borrowedDate = new Date(device.TGMuon);
+            var borrowedMonth = borrowedDate.getMonth() + 1;
+            var borrowedYear = borrowedDate.getFullYear();
+            return borrowedMonth === parseInt(month) && borrowedYear === currentYear;
+        });
+    }
+    var tbody = document.querySelector('table tbody');
+    tbody.innerHTML = '';
+
+    filteredDevices.forEach(function(device) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + device.maTB + '</td>' +
+                       '<td>' + device.name + '</td>' +
+                       '<td>' + device.description + '</td>' +
+                       '<td>' + device.availability + '</td>';
+        tbody.appendChild(tr);
+    });
+}
 </script>
 
 </html>

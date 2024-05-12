@@ -53,10 +53,10 @@ public class AdminController {
 
         // show list thanhvien with TGVao != null
         List<ThongTinSD> list = new ArrayList<>();
-        for(ThongTinSD info : thongtinSdRepository.findAll()) {
-            if(info.getTGVao() != null) {
+        for (ThongTinSD info : thongtinSdRepository.findAll()) {
+            if (info.getTGVao() != null) {
                 ThanhVien thanhvien = thanhVienRepository.findByMaTV(info.getThanhvien());
-                if(thanhvien != null) {
+                if (thanhvien != null) {
                     info.setMember(thanhvien);
                 }
                 list.add(info);
@@ -67,8 +67,8 @@ public class AdminController {
         // show total member + total member with TGVao != null
         int totalMember = (int) thanhVienRepository.count();
         int totalMemberWithTGVao = 0;
-        for(ThongTinSD info : thongtinSdRepository.findAll()) {
-            if(info.getTGVao() != null) {
+        for (ThongTinSD info : thongtinSdRepository.findAll()) {
+            if (info.getTGVao() != null) {
                 totalMemberWithTGVao++;
             }
         }
@@ -413,7 +413,7 @@ public class AdminController {
     @GetMapping("/admin-vipham")
     public String admin_vipham(Model model) {
         List<XuLy> errorList = new ArrayList<>();
-        for(XuLy error : xuLyRepository.findAll()) {
+        for (XuLy error : xuLyRepository.findAll()) {
             ThanhVien thanhvien = thanhVienRepository.findByMaTV(error.getMaTV());
             error.setThanhvien(thanhvien);
             errorList.add(error);
@@ -817,10 +817,10 @@ public class AdminController {
         Map<String, Object> response = new HashMap<>();
         BigInteger maTV = new BigInteger(warningData.get("maTV"));
         List<XuLy> list = xuLyRepository.findByMaTVAndTrangThaiXL(maTV);
-        if(list.isEmpty()) {
+        if (list.isEmpty()) {
             response.put("success", false);
             response.put("message", "Thành viên này chưa có vi phạm");
-        }else {
+        } else {
             response.put("success", true);
         }
         return response;
@@ -847,15 +847,16 @@ public class AdminController {
         BigInteger maTV = new BigInteger(memberData.get("maTV"));
         ThanhVien thanhVien = thanhVienRepository.findByMaTV(maTV);
 
-        if(thanhVien == null) {
+        if (thanhVien == null) {
             response.put("success", false);
             response.put("message", "Không tìm thấy thành viên");
             return response;
         }
-        ThongTinSD info = new ThongTinSD(thanhVien.getMaTV(),null,new Timestamp(System.currentTimeMillis()),null,null,null);
+        ThongTinSD info = new ThongTinSD(thanhVien.getMaTV(), null, new Timestamp(System.currentTimeMillis()), null,
+                null, null);
         ThongTinSD result = thongtinSdRepository.save(info);
 
-        if(result == null) {
+        if (result == null) {
             response.put("success", false);
             response.put("message", "Check-in thất bại");
             return response;
@@ -894,7 +895,6 @@ public class AdminController {
             }
         }
 
-
         fromDateString += ":" + currentSecond;
         toDateString += ":" + currentSecond;
 
@@ -913,4 +913,47 @@ public class AdminController {
         return response;
     }
 
+    // Dashboard device availability
+    @PostMapping("/getDeviceAvailability")
+    @ResponseBody
+    public Map<String, Object> getDeviceAvailability() {
+        Map<Integer, String> deviceAvailabilityMap = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
+        List<ThietBi> thietBiList = thietBiRepository.findAll();
+        List<ThongTinSD> thongTinSdList = thongtinSdRepository.findAll();
+
+        Map<Integer, BigInteger> borrowedStudentId = new HashMap<>();
+        Map<Integer, Timestamp> borrowedStartDate = new HashMap<>();
+        Map<Integer, Timestamp> borrowedEndDate = new HashMap<>();
+        for (ThongTinSD tt : thongTinSdList) {
+            if (tt.getThietbi() != null) {
+                if (tt.getTGMuon() != null && tt.getTGTra() != null) {
+                    borrowedStudentId.put(tt.getThietbi(), tt.getThanhvien());
+                    borrowedStartDate.put(tt.getThietbi(), tt.getTGMuon());
+                    borrowedEndDate.put(tt.getThietbi(), tt.getTGTra());
+                    deviceAvailabilityMap.put(tt.getThietbi(), "Đang mượn");
+                }
+            }
+        }
+
+        List<Map<String, String>> deviceList = new ArrayList<>();
+        for (ThietBi tb : thietBiList) {
+            Map<String, String> deviceInfo = new HashMap<>();
+            deviceInfo.put("maTB", String.valueOf(tb.getMaTB()));
+            deviceInfo.put("name", tb.getTenTB());
+            deviceInfo.put("description", tb.getMoTaTB());
+            deviceInfo.put("availability", deviceAvailabilityMap.getOrDefault(tb.getMaTB(), "Chưa mượn"));
+            String studentId = "Không";
+            if (borrowedStudentId.containsKey(tb.getMaTB())) {
+                studentId = borrowedStudentId.get(tb.getMaTB()).toString();
+                deviceInfo.put("TGMuon", borrowedStartDate.get(tb.getMaTB()).toString());
+                deviceInfo.put("TGTra", borrowedEndDate.get(tb.getMaTB()).toString());
+            }
+            deviceInfo.put("studentId", studentId);
+            deviceList.add(deviceInfo);
+        }
+
+        response.put("devices", deviceList);
+        return response;
+    }
 }
