@@ -38,4 +38,8 @@ public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer>
 
     @Query("SELECT s FROM ThongTinSD s JOIN s.member tv WHERE s.TGVao BETWEEN :from AND :to AND tv.khoa LIKE CONCAT('%', UPPER(:khoa), '%') AND tv.nganh LIKE CONCAT('%', UPPER(:nganh), '%')")
     List<ThongTinSD> findByKeywordCheckIn(@Param("from") Timestamp from, @Param("to") Timestamp to, @Param("khoa") String khoa, @Param("nganh") String nganh);
+
+    @Query("SELECT ttsd, tb FROM ThongTinSD ttsd inner join ThietBi tb on ttsd.thietbi = tb.MaTB" +
+            " WHERE ttsd.thanhvien = :maTV AND ttsd.TGMuon IS NOT NULL AND ttsd.TGTra IS NOT NULL")
+    List<ThongTinSD> findByMaTVMuonThietBi(@Param("maTV") BigInteger maTV);
 }
