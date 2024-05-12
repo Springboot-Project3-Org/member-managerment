@@ -956,4 +956,67 @@ public class AdminController {
         response.put("devices", deviceList);
         return response;
     }
+
+    @PostMapping("/getThongTinSDList")
+    @ResponseBody
+    public Map<String, Object> getThongTinSD() {
+        Map<String, Object> response = new HashMap<>();
+        List<Map<String, String>> thongtinsdInfoList = new ArrayList<>();
+        List<ThongTinSD> thongTinSdList = thongtinSdRepository.findAll();
+        for (ThongTinSD tt : thongTinSdList) {
+            ThanhVien thanhVien = thanhVienRepository.findByMaTV(tt.getThanhvien());
+            Map<String, String> thongtinsdInfo = new HashMap<>();
+            thongtinsdInfo.put("maTV", thanhVien.getMaTV().toString());
+            thongtinsdInfo.put("tenTV", thanhVien.getHoTen());
+            thongtinsdInfo.put("tgVao", String.valueOf(tt.getTGVao()));
+            thongtinsdInfoList.add(thongtinsdInfo);
+        }
+        response.put("success", true);
+        response.put("data", thongtinsdInfoList);
+        return response;
+    }
+
+    @PostMapping("/filterThongTinSD")
+    @ResponseBody
+    public Map<String, Object> filterThongTinSD(@RequestBody Map<String, String> filters) {
+        Map<String, Object> response = new HashMap<>();
+        String fromDate = filters.get("enterFromDate");
+        String toDate = filters.get("enterToDate");
+        String maTV = filters.get("inputMaTV");
+        String tenTV = filters.get("inputTenTV");
+
+        List<ThongTinSD> thongTinSdList = thongtinSdRepository.findAll();
+        List<Map<String, String>> thongtinsdInfoList = new ArrayList<>();
+        for (ThongTinSD tt : thongTinSdList) {
+            ThanhVien thanhVien = thanhVienRepository.findByMaTV(tt.getThanhvien());
+            if (thanhVien != null && thanhVien.getMaTV().toString().contains(maTV)
+                    && thanhVien.getHoTen().contains(tenTV)) {
+                if (fromDate.isEmpty() && toDate.isEmpty()) {
+                    Map<String, String> thongtinsdInfo = new HashMap<>();
+                    thongtinsdInfo.put("maTV", thanhVien.getMaTV().toString());
+                    thongtinsdInfo.put("tenTV", thanhVien.getHoTen());
+                    thongtinsdInfo.put("tgVao", tt.getTGVao() != null ? String.valueOf(tt.getTGVao()) : "N/A");
+                    thongtinsdInfoList.add(thongtinsdInfo);
+                } else {
+                    if (fromDate.isEmpty()) {
+                        fromDate = "1970-01-01 00:00:00";
+                    }
+                    if (toDate.isEmpty()) {
+                        toDate = "9999-12-31 23:59:59";
+                    }
+                    if (tt.getTGVao() != null && tt.getTGVao().after(Timestamp.valueOf(fromDate))
+                            && tt.getTGVao().before(Timestamp.valueOf(toDate))) {
+                        Map<String, String> thongtinsdInfo = new HashMap<>();
+                        thongtinsdInfo.put("maTV", thanhVien.getMaTV().toString());
+                        thongtinsdInfo.put("tenTV", thanhVien.getHoTen());
+                        thongtinsdInfo.put("tgVao", String.valueOf(tt.getTGVao()));
+                        thongtinsdInfoList.add(thongtinsdInfo);
+                    }
+                }
+            }
+        }
+        response.put("success", true);
+        response.put("data", thongtinsdInfoList);
+        return response;
+    }
 }

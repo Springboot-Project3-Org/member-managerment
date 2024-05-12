@@ -129,6 +129,9 @@
                         <th
                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                             Trạng thái</th>
+                         <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Mã sinh viên</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -182,13 +185,13 @@
 
                             <div class="my-3 px-5">
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="text" name="input-khoa" id="input-khoa" class="form-control" />
-                                    <label class="form-label" for="input-khoa">Khoa</label>
+                                    <input type="text" name="input-matv" id="input-matv" class="form-control" />
+                                    <label class="form-label" for="input-matv">Mã thành viên</label>
                                 </div>
 
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="text" name="input-nganh" id="input-nganh" class="form-control" />
-                                    <label class="form-label" for="input-nganh">Ngành</label>
+                                    <input type="text" name="input-tentv" id="input-tentv" class="form-control" />
+                                    <label class="form-label" for="input-tentv">Tên thành viên</label>
                                 </div>
                             </div>
 
@@ -282,6 +285,7 @@
                             <th
                                     class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                 Trạng thái</th>
+                           
                         </tr>
                         </thead>
                         <tbody>
@@ -396,7 +400,8 @@ fetch('/getDeviceAvailability', {
         tr.innerHTML = '<td>' + device.maTB + '</td>' +
                        '<td>' + device.name + '</td>' +
                        '<td>' + device.description + '</td>' +
-                       '<td>' + device.availability + '</td>';
+                       '<td>' + device.availability + '</td>' +
+                          '<td>' + device.studentId + '</td>';
         tbody.appendChild(tr);
     });
 })
@@ -443,10 +448,78 @@ function updateTable() {
         tr.innerHTML = '<td>' + device.maTB + '</td>' +
                        '<td>' + device.name + '</td>' +
                        '<td>' + device.description + '</td>' +
-                       '<td>' + device.availability + '</td>';
+                       '<td>' + device.availability + '</td>'+
+                        '<td>' + device.studentId + '</td>';
         tbody.appendChild(tr);
     });
 }
+fetch('/getThongTinSDList', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => {
+    var thongTinSDList = data.data;
+    var tbody = document.querySelector('#checkInList');
+    tbody.innerHTML = '';
+
+    thongTinSDList.forEach(function(thongTinSD) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + thongTinSD.maTV + '</td>' +
+                       '<td>' + thongTinSD.tenTV + '</td>' +
+                       '<td class="align-middle text-center text-sm">' + thongTinSD.tgVao + '</td>';
+        tbody.appendChild(tr);
+    });
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
+document.querySelector('#locVaoKhuHocTap').addEventListener('click', function() {
+    var enterFromDate = document.querySelector('#enterFromDate').value;
+    var enterToDate = document.querySelector('#enterToDate').value;
+    var inputMaTV = document.querySelector('#input-matv').value;
+    var inputTenTV = document.querySelector('#input-tentv').value;
+
+    // Convert the date strings to the expected format
+    if (enterFromDate) {
+        enterFromDate = enterFromDate.replace('T', ' ') + ':00';
+    }
+    if (enterToDate) {
+        enterToDate = enterToDate.replace('T', ' ') + ':00';
+    }
+
+    fetch('/filterThongTinSD', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            enterFromDate: enterFromDate,
+            enterToDate: enterToDate,
+            inputMaTV: inputMaTV,
+            inputTenTV: inputTenTV
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        var thongTinSDList = data.data;
+        var tbody = document.querySelector('#checkInList');
+        tbody.innerHTML = '';
+
+        thongTinSDList.forEach(function(thongTinSD) {
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td>' + thongTinSD.maTV + '</td>' +
+                           '<td>' + thongTinSD.tenTV + '</td>' +
+                           '<td class="align-middle text-center text-sm">' + thongTinSD.tgVao + '</td>';
+            tbody.appendChild(tr);
+        });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
 </script>
 
 </html>
