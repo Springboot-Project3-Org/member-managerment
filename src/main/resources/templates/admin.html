@@ -455,50 +455,57 @@ fetch('/getThongTinSDList', {
 .catch((error) => {
     console.error('Error:', error);
 });
-document.querySelector('#locVaoKhuHocTap').addEventListener('click', function() {
-    var enterFromDate = document.querySelector('#enterFromDate').value;
-    var enterToDate = document.querySelector('#enterToDate').value;
-    var inputKhoa = document.querySelector('#input-khoa').value;
-    var inputNganh = document.querySelector('#input-nganh').value;
 
-    // Convert the date strings to the expected format
-    if (enterFromDate) {
-        enterFromDate = enterFromDate.replace('T', ' ') + ':00';
-    }
-    if (enterToDate) {
-        enterToDate = enterToDate.replace('T', ' ') + ':00';
-    }
+document.getElementById("locVaoKhuHocTap").addEventListener("click", function () {
+    var fromDate = document.getElementById("enterFromDate").value;
+    var toDate = document.getElementById("enterToDate").value;
+    var khoa = document.getElementById("input-khoa").value;
+    var nganh = document.getElementById("input-nganh").value;
 
-    fetch('/filterThongTinSD', {
-        method: 'POST',
+    var fromDateTime = fromDate.replace("T", " ");
+    var toDateTime = toDate.replace("T", " ");
+
+    var data = {
+        fromDate: fromDateTime,
+        toDate: toDateTime,
+        khoa: khoa,
+        nganh: nganh
+    };
+
+    fetch("/searchCheckIn", {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-            enterFromDate: enterFromDate,
-            enterToDate: enterToDate,
-            inputKhoa: inputKhoa,
-            inputNganh: inputNganh
-        })
+        body: JSON.stringify(data),
     })
-    .then(response => response.json())
-    .then(data => {
-        var thongTinSDList = data.data;
-        var tbody = document.querySelector('#checkInList');
-        tbody.innerHTML = '';
+        .then((res) => res.json())
+        .then((data) => {
+            if(data.success === false) {
+                alert(data.message);
+            }else {
+                document.getElementById('checkInList').innerHTML = '';
 
-        thongTinSDList.forEach(function(thongTinSD) {
-            var tr = document.createElement('tr');
-            tr.innerHTML = '<td>' + thongTinSD.maTV + '</td>' +
-                           '<td>' + thongTinSD.tenTV + '</td>' +
-                           '<td class="align-middle text-center text-sm">' + thongTinSD.tgVao + '</td>';
-            tbody.appendChild(tr);
+                data.result.forEach(function (info) {
+                    var tr = document.createElement('tr');
+
+                    var currentDate = new Date(info.tgvao);
+                    currentDate.setHours(currentDate.getHours() + 7);
+                    var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+                    tr.innerHTML = `
+                            <td>${info.thanhvien}</td>
+                            <td>${info.member.hoTen}</td>
+                            <td class="align-middle text-center text-sm">${formattedDate}</td>
+                        `;
+                    document.getElementById('checkInList').appendChild(tr);
+                });
+            }
+        })
+        .catch((error) => {
+            console.log("error: " + error);
         });
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
 });
+
 fetch('/getXuLy', {
     method: 'POST',
     headers: {
