@@ -1068,6 +1068,52 @@ public class AdminController {
         return response;
     }
 
+    @PostMapping("/getOrderList")
+    @ResponseBody
+    public Map<String, Object> getOrderList(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> response = new HashMap<>();
+
+        BigInteger maTV = new BigInteger(requestData.get("maTV"));
+        List<ThongTinSD> result = new ArrayList<>();
+        List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
+        for(ThongTinSD info1 : info) {
+            if(info1.getTGDatCho() != null) {
+                ThietBi device = thietBiRepository.findById(info1.getThietbi()).orElse(null);
+                info1.setDevice(device);
+                result.add(info1);
+            }
+        }
+        System.out.println(result);
+        response.put("result", result);
+        return response;
+    }
+
+    @PostMapping("/getBorrowList")
+    @ResponseBody
+    public Map<String, Object> getBorrowList(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> response = new HashMap<>();
+
+        List<ThietBi> devicesToAdd = new ArrayList<>();
+        List<Integer> borrowedDeviceIds = new ArrayList<>();
+
+        for (ThongTinSD info : thongtinSdRepository.findAll()) {
+            if (info.getThietbi() != null) {
+                borrowedDeviceIds.add(info.getThietbi());
+            }
+        }
+
+        for (ThietBi curDevice : thietBiRepository.findAll()) {
+            if (!borrowedDeviceIds.contains(curDevice.getMaTB())) {
+                devicesToAdd.add(curDevice);
+            }
+        }
+
+        response.put("result", devicesToAdd);
+        return response;
+    }
+
+
+
     @PostMapping("/paybackHandle")
     @ResponseBody
     public Map<String, Object> paybackHandle(@RequestBody Map<String, String> requestData) {
@@ -1094,6 +1140,88 @@ public class AdminController {
         }
         response.put("success", true);
         response.put("message", "Trả thiết bị thành công");
+        return response;
+    }
+
+    @PostMapping("/borrowHandle")
+    @ResponseBody
+    public Map<String, Object> borrowHandle(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> response = new HashMap<>();
+
+        BigInteger maTV = new BigInteger(requestData.get("maTV"));
+        int maTB  = Integer.parseInt(requestData.get("id"));
+        String name = requestData.get("name");
+        String description = requestData.get("description");
+        String dateString = requestData.get("toDateTime");
+
+        if(dateString.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "Vui lòng chọn thời gian trả thiết bị");
+            return response;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        int currentSecond = now.getSecond();
+        dateString += ":" + currentSecond;
+
+        Timestamp date = Timestamp.valueOf(dateString);
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+        if(date.compareTo(currentTime) < 0) {
+            response.put("success", false);
+            response.put("message", "Thời gian đặt phải lớn hơn thời gian hiện tại");
+            return response;
+        }
+
+        ThongTinSD addInfo = new ThongTinSD(maTV,maTB,null,currentTime,date,null);
+        thongtinSdRepository.save(addInfo);
+
+        response.put("success", true);
+        response.put("message", "Mượn thiết bị thành công");
+        return response;
+    }
+
+    @PostMapping("/orderHandle")
+    @ResponseBody
+    public Map<String, Object> orderHandle(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> response = new HashMap<>();
+
+        BigInteger maTV = new BigInteger(requestData.get("maTV"));
+        int maTB  = Integer.parseInt(requestData.get("id"));
+        String name = requestData.get("name");
+        String description = requestData.get("description");
+        String dateString = requestData.get("toDateTime");
+
+        if(dateString.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "Vui lòng chọn thời gian trả thiết bị");
+            return response;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        int currentSecond = now.getSecond();
+        dateString += ":" + currentSecond;
+
+        Timestamp date = Timestamp.valueOf(dateString);
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+        if(date.compareTo(currentTime) < 0) {
+            response.put("success", false);
+            response.put("message", "Thời gian đặt phải lớn hơn thời gian hiện tại");
+            return response;
+        }
+
+        List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
+        for(ThongTinSD info1 : info) {
+            if(info1.getTGDatCho() != null) {
+                ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(),maTV,maTB,null,currentTime,date,null);
+                thongtinSdRepository.save(updateInfo);
+            }
+        }
+        response.put("success", true);
+        response.put("message", "Mượn thiết bị thành công");
         return response;
     }
 

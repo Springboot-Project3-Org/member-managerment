@@ -295,7 +295,7 @@
                             </div>
                         </div>
                     </div>
-                    <span class="center" th:attr="data-maTV=${member.MaTV}"
+                    <span class="center" th:attr="data-maTV=${member.MaTV}" id="borrowBtn"
                           onclick="openBorrowDevice(this.getAttribute('data-maTV'))"
                           style="color: rgb(152, 18, 18); margin-left: 5px">Mượn thiết bị</span>
                     <!-- Mượn thiết bị -->
@@ -308,7 +308,7 @@
                     display: none;
                     z-index: 2;
                     right:0;
-                  ">
+                  " th:attr="data-maTV=${member.MaTV}">
                         <div style="
                       position: absolute;
                       height: 600px;
@@ -347,7 +347,7 @@
                                 <div class="col-lg-5" style="margin-top: 10px">
                                     <div class="input-group mb-3">
                                         <label class="input-group-text" for="borrowDate">Ngày trả</label>
-                                        <input class="form-control" type="date" min="" />
+                                        <input class="form-control" type="datetime-local" id="toDate" min="" />
                                     </div>
                                 </div>
                             </div>
@@ -377,20 +377,9 @@
                                             </th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="borrowList">
                                         <tr>
-                                            <td class="align-middle text-left text-sm">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                       id="flexCheckDefault" />
-                                                <label class="form-check-label"
-                                                       for="flexCheckDefault">01</label>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                Thiết bị A
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                Được làm băng nhôm
-                                            </td>
+
                                         </tr>
                                         </tbody>
                                     </table>
@@ -415,7 +404,7 @@
                     <!-- Button trigger modal -->
                     <!-- Button trigger modal -->
 
-                    <span class="center" th:attr="data-maTV=${member.MaTV}"
+                    <span class="center" th:attr="data-maTV=${member.MaTV}" id="orderBtns"
                           onclick="openOrderDevice(this.getAttribute('data-maTV'))"
                           style="color: rgb(152, 18, 18); margin-left: 5px">Đặt thiết bị</span>
                     <!-- Đặt thiết bị -->
@@ -428,7 +417,7 @@
                     display: none;
                     z-index: 2;
                     right:0;
-                  ">
+                  "  th:attr="data-maTV=${member.MaTV}">
                         <div style="
                       position: absolute;
                       height: 600px;
@@ -466,8 +455,8 @@
                                 </div>
                                 <div class="col-lg-5" style="margin-top: 10px">
                                     <div class="input-group mb-3">
-                                        <label class="input-group-text">Ngày đặt</label>
-                                        <input class="form-control" type="date" min="" />
+                                        <label class="input-group-text">Ngày trả</label>
+                                        <input class="form-control" type="datetime-local" id="toDateTime" min="" />
                                     </div>
                                 </div>
                             </div>
@@ -497,21 +486,8 @@
                                             </th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td class="align-middle text-left text-sm">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                       id="flexCheckDefault" />
-                                                <label class="form-check-label"
-                                                       for="flexCheckDefault">01</label>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                Thiết bị A
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                Được làm băng nhôm
-                                            </td>
-                                        </tr>
+                                        <tbody id="orderDeviceList">
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -1151,6 +1127,262 @@
                     .catch((error) => console.error("Error:", error));
             });
         });
+
+        var haha = document.querySelectorAll('#payBackBtn');
+    haha.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            fetch("/getPaybackList", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ maTV: btn.getAttribute("data-matv") }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    var html = document.getElementById('paybackList');
+                    html.innerHTML = '';
+
+                    data.result.forEach(function (device) {
+                        var currentDate = new Date(device.tgmuon);
+                        currentDate.setHours(currentDate.getHours());
+
+                        // Định dạng ngày giờ
+                        var year = currentDate.getFullYear();
+                        var month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                        var day = String(currentDate.getDate()).padStart(2, '0');
+                        var hours = String(currentDate.getHours()).padStart(2, '0');
+                        var minutes = String(currentDate.getMinutes()).padStart(2, '0');
+                        var seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+                        var formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+                        let tr = document.createElement("tr");
+                        tr.innerHTML = `
+                        <tr>
+                                                                <td class="align-middle text-left text-sm">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="" id="flexCheckDefault" />
+                                                                    <label class="form-check-label"
+                                                                        for="flexCheckDefault">${device.device.maTB}</label>
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.device.tenTB}
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.device.moTaTB}
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${formattedDate}
+                                                                </td>
+                                                            </tr>
+                        `;
+                        document.getElementById("paybackList").appendChild(tr);
+                    });
+                })
+                .catch((error) => console.error("Error:", error));
+        })
+    })
+    document.getElementById("save-return-device-btn").addEventListener("click", function () {
+        var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkedRows.forEach(function (row) {
+            var maTV = document.getElementById("returnDeviceModal").getAttribute("data-maTV");
+            var parentRow = row.closest("tr");
+            var maTB = parentRow.querySelector(".form-check-label").innerText;
+            var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
+            var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
+            var formattedDate = parentRow.querySelector(".align-middle.text-center:nth-child(4)").innerText;
+
+            var data = {
+                id: maTB,
+                name: tenTB,
+                description: moTaTB,
+                date: formattedDate,
+                maTV: maTV
+            };
+
+            fetch("/paybackHandle", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if(data.success === true) {
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.log("error: " + error);
+                });
+        });
+    });
+
+
+    var orderBtns = document.querySelectorAll('#orderBtns');
+    orderBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            console.log("test: "+btn);
+            fetch("/getOrderList", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ maTV: btn.getAttribute("data-matv") }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    var html = document.getElementById('orderDeviceList');
+                    html.innerHTML = '';
+
+                    data.result.forEach(function (device) {
+
+                        let tr = document.createElement("tr");
+                        tr.innerHTML = `
+                        <tr>
+                                                                <td class="align-middle text-left text-sm">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="" id="flexCheckDefault" />
+                                                                    <label class="form-check-label"
+                                                                        for="flexCheckDefault">${device.device.maTB}</label>
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.device.tenTB}
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.device.moTaTB}
+                                                                </td>
+                                                            </tr>
+                        `;
+                        document.getElementById("orderDeviceList").appendChild(tr);
+                    });
+                })
+                .catch((error) => console.error("Error:", error));
+        })
+    })
+
+    document.getElementById("order-device-btn").addEventListener("click", function () {
+        var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkedRows.forEach(function (row) {
+            var maTV = document.getElementById("orderDevice").getAttribute("data-maTV");
+            var parentRow = row.closest("tr");
+            var maTB = parentRow.querySelector(".form-check-label").innerText;
+            var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
+            var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
+            var toDate = document.getElementById("toDateTime").value;
+            var toDateTime = toDate.replace("T", " ");
+
+
+            var data = {
+                id: maTB,
+                name: tenTB,
+                description: moTaTB,
+                maTV: maTV,
+                toDateTime: toDateTime
+            };
+
+            fetch("/orderHandle", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.message);
+                    if(data.success === true) {
+                        parent.window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.log("error: " + error);
+                });
+        });
+    });
+
+    var borrowBtns = document.querySelectorAll('#borrowBtn');
+    borrowBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            console.log("test: "+btn);
+            fetch("/getBorrowList", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ maTV: btn.getAttribute("data-matv") }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    var html = document.getElementById('borrowList');
+                    html.innerHTML = '';
+
+                    data.result.forEach(function (device) {
+
+                        let tr = document.createElement("tr");
+                        tr.innerHTML = `
+                        <tr>
+                                                                <td class="align-middle text-left text-sm">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="" id="flexCheckDefault" />
+                                                                    <label class="form-check-label"
+                                                                        for="flexCheckDefault">${device.maTB}</label>
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.tenTB}
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.moTaTB}
+                                                                </td>
+                                                            </tr>
+                        `;
+                        document.getElementById("borrowList").appendChild(tr);
+                    });
+                })
+                .catch((error) => console.error("Error:", error));
+        })
+    })
+
+    document.getElementById("borrow-device-btn").addEventListener("click", function () {
+        var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkedRows.forEach(function (row) {
+            var maTV = document.getElementById("borrowDevice").getAttribute("data-maTV");
+            var parentRow = row.closest("tr");
+            var maTB = parentRow.querySelector(".form-check-label").innerText;
+            var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
+            var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
+            var toDate = document.getElementById("toDate").value;
+            var toDateTime = toDate.replace("T", " ");
+
+            var data = {
+                id: maTB,
+                name: tenTB,
+                description: moTaTB,
+                maTV: maTV,
+                toDateTime: toDateTime
+            };
+
+            fetch("/borrowHandle", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.message);
+                    if(data.success === true) {
+                        parent.window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.log("error: " + error);
+                });
+        });
+    });
     }
 
     document
@@ -1217,119 +1449,319 @@
                         <i style="color: yellow;" maTV="${member.maTV}" onclick="warningMember(this.getAttribute('maTV'))" class="warning-btn fa-solid fa-triangle-exclamation fa-2x"></i>
                         <i style="color: red;" maTV="${member.maTV}" class="delete-btn fas fa-trash-can fa-2x mx-2"></i>
                         <i maTV="${member.maTV}" class="edit-btn fas fa-square-pen fa-2x"></i>
-                        <div style="display: flex; flex-direction: column; margin-left: 15px;">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="payBackBtn"
-                                data-bs-target="#returnDeviceModal" maTV="${member.maTV}"
-                                style="color: rgb(35, 222, 60); margin-left: 5px">
-                                Trả thiết bị
-                            </button>
-                            <div class="modal fade" id="returnDeviceModal" tabindex="-1"
-                                aria-labelledby="returnDeviceModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg" id="showReturnDevice">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="returnDeviceModalLabel">
-                                                Trả thiết bị
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                        <div style="display: flex; flex-direction: column; margin-left: 15px">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="payBackBtn"
+                            data-bs-target="#returnDeviceModal" th:attr="data-maTV=${member.MaTV}"
+                            style="color: rgb(35, 222, 60); margin-left: 5px">
+                        Trả thiết bị
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="returnDeviceModal" tabindex="-1"
+                         aria-labelledby="returnDeviceModalLabel" aria-hidden="true"  maTV="${member.maTV}">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" id="showReturnDevice">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="returnDeviceModalLabel">
+                                        Trả thiết bị
+                                    </h5>
+                                    <div class="mt-3 px-5">
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text" for="enterFromDate">Thời gian
+                                                trả</label>
+                                            <input id="enterFromDate" class="form-control" type="datetime-local"
+                                                   min="" />
                                         </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <div class="input-group">
-                                                        <!-- Search input -->
-                                                        <div class="form-outline" data-mdb-input-init>
-                                                            <input type="search" id="searchReturnDevice"
-                                                                class="form-control" />
-                                                            <label class="form-label" for="search">Search</label>
-                                                        </div>
-                                                        <!-- Search input -->
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <!-- Search input -->
+                                                <div class="form-outline" data-mdb-input-init>
+                                                    <input type="search" id="searchReturnDevice"
+                                                           class="form-control" />
+                                                    <label class="form-label" for="search">Search</label>
+                                                </div>
+                                                <!-- Search input -->
 
-                                                        <!-- Btn search -->
-                                                        <button type="button" id="searchReturnDeviceBtn"
-                                                            class="btn btn-primary" data-mdb-ripple-init>
-                                                            <i class="fas fa-search"></i>
-                                                        </button>
-                                                        <!-- Btn search -->
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <button type="button" class="btn-newUser btn btn-outline-primary"
-                                                        data-mdb-ripple-init data-mdb-ripple-color="dark">
-                                                        Refresh
-                                                    </button>
-                                                </div>
+                                                <!-- Btn search -->
+                                                <button type="button" id="searchReturnDeviceBtn"
+                                                        class="btn btn-primary" data-mdb-ripple-init>
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                                <!-- Btn search -->
                                             </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn-newUser btn btn-outline-primary"
+                                                    data-mdb-ripple-init data-mdb-ripple-color="dark">
+                                                Refresh
+                                            </button>
+                                        </div>
+                                    </div>
 
-                                            <div class="card col-lg-4 col-md-6" style="
+                                    <div class="card col-lg-4 col-md-6" style="
                             height: 393px;
                             overflow-y: scroll;
                             scrollbar-width: none;
                             scroll-margin: 1px;
                             width: 100%;
                           ">
-                                                <div class="h-100">
-                                                    <table class="table align-items-center mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th
-                                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                                    Mã thiết bị
-                                                                </th>
-                                                                <th
-                                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                                    Tên
-                                                                </th>
-                                                                <th
-                                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                                    Mô tả
-                                                                </th>
-                                                                <th
-                                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                                    Ngày mượn
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="align-middle text-left text-sm">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        value="" id="flexCheckDefault" />
-                                                                    <label class="form-check-label"
-                                                                        for="flexCheckDefault">01</label>
-                                                                </td>
-                                                                <td class="align-middle text-center text-sm">
-                                                                    Thiết bị A
-                                                                </td>
-                                                                <td class="align-middle text-center text-sm">
-                                                                    Được làm băng nhôm
-                                                                </td>
-                                                                <td class="align-middle text-center text-sm">
-                                                                    30-2-1119
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" id="save-return-device-btn">
-                                                Lưu
-                                            </button>
+                                        <div class="h-100">
+                                            <table class="table align-items-center mb-0">
+                                                <thead>
+                                                <tr>
+                                                    <th
+                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                        Mã thiết bị
+                                                    </th>
+                                                    <th
+                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                        Tên
+                                                    </th>
+                                                    <th
+                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                        Mô tả
+                                                    </th>
+                                                    <th
+                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                        Ngày mượn
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="paybackList">
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="modal-footer" id="paybackSave">
+                                    <button type="button" class="btn btn-primary" id="save-return-device-btn">
+                                        Lưu
+                                    </button>
+                                </div>
                             </div>
-                            <span class="center" maTV="${member.maTV}" onclick="openBorrowDevice(this.getAttribute('data-maTV'))" style="color: rgb(152, 18, 18); margin-left: 5px;">Mượn thiết bị</span>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    th:attr="data-bs-target=${'#orderDeviceModal_' + member.MaTV}, data-maTV=${member.MaTV} maTV="${member.maTV}""
-                                                    style="color: rgb(35, 222, 60); margin-left: 5px"
-                                                    onclick="fetchBookedDevices(this.getAttribute('data-maTV'))">
-                                                    Đặt thiết bị
-                                                </button>
                         </div>
+                    </div>
+                    <span class="center"  maTV="${member.maTV}" id="borrowBtn"
+                          onclick="openBorrowDevice(this.getAttribute('data-maTV'))"
+                          style="color: rgb(152, 18, 18); margin-left: 5px">Mượn thiết bị</span>
+                    <!-- Mượn thiết bị -->
+                    <div id="borrowDevice" style="
+                    height: 100%;
+                    width: 100%;
+                    background-color: rgba(189, 189, 189, 0.538);
+                    position: fixed;
+                    top: 0;
+                    display: none;
+                    z-index: 2;
+                    right:0;
+                  "  maTV="${member.maTV}">
+                        <div style="
+                      position: absolute;
+                      height: 600px;
+                      width: 600px;
+                      background-color: white;
+                      top: 12%;
+                      right: 50%;
+                      transform: translate(50%, 0%);
+                      padding: 3px;
+                    " class="rounded">
+                            <span class="text-uppercase text-center mt-5 mb-5">Mượn thiết bị</span>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <!-- Search input -->
+                                        <div class="form-outline" data-mdb-input-init>
+                                            <input type="search" id="searchBorrowDevice" class="form-control" />
+                                            <label class="form-label" for="search">Search</label>
+                                        </div>
+                                        <!-- Search input -->
+
+                                        <!--                Btn search -->
+                                        <button type="button" id="searchBorrowDeviceBtn" class="btn btn-primary"
+                                                data-mdb-ripple-init>
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        <!--                Btn search -->
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn-newUser btn btn-outline-primary"
+                                            data-mdb-ripple-init data-mdb-ripple-color="dark">
+                                        Refresh
+                                    </button>
+                                </div>
+                                <div class="col-lg-5" style="margin-top: 10px">
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text" for="borrowDate">Ngày trả</label>
+                                        <input class="form-control" type="datetime-local" id="toDate" min="" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card col-lg-4 col-md-6" style="
+                        height: 393px;
+                        overflow-y: scroll;
+                        scrollbar-width: none;
+                        scroll-margin: 1px;
+                        width: 100%;
+                      ">
+                                <div class="h-100">
+                                    <table class="table align-items-center mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Mã thiết bị
+                                            </th>
+                                            <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Tên
+                                            </th>
+                                            <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Mô tả
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="borrowList">
+                                        <tr>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div style="
+                        display: flex;
+                        justify-content: right;
+                        margin-top: 5px;
+                      ">
+                                <button type="button" class="closeBorrowDevice-btn btn btn-link"
+                                        data-mdb-ripple-init data-mdb-ripple-color="dark">
+                                    Hủy
+                                </button>
+                                <button type="button" class="btn btn-primary" id="borrow-device-btn"
+                                        data-mdb-ripple-init>
+                                    Lưu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Button trigger modal -->
+                    <!-- Button trigger modal -->
+
+                    <span class="center"  maTV="${member.maTV}" id="orderBtns"
+                          onclick="openOrderDevice(this.getAttribute('data-maTV'))"
+                          style="color: rgb(152, 18, 18); margin-left: 5px">Đặt thiết bị</span>
+                    <!-- Đặt thiết bị -->
+                    <div id="orderDevice" style="
+                    height: 100%;
+                    width: 100%;
+                    background-color: rgba(189, 189, 189, 0.538);
+                    position: fixed;
+                    top: 0;
+                    display: none;
+                    z-index: 2;
+                    right:0;
+                  "   maTV="${member.maTV}">
+                        <div style="
+                      position: absolute;
+                      height: 600px;
+                      width: 600px;
+                      background-color: white;
+                      top: 12%;
+                      right: 50%;
+                      transform: translate(50%, 0%);
+                      padding: 3px;
+                    " class="rounded">
+                            <span class="text-uppercase text-center mt-5 mb-5">Đặt thiết bị</span>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <!-- Search input -->
+                                        <div class="form-outline" data-mdb-input-init>
+                                            <input type="search" id="searchOrderDevice" class="form-control" />
+                                            <label class="form-label" for="search">Search</label>
+                                        </div>
+                                        <!-- Search input -->
+
+                                        <!--                Btn search -->
+                                        <button type="button" id="searchOrderDeviceBtn" class="btn btn-primary"
+                                                data-mdb-ripple-init>
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        <!--                Btn search -->
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn-newUser btn btn-outline-primary"
+                                            data-mdb-ripple-init data-mdb-ripple-color="dark">
+                                        Refresh
+                                    </button>
+                                </div>
+                                <div class="col-lg-5" style="margin-top: 10px">
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text">Ngày trả</label>
+                                        <input class="form-control" type="datetime-local" id="toDateTime" min="" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card col-lg-4 col-md-6" style="
+                        height: 393px;
+                        overflow-y: scroll;
+                        scrollbar-width: none;
+                        scroll-margin: 1px;
+                        width: 100%;
+                      ">
+                                <div class="h-100">
+                                    <table class="table align-items-center mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Mã thiết bị
+                                            </th>
+                                            <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Tên
+                                            </th>
+                                            <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Mô tả
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="orderDeviceList">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div style="
+                        display: flex;
+                        justify-content: right;
+                        margin-top: 5px;
+                      ">
+                                <button type="button" class="closeOrderDevice-btn btn btn-link"
+                                        data-mdb-ripple-init data-mdb-ripple-color="dark">
+                                    Hủy
+                                </button>
+                                <button type="button" class="btn btn-primary" id="order-device-btn"
+                                        data-mdb-ripple-init>
+                                    Lưu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     </td>
                 `;
     }
@@ -1456,6 +1888,169 @@
         });
     });
 
+
+    var orderBtns = document.querySelectorAll('#orderBtns');
+    orderBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            console.log("test: "+btn);
+            fetch("/getOrderList", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ maTV: btn.getAttribute("data-matv") }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    var html = document.getElementById('orderDeviceList');
+                    html.innerHTML = '';
+
+                    data.result.forEach(function (device) {
+
+                        let tr = document.createElement("tr");
+                        tr.innerHTML = `
+                        <tr>
+                                                                <td class="align-middle text-left text-sm">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="" id="flexCheckDefault" />
+                                                                    <label class="form-check-label"
+                                                                        for="flexCheckDefault">${device.device.maTB}</label>
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.device.tenTB}
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.device.moTaTB}
+                                                                </td>
+                                                            </tr>
+                        `;
+                        document.getElementById("orderDeviceList").appendChild(tr);
+                    });
+                })
+                .catch((error) => console.error("Error:", error));
+        })
+    })
+
+    document.getElementById("order-device-btn").addEventListener("click", function () {
+        var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkedRows.forEach(function (row) {
+            var maTV = document.getElementById("orderDevice").getAttribute("data-maTV");
+            var parentRow = row.closest("tr");
+            var maTB = parentRow.querySelector(".form-check-label").innerText;
+            var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
+            var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
+            var toDate = document.getElementById("toDateTime").value;
+            var toDateTime = toDate.replace("T", " ");
+
+
+            var data = {
+                id: maTB,
+                name: tenTB,
+                description: moTaTB,
+                maTV: maTV,
+                toDateTime: toDateTime
+            };
+
+            fetch("/orderHandle", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.message);
+                    if(data.success === true) {
+                        parent.window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.log("error: " + error);
+                });
+        });
+    });
+
+    var borrowBtns = document.querySelectorAll('#borrowBtn');
+    borrowBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            console.log("test: "+btn);
+            fetch("/getBorrowList", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ maTV: btn.getAttribute("data-matv") }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    var html = document.getElementById('borrowList');
+                    html.innerHTML = '';
+
+                    data.result.forEach(function (device) {
+
+                        let tr = document.createElement("tr");
+                        tr.innerHTML = `
+                        <tr>
+                                                                <td class="align-middle text-left text-sm">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="" id="flexCheckDefault" />
+                                                                    <label class="form-check-label"
+                                                                        for="flexCheckDefault">${device.maTB}</label>
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.tenTB}
+                                                                </td>
+                                                                <td class="align-middle text-center text-sm">
+                                                                    ${device.moTaTB}
+                                                                </td>
+                                                            </tr>
+                        `;
+                        document.getElementById("borrowList").appendChild(tr);
+                    });
+                })
+                .catch((error) => console.error("Error:", error));
+        })
+    })
+
+    document.getElementById("borrow-device-btn").addEventListener("click", function () {
+        var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkedRows.forEach(function (row) {
+            var maTV = document.getElementById("borrowDevice").getAttribute("data-maTV");
+            var parentRow = row.closest("tr");
+            var maTB = parentRow.querySelector(".form-check-label").innerText;
+            var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
+            var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
+            var toDate = document.getElementById("toDate").value;
+            var toDateTime = toDate.replace("T", " ");
+
+            var data = {
+                id: maTB,
+                name: tenTB,
+                description: moTaTB,
+                maTV: maTV,
+                toDateTime: toDateTime
+            };
+
+            fetch("/borrowHandle", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.message);
+                    if(data.success === true) {
+                        parent.window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.log("error: " + error);
+                });
+        });
+    });
 
     function fetchBookedDevices(maTV) {
         let modalBody = document.querySelector(".modal-body");
