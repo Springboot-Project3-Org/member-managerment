@@ -1234,7 +1234,6 @@
     var borrowBtns = document.querySelectorAll('#borrowBtn');
     borrowBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-            console.log("test: "+btn);
             fetch("/getBorrowList", {
                 method: "POST",
                 headers: {
@@ -1820,7 +1819,6 @@
     var orderBtns = document.querySelectorAll('#orderBtns');
     orderBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-            console.log("test: "+btn);
             fetch("/getOrderList", {
                 method: "POST",
                 headers: {
@@ -1859,50 +1857,11 @@
         })
     })
 
-    document.getElementById("order-device-btn").addEventListener("click", function () {
-        var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
-        checkedRows.forEach(function (row) {
-            var maTV = document.getElementById("orderDevice").getAttribute("data-maTV");
-            var parentRow = row.closest("tr");
-            var maTB = parentRow.querySelector(".form-check-label").innerText;
-            var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
-            var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
-            var toDate = document.getElementById("toDateTime").value;
-            var toDateTime = toDate.replace("T", " ");
 
-
-            var data = {
-                id: maTB,
-                name: tenTB,
-                description: moTaTB,
-                maTV: maTV,
-                toDateTime: toDateTime
-            };
-
-            fetch("/orderHandle", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    alert(data.message);
-                    if(data.success === true) {
-                        parent.window.location.reload();
-                    }
-                })
-                .catch((error) => {
-                    console.log("error: " + error);
-                });
-        });
-    });
 
     var borrowBtns = document.querySelectorAll('#borrowBtn');
     borrowBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-            console.log("test: "+btn);
             fetch("/getBorrowList", {
                 method: "POST",
                 headers: {
@@ -1940,45 +1899,6 @@
                 .catch((error) => console.error("Error:", error));
         })
     })
-
-    document.getElementById("borrow-device-btn").addEventListener("click", function () {
-        var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
-        checkedRows.forEach(function (row) {
-            var maTV = document.getElementById("borrowDevice").getAttribute("data-maTV");
-            var parentRow = row.closest("tr");
-            var maTB = parentRow.querySelector(".form-check-label").innerText;
-            var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
-            var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
-            var toDate = document.getElementById("toDate").value;
-            var toDateTime = toDate.replace("T", " ");
-
-            var data = {
-                id: maTB,
-                name: tenTB,
-                description: moTaTB,
-                maTV: maTV,
-                toDateTime: toDateTime
-            };
-
-            fetch("/borrowHandle", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    alert(data.message);
-                    if(data.success === true) {
-                        parent.window.location.reload();
-                    }
-                })
-                .catch((error) => {
-                    console.log("error: " + error);
-                });
-        });
-    });
 
     function fetchBookedDevices(maTV) {
         let modalBody = document.querySelector(".modal-body");

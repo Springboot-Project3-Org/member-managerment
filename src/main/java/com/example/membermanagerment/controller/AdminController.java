@@ -1149,6 +1149,7 @@ public class AdminController {
         Map<String, Object> response = new HashMap<>();
 
         BigInteger maTV = new BigInteger(requestData.get("maTV"));
+        System.out.println("test cai: "+maTV);
         int maTB  = Integer.parseInt(requestData.get("id"));
         String name = requestData.get("name");
         String description = requestData.get("description");
@@ -1174,7 +1175,9 @@ public class AdminController {
             return response;
         }
 
+
         ThongTinSD addInfo = new ThongTinSD(maTV,maTB,null,currentTime,date,null);
+        System.out.println(addInfo);
         thongtinSdRepository.save(addInfo);
 
         response.put("success", true);
