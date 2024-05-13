@@ -435,7 +435,7 @@ public class UserController {
                 ThietBi thietBi = thietBiRepository.findById(thongTinSD.getThietbi()).orElse(null);
 
                 // Chỉ lấy thiết bị có thời gian trả là null và thời gian mượn là khác null
-                if (thietBi != null && thongTinSD.getTGMuon() != null && thongTinSD.getTGTra() == null) {
+                if (thietBi != null && thongTinSD.getTGMuon() != null && thongTinSD.getTGTra() != null) {
                     // Tạo map để lưu thông tin của mỗi thiết bị và thời gian mượn tương ứng
                     Map<String, Object> deviceAndUsageInfo = new HashMap<>();
                     deviceAndUsageInfo.put("tenTB", thietBi.getTenTB());
