@@ -325,7 +325,7 @@
                   ">
                         <div style="
                       position: absolute;
-                      height: 566px;
+                      height: 600px;
                       width: 600px;
                       background-color: white;
                       top: 12%;
@@ -428,71 +428,125 @@
                     </div>
                     <!-- Button trigger modal -->
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            th:attr="data-bs-target=${'#orderDeviceModal_' + member.MaTV}, data-maTV=${member.MaTV}"
-                            style="color: rgb(35, 222, 60); margin-left: 5px"
-                            onclick="fetchBookedDevices(this.getAttribute('data-maTV'))">
-                        Đặt thiết bị
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" th:id="${'orderDeviceModal_' + member.MaTV}" tabindex="-1"
-                         aria-labelledby="orderDeviceModalLabel" aria-hidden="true">
-                        <script>
-                            function fetchBookedDevices(maTV) {
-                                fetch("/fetchBookedDevices", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify({ maTV: maTV }),
-                                })
-                                    .then((res) => res.json())
-                                    .then((data) => {
-                                        console.log(data);
-                                        let modalBody = document.querySelector(".modal-body");
-                                        modalBody.innerHTML = ""; // Clear the modal body
 
-                                        let cardDiv = document.createElement("div");
-                                        cardDiv.className = "card col-lg-4 col-md-6";
-                                        cardDiv.style =
-                                            "height: 393px; overflow-y: scroll; scrollbar-width: none; scroll-margin: 1px; width: 100%;";
+                    <span class="center" th:attr="data-maTV=${member.MaTV}"
+                          onclick="openOrderDevice(this.getAttribute('data-maTV'))"
+                          style="color: rgb(152, 18, 18); margin-left: 5px">Đặt thiết bị</span>
+                    <!-- Đặt thiết bị -->
+                    <div id="orderDevice" style="
+                    height: 100%;
+                    width: 100%;
+                    background-color: rgba(189, 189, 189, 0.538);
+                    position: fixed;
+                    top: 0;
+                    display: none;
+                    z-index: 2;
+                    right:0;
+                  ">
+                        <div style="
+                      position: absolute;
+                      height: 600px;
+                      width: 600px;
+                      background-color: white;
+                      top: 12%;
+                      right: 50%;
+                      transform: translate(50%, 0%);
+                      padding: 3px;
+                    " class="rounded">
+                            <span class="text-uppercase text-center mt-5 mb-5">Đặt thiết bị</span>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <!-- Search input -->
+                                        <div class="form-outline" data-mdb-input-init>
+                                            <input type="search" id="searchOrderDevice" class="form-control" />
+                                            <label class="form-label" for="search">Search</label>
+                                        </div>
+                                        <!-- Search input -->
 
-                                        let table = document.createElement("table");
-                                        table.className = "table align-items-center mb-0";
+                                        <!--                Btn search -->
+                                        <button type="button" id="searchOrderDeviceBtn" class="btn btn-primary"
+                                                data-mdb-ripple-init>
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        <!--                Btn search -->
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn-newUser btn btn-outline-primary"
+                                            data-mdb-ripple-init data-mdb-ripple-color="dark">
+                                        Refresh
+                                    </button>
+                                </div>
+                                <div class="col-lg-5" style="margin-top: 10px">
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text">Ngày đặt</label>
+                                        <input class="form-control" type="date" min="" />
+                                    </div>
+                                </div>
+                            </div>
 
-                                        let thead = document.createElement("thead");
-                                        thead.innerHTML = `
-  <tr>
-    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mã thiết bị</th>
-    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tên</th>
-    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mô tả</th>
-  </tr>
-`;
-
-                                        let tbody = document.createElement("tbody");
-
-                                        data.forEach((device) => {
-                                            let tr = document.createElement("tr");
-                                            tr.innerHTML = `
-    <td class="align-middle text-left text-sm">
-      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" />
-      <label class="form-check-label" for="flexCheckDefault1">${device.maTB}</label>
-    </td>
-    <td class="align-middle text-center text-sm">${device.tenTB}</td>
-    <td class="align-middle text-center text-sm">${device.moTa}</td>
-    <td class="align-middle text-center text-sm">${device.ngayDat}</td>
-  `;
-                                            tbody.appendChild(tr);
-                                        });
-
-                                        table.appendChild(thead);
-                                        table.appendChild(tbody);
-                                        cardDiv.appendChild(table);
-                                        modalBody.appendChild(cardDiv);
-                                    });
-                            }
-                        </script>
+                            <div class="card col-lg-4 col-md-6" style="
+                        height: 393px;
+                        overflow-y: scroll;
+                        scrollbar-width: none;
+                        scroll-margin: 1px;
+                        width: 100%;
+                      ">
+                                <div class="h-100">
+                                    <table class="table align-items-center mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Mã thiết bị
+                                            </th>
+                                            <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Tên
+                                            </th>
+                                            <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Mô tả
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td class="align-middle text-left text-sm">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                       id="flexCheckDefault" />
+                                                <label class="form-check-label"
+                                                       for="flexCheckDefault">01</label>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                Thiết bị A
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                Được làm băng nhôm
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div style="
+                        display: flex;
+                        justify-content: right;
+                        margin-top: 5px;
+                      ">
+                                <button type="button" class="closeOrderDevice-btn btn btn-link"
+                                        data-mdb-ripple-init data-mdb-ripple-color="dark">
+                                    Hủy
+                                </button>
+                                <button type="button" class="btn btn-primary" id="order-device-btn"
+                                        data-mdb-ripple-init>
+                                    Lưu
+                                </button>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </td>
         </tr>
@@ -714,6 +768,19 @@
         .addEventListener("click", function () {
             var borrowDevice = document.getElementById("borrowDevice");
             borrowDevice.style.display = " none";
+        });
+
+    //open form order device
+    function openOrderDevice(user) {
+        var orderDevice = document.getElementById("orderDevice");
+        orderDevice.style.display = " flex";
+    }
+    //close form order device
+    document
+        .querySelector(".closeOrderDevice-btn")
+        .addEventListener("click", function () {
+            var orderDevice = document.getElementById("orderDevice");
+            orderDevice.style.display = " none";
         });
 
     // Close form order device
@@ -1311,6 +1378,49 @@
                 .catch((error) => console.error("Error:", error));
         }
     });
+
+    function fetchBookedDevices(maTV) {
+        let modalBody = document.querySelector(".modal-body");
+                modalBody.innerHTML = ""; // Clear the modal body
+
+                let cardDiv = document.createElement("div");
+                cardDiv.className = "card col-lg-4 col-md-6";
+                cardDiv.style =
+                    "height: 393px; overflow-y: scroll; scrollbar-width: none; scroll-margin: 1px; width: 100%;";
+
+                let table = document.createElement("table");
+                table.className = "table align-items-center mb-0";
+
+                let thead = document.createElement("thead");
+                thead.innerHTML = `
+    <tr>
+    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mã thiết bị</th>
+    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tên</th>
+    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mô tả</th>
+    </tr>
+    `;
+
+                let tbody = document.createElement("tbody");
+
+                data.forEach((device) => {
+                    let tr = document.createElement("tr");
+                    tr.innerHTML = `
+    <td class="align-middle text-left text-sm">
+    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" />
+    <label class="form-check-label" for="flexCheckDefault1">${device.maTB}</label>
+    </td>
+    <td class="align-middle text-center text-sm">${device.tenTB}</td>
+    <td class="align-middle text-center text-sm">${device.moTa}</td>
+    <td class="align-middle text-center text-sm">${device.ngayDat}</td>
+    `;
+                    tbody.appendChild(tr);
+                });
+
+                table.appendChild(thead);
+                table.appendChild(tbody);
+                cardDiv.appendChild(table);
+                modalBody.appendChild(cardDiv);
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
