@@ -2,6 +2,7 @@ package com.example.membermanagerment.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +27,6 @@ public class ThongTinSD {
     private BigInteger thanhvien;
 
     @Column(name = "MaTB")
-    @JsonIgnore
     private Integer thietbi;
 
     @Column(name = "TGVao")
@@ -105,10 +105,28 @@ public class ThongTinSD {
         this.member = member;
     }
 
+    public ThietBi getDevice() {
+        return device;
+    }
+
+    public void setDevice(ThietBi device) {
+        this.device = device;
+    }
+
     public ThongTinSD() {
     }
 
     public ThongTinSD(BigInteger thanhvien, Integer thietbi, Timestamp TGVao, Timestamp TGMuon, Timestamp TGTra, Timestamp TGDatCho) {
+        this.thanhvien = thanhvien;
+        this.thietbi = thietbi;
+        this.TGVao = TGVao;
+        this.TGMuon = TGMuon;
+        this.TGTra = TGTra;
+        this.TGDatCho = TGDatCho;
+    }
+
+    public ThongTinSD(int maTT, BigInteger thanhvien, Integer thietbi, Timestamp TGVao, Timestamp TGMuon, Timestamp TGTra, Timestamp TGDatCho) {
+        MaTT = maTT;
         this.thanhvien = thanhvien;
         this.thietbi = thietbi;
         this.TGVao = TGVao;
@@ -128,6 +146,7 @@ public class ThongTinSD {
                 ", TGTra=" + TGTra +
                 ", TGDatCho=" + TGDatCho +
                 ", member=" + member +
+                ", device=" + device +
                 '}';
     }
 

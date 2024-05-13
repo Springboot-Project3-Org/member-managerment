@@ -1,5 +1,6 @@
 package com.example.membermanagerment.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -17,7 +18,6 @@ import java.util.List;
 public class ThietBi {
     @Id
     @Column(name = "MaTB")
-    @JsonIgnore
     private int MaTB;
 
     @Column(name = "TenTB")
@@ -44,6 +44,7 @@ public class ThietBi {
         this.tenTB = tenTB;
         this.moTaTB = moTaTB;
     }
+
 
     @Override
     public String toString() {

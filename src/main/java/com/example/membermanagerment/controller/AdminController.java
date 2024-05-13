@@ -81,6 +81,7 @@ public class AdminController {
     // --------------------MEMBER----------------------
     @GetMapping("/admin-thanhvien")
     public String admin_thanhvien(Model model) {
+        // member list
         List<ThanhVien> memberList = thanhVienRepository.findAll();
         model.addAttribute("memberList", memberList);
         return "admin-thanhvien";
@@ -1044,4 +1045,56 @@ public class AdminController {
         response.put("data", xuLyInfoList);
         return response;
     }
+
+
+    @PostMapping("/getPaybackList")
+    @ResponseBody
+    public Map<String, Object> getList(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> response = new HashMap<>();
+
+        BigInteger maTV = new BigInteger(requestData.get("maTV"));
+
+        List<ThongTinSD> result = new ArrayList<>();
+        List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
+        for(ThongTinSD info1 : info) {
+            if(info1.getTGMuon() != null && info1.getTGTra() != null) {
+                ThietBi device = thietBiRepository.findById(info1.getThietbi()).orElse(null);
+                info1.setDevice(device);
+                result.add(info1);
+            }
+        }
+        System.out.println(result);
+        response.put("result", result);
+        return response;
+    }
+
+    @PostMapping("/paybackHandle")
+    @ResponseBody
+    public Map<String, Object> paybackHandle(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> response = new HashMap<>();
+
+        System.out.println("test cai: "+requestData);
+        BigInteger maTV = new BigInteger(requestData.get("maTV"));
+        int maTB  = Integer.parseInt(requestData.get("id"));
+        String name = requestData.get("name");
+        String description = requestData.get("description");
+        Timestamp date = Timestamp.valueOf(requestData.get("date"));
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+        List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
+        for(ThongTinSD info1 : info) {
+            if(info1.getThietbi() != null && info1.getThietbi() == maTB) {
+                if(currentTime.compareTo(info1.getTGTra()) > 0) {
+                    XuLy xuly = new XuLy(maTV,"Trả thiết bị không đúng hạn",500000,currentTime,0);
+                    xuLyRepository.save(xuly);
+                }
+                ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(),maTV,null,null,null,null,null);
+                thongtinSdRepository.save(updateInfo);
+            }
+        }
+        response.put("success", true);
+        response.put("message", "Trả thiết bị thành công");
+        return response;
+    }
+
 }
