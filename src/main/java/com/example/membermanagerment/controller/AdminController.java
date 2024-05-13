@@ -981,15 +981,14 @@ public class AdminController {
         Map<String, Object> response = new HashMap<>();
         String fromDate = filters.get("enterFromDate");
         String toDate = filters.get("enterToDate");
-        String maTV = filters.get("inputMaTV");
-        String tenTV = filters.get("inputTenTV");
-
+        String inputKhoa = filters.get("inputKhoa");
+        String inputNganh = filters.get("inputNganh");
         List<ThongTinSD> thongTinSdList = thongtinSdRepository.findAll();
         List<Map<String, String>> thongtinsdInfoList = new ArrayList<>();
         for (ThongTinSD tt : thongTinSdList) {
             ThanhVien thanhVien = thanhVienRepository.findByMaTV(tt.getThanhvien());
-            if (thanhVien != null && thanhVien.getMaTV().toString().contains(maTV)
-                    && thanhVien.getHoTen().contains(tenTV)) {
+            if (thanhVien != null && thanhVien.getKhoa().contains(inputKhoa)
+                    && thanhVien.getNganh().contains(inputNganh)) {
                 if (fromDate.isEmpty() && toDate.isEmpty()) {
                     Map<String, String> thongtinsdInfo = new HashMap<>();
                     thongtinsdInfo.put("maTV", thanhVien.getMaTV().toString());

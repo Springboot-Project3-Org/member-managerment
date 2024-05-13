@@ -185,13 +185,13 @@
 
                             <div class="my-3 px-5">
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="text" name="input-matv" id="input-matv" class="form-control" />
-                                    <label class="form-label" for="input-matv">Mã thành viên</label>
+                                    <input type="text" name="input-khoa" id="input-khoa" class="form-control" />
+                                    <label class="form-label" for="input-khoa">Khoa</label>
                                 </div>
 
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="text" name="input-tentv" id="input-tentv" class="form-control" />
-                                    <label class="form-label" for="input-tentv">Tên thành viên</label>
+                                    <input type="text" name="input-nganh" id="input-nganh" class="form-control" />
+                                    <label class="form-label" for="input-nganh">Ngành</label>
                                 </div>
                             </div>
 
@@ -458,8 +458,8 @@ fetch('/getThongTinSDList', {
 document.querySelector('#locVaoKhuHocTap').addEventListener('click', function() {
     var enterFromDate = document.querySelector('#enterFromDate').value;
     var enterToDate = document.querySelector('#enterToDate').value;
-    var inputMaTV = document.querySelector('#input-matv').value;
-    var inputTenTV = document.querySelector('#input-tentv').value;
+    var inputKhoa = document.querySelector('#input-khoa').value;
+    var inputNganh = document.querySelector('#input-nganh').value;
 
     // Convert the date strings to the expected format
     if (enterFromDate) {
@@ -477,8 +477,8 @@ document.querySelector('#locVaoKhuHocTap').addEventListener('click', function() 
         body: JSON.stringify({
             enterFromDate: enterFromDate,
             enterToDate: enterToDate,
-            inputMaTV: inputMaTV,
-            inputTenTV: inputTenTV
+            inputKhoa: inputKhoa,
+            inputNganh: inputNganh
         })
     })
     .then(response => response.json())
