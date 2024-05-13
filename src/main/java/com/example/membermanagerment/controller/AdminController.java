@@ -80,10 +80,26 @@ public class AdminController {
 
     // --------------------MEMBER----------------------
     @GetMapping("/admin-thanhvien")
-    public String admin_thanhvien(Model model) {
+    public String admin_thanhvien(@RequestParam(name = "searchValue", required = false) String searchValue,
+                                  @RequestParam(name = "searchType", required = false) String searchType,
+                                  Model model) {
         // member list
-        List<ThanhVien> memberList = thanhVienRepository.findAll();
-        model.addAttribute("memberList", memberList);
+        List<ThanhVien> thanhVienList = null;
+        if(searchValue.isEmpty()) {
+            thanhVienList = thanhVienRepository.findAll();
+        }else {
+            if(searchType == null) {
+                thanhVienList = thanhVienRepository.findByKeyword(searchValue);
+            }else {
+                if (searchType.equals("searchYear")) {
+                    thanhVienList = thanhVienRepository.findByYear(searchValue);
+                }
+            }
+        }
+
+
+
+        model.addAttribute("memberList", thanhVienList);
         return "admin-thanhvien";
     }
 
@@ -161,6 +177,7 @@ public class AdminController {
     public Map<String, Object> editMember(@RequestBody Map<String, String> memberData) {
         Map<String, Object> response = new HashMap<>();
 
+        System.out.println("test: "+memberData);
         if (memberData.get("maTV") == null || memberData.get("maTV").isEmpty() ||
                 memberData.get("tenTV") == null || memberData.get("tenTV").isEmpty() ||
                 memberData.get("khoa") == null || memberData.get("khoa").isEmpty() ||
@@ -257,29 +274,6 @@ public class AdminController {
             response.put("message", "Xóa thất bại");
         }
         return response;
-    }
-
-    // search member
-    @PostMapping("/searchMember")
-    @ResponseBody
-    public List<ThanhVien> searchMember(@RequestBody Map<String, String> searchData) {
-        String searchValue = searchData.get("searchValue");
-        if (searchValue.isEmpty()) {
-            return thanhVienRepository.findAll();
-        }
-        System.out.println(thanhVienRepository.findByKeyword(searchValue));
-        return thanhVienRepository.findByKeyword(searchValue);
-    }
-
-    // search member by year
-    @PostMapping("/searchMemberByYear")
-    @ResponseBody
-    public List<ThanhVien> searchMemberByYear(@RequestBody Map<String, String> searchData) {
-        String searchValue = searchData.get("searchValue");
-        if (searchValue == null || searchValue.isEmpty()) {
-            return thanhVienRepository.findAll();
-        }
-        return thanhVienRepository.findByYear(searchValue);
     }
 
     @PostMapping("/deleteAll")
