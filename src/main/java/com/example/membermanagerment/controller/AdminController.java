@@ -418,7 +418,6 @@ public class AdminController {
             error.setThanhvien(thanhvien);
             errorList.add(error);
         }
-        System.out.println(errorList);
         model.addAttribute("errorList", errorList);
 
         List<Map<String, Object>> thanhVienList = new ArrayList<>();

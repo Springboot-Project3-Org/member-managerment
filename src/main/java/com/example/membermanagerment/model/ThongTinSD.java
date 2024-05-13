@@ -133,7 +133,6 @@ public class ThongTinSD {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MaTB", insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_thongtinsd_device"))
-    @JsonIgnore
     private ThietBi device;
 
     @ManyToOne(fetch = FetchType.LAZY)
