@@ -199,240 +199,243 @@
                 <div style="display: flex; flex-direction: column; margin-left: 15px">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="payBackBtn"
-                            data-bs-target="#returnDeviceModal" th:attr="data-maTV=${member.MaTV}">
+                            data-bs-target="#returnDeviceModal" th:attr="data-maTV=${member.MaTV}"
+                            onclick="openReturnDevice(this.getAttribute('data-maTV'))">
                         Trả thiết bị
                     </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="returnDeviceModal" tabindex="-1"
-                         aria-labelledby="returnDeviceModalLabel" aria-hidden="true"
-                         th:attr="data-maTV=${member.MaTV}">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" id="showReturnDevice">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="returnDeviceModalLabel">
-                                        Trả thiết bị
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
 
-                                    <div class="card col-lg-4 col-md-6" style="
-                            height: 393px;
-                            overflow-y: scroll;
-                            scrollbar-width: none;
-                            scroll-margin: 1px;
-                            width: 100%;
-                          ">
-                                        <div class="h-100">
-                                            <table class="table align-items-center mb-0">
-                                                <thead>
-                                                <tr>
-                                                    <th
-                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Mã thiết bị
-                                                    </th>
-                                                    <th
-                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Tên
-                                                    </th>
-                                                    <th
-                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Mô tả
-                                                    </th>
-                                                    <th
-                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Ngày mượn
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="paybackList">
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer" id="paybackSave">
-                                    <button type="button" class="btn btn-primary" id="save-return-device-btn">
-                                        Lưu
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <span class="center btn btn-secondary mt-2" th:attr="data-maTV=${member.MaTV}" id="borrowBtn"
-                          onclick="openBorrowDevice(this.getAttribute('data-maTV'))">Mượn thiết bị</span>
-                    <!-- Mượn thiết bị -->
-                    <div id="borrowDevice" style="
-                    height: 100%;
-                    width: 100%;
-                    background-color: rgba(189, 189, 189, 0.538);
-                    position: fixed;
-                    top: 0;
-                    display: none;
-                    z-index: 2;
-                    right:0;
-                  " th:attr="data-maTV=${member.MaTV}">
-                        <div style="
-                      position: absolute;
-                      height: 530px;
-                      width: 600px;
-                      background-color: white;
-                      top: 12%;
-                      right: 50%;
-                      transform: translate(50%, 0%);
-                      padding: 3px;
-                    " class="rounded">
-                            <span class="text-uppercase text-center mt-5 mb-5">Mượn thiết bị</span>
-                            <div class="row">
-                                <div class="col-lg-5" style="margin-top: 10px">
-                                    <div class="input-group mb-3">
-                                        <label class="input-group-text" for="borrowDate">Ngày trả</label>
-                                        <input class="form-control" type="datetime-local" id="toDate" min="" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card col-lg-4 col-md-6" style="
-                        height: 393px;
-                        overflow-y: scroll;
-                        scrollbar-width: none;
-                        scroll-margin: 1px;
-                        width: 100%;
-                      ">
-                                <div class="h-100">
-                                    <table class="table align-items-center mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th
-                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Mã thiết bị
-                                            </th>
-                                            <th
-                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Tên
-                                            </th>
-                                            <th
-                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Mô tả
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="borrowList">
-                                        <tr>
-
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div style="
-                        display: flex;
-                        justify-content: right;
-                        margin-top: 5px;
-                      ">
-                                <button type="button" class="closeBorrowDevice-btn btn btn-link"
-                                        data-mdb-ripple-init data-mdb-ripple-color="dark">
-                                    Hủy
-                                </button>
-                                <button type="button" class="btn btn-primary" id="borrow-device-btn"
-                                        data-mdb-ripple-init>
-                                    Lưu
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Button trigger modal -->
-                    <!-- Button trigger modal -->
+                    <span class="center btn btn-secondary mt-2" th:attr="data-maTV=${member.MaTV}"
+                          id="borrowBtn" onclick="openBorrowDevice(this.getAttribute('data-maTV'))">
+                        Mượn thiết bị
+                    </span>
 
                     <span class="center btn btn-info mt-2" th:attr="data-maTV=${member.MaTV}" id="orderBtns"
-                          onclick="openOrderDevice(this.getAttribute('data-maTV'))">Đặt thiết bị</span>
-                    <!-- Đặt thiết bị -->
-                    <div id="orderDevice" style="
-                    height: 100%;
-                    width: 100%;
-                    background-color: rgba(189, 189, 189, 0.538);
-                    position: fixed;
-                    top: 0;
-                    display: none;
-                    z-index: 2;
-                    right:0;
-                  " th:attr="data-maTV=${member.MaTV}">
-                        <div style="
-                      position: absolute;
-                      height: 530px;
-                      width: 600px;
-                      background-color: white;
-                      top: 12%;
-                      right: 50%;
-                      transform: translate(50%, 0%);
-                      padding: 3px;
-                    " class="rounded">
-                            <span class="text-uppercase text-center mt-5 mb-5">Đặt thiết bị</span>
-                            <div class="row">
-                                <div class="col-lg-5" style="margin-top: 10px">
-                                    <div class="input-group mb-3">
-                                        <label class="input-group-text">Ngày trả</label>
-                                        <input class="form-control" type="datetime-local" id="toDateTime"
-                                               min="" />
-                                    </div>
-                                </div>
-                            </div>
+                          onclick="openOrderDevice(this.getAttribute('data-maTV'))">
+                        Đặt thiết bị
+                    </span>
 
-                            <div class="card col-lg-4 col-md-6" style="
-                        height: 393px;
-                        overflow-y: scroll;
-                        scrollbar-width: none;
-                        scroll-margin: 1px;
-                        width: 100%;
-                      ">
-                                <div class="h-100">
-                                    <table class="table align-items-center mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th
-                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Mã thiết bị
-                                            </th>
-                                            <th
-                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Tên
-                                            </th>
-                                            <th
-                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Mô tả
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="orderDeviceList">
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div style="
-                        display: flex;
-                        justify-content: right;
-                        margin-top: 5px;
-                      ">
-                                <button type="button" class="closeOrderDevice-btn btn btn-link"
-                                        data-mdb-ripple-init data-mdb-ripple-color="dark">
-                                    Hủy
-                                </button>
-                                <button type="button" class="btn btn-primary" id="order-device-btn"
-                                        data-mdb-ripple-init>
-                                    Lưu
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
     <!--Table-->
+
+    <!-- Modal return Device -->
+    <div class="modal fade" id="returnDeviceModal" tabindex="-1" aria-labelledby="returnDeviceModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" id="showReturnDevice">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnDeviceModalLabel">
+                        Trả thiết bị
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="card col-lg-4 col-md-6" style="
+                            height: 393px;
+                            overflow-y: scroll;
+                            scrollbar-width: none;
+                            scroll-margin: 1px;
+                            width: 100%;
+                          ">
+                        <div class="h-100">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Mã thiết bị
+                                    </th>
+                                    <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Tên
+                                    </th>
+                                    <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Mô tả
+                                    </th>
+                                    <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Ngày mượn
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody id="paybackList">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="paybackSave">
+                    <button type="button" class="btn btn-primary" id="save-return-device-btn">
+                        Lưu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal return Device -->
+
+    <!-- Modal Mượn thiết bị -->
+    <div id="borrowDevice" style="
+                    height: 100%;
+                    width: 100%;
+                    background-color: rgba(189, 189, 189, 0.538);
+                    position: fixed;
+                    top: 0;
+                    display: none;
+                    z-index: 2;
+                    right:0;">
+        <div style="
+                      position: absolute;
+                      height: 530px;
+                      width: 600px;
+                      background-color: white;
+                      top: 12%;
+                      right: 50%;
+                      transform: translate(50%, 0%);
+                      padding: 3px;
+                    " class="rounded">
+            <span class="text-uppercase text-center mt-5 mb-5">Mượn thiết bị</span>
+            <div class="row">
+                <div class="col-lg-5" style="margin-top: 10px">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="toDate">Ngày trả</label>
+                        <input class="form-control" type="datetime-local" id="toDate" min="" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card col-lg-4 col-md-6" style="
+                        height: 393px;
+                        overflow-y: scroll;
+                        scrollbar-width: none;
+                        scroll-margin: 1px;
+                        width: 100%;
+                      ">
+                <div class="h-100">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Mã thiết bị
+                            </th>
+                            <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                Tên
+                            </th>
+                            <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Mô tả
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="borrowList">
+                        <tr>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="
+                        display: flex;
+                        justify-content: right;
+                        margin-top: 5px;
+                      ">
+                <button type="button" class="closeBorrowDevice-btn btn btn-link" data-mdb-ripple-init
+                        data-mdb-ripple-color="dark">
+                    Hủy
+                </button>
+                <button type="button" class="btn btn-primary" id="borrow-device-btn" data-mdb-ripple-init>
+                    Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Mượn thiết bị -->
+
+    <!-- Modal Đặt thiết bị -->
+    <div id="orderDevice" style="
+    height: 100%;
+    width: 100%;
+    background-color: rgba(189, 189, 189, 0.538);
+    position: fixed;
+    top: 0;
+    display: none;
+    z-index: 2;
+    right:0;">
+        <div style="
+      position: absolute;
+      height: 530px;
+      width: 600px;
+      background-color: white;
+      top: 12%;
+      right: 50%;
+      transform: translate(50%, 0%);
+      padding: 3px;
+    " class="rounded">
+            <span class="text-uppercase text-center mt-5 mb-5">Đặt thiết bị</span>
+            <div class="row">
+                <div class="col-lg-5" style="margin-top: 10px">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text">Ngày trả</label>
+                        <input class="form-control" type="datetime-local" id="toDateTime" min="" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card col-lg-4 col-md-6" style="
+        height: 393px;
+        overflow-y: scroll;
+        scrollbar-width: none;
+        scroll-margin: 1px;
+        width: 100%;
+      ">
+                <div class="h-100">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Mã thiết bị
+                            </th>
+                            <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                Tên
+                            </th>
+                            <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Mô tả
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="orderDeviceList">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="
+        display: flex;
+        justify-content: right;
+        margin-top: 5px;
+      ">
+                <button type="button" class="closeOrderDevice-btn btn btn-link" data-mdb-ripple-init
+                        data-mdb-ripple-color="dark">
+                    Hủy
+                </button>
+                <button type="button" class="btn btn-primary" id="order-device-btn" data-mdb-ripple-init>
+                    Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Đặt thiết bị -->
+
 </div>
 
 <!-- new user -->
@@ -638,10 +641,16 @@
         newUser.querySelector(".email").value = "";
     });
 
+    // open return device
+    function openReturnDevice(user) {
+        document.getElementById("returnDeviceModal").setAttribute("data-maTV", user);
+    }
+
     //open form borrow device
     function openBorrowDevice(user) {
         var borrowDevice = document.getElementById("borrowDevice");
         borrowDevice.style.display = " flex";
+        document.getElementById("borrowDevice").setAttribute("data-maTV", user);
     }
     //close form borrow device
     let closeBtnBorrow = document.querySelector(".closeBorrowDevice-btn");
@@ -656,6 +665,7 @@
     function openOrderDevice(user) {
         var orderDevice = document.getElementById("orderDevice");
         orderDevice.style.display = " flex";
+        document.getElementById("orderDevice").setAttribute("data-maTV", user);
     }
     //close form order device
     let closeOrderBtn = document.querySelector(".closeOrderDevice-btn");
@@ -793,6 +803,94 @@
                 .catch((error) => console.error("Error:", error));
         });
     });
+
+    // Save order device btn
+    let saveOrderDeviceBtn = document.getElementById("order-device-btn");
+    if (saveOrderDeviceBtn) {
+        saveOrderDeviceBtn.addEventListener("click", function () {
+            var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkedRows.forEach(function (row) {
+                var maTV = document.getElementById("orderDevice").getAttribute("data-maTV");
+                var parentRow = row.closest("tr");
+                var maTB = parentRow.querySelector(".form-check-label").innerText;
+                var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
+                var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
+                var toDate = document.getElementById("toDateTime").value;
+                var toDateTime = toDate.replace("T", " ");
+
+
+                var data = {
+                    id: maTB,
+                    name: tenTB,
+                    description: moTaTB,
+                    maTV: maTV,
+                    toDateTime: toDateTime
+                };
+
+                fetch("/orderHandle", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        alert(data.message);
+                        if (data.success === true) {
+                            parent.window.location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("error: " + error);
+                    });
+            });
+        });
+    }
+
+    // Save borrow device btn
+    let saveBorrowDeviceBtn = document.getElementById("borrow-device-btn");
+    if (saveBorrowDeviceBtn) {
+        saveBorrowDeviceBtn.addEventListener("click", function () {
+            var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkedRows.forEach(function (row) {
+                var maTV = document.getElementById("borrowDevice").getAttribute("data-maTV");
+                var parentRow = row.closest("tr");
+                var maTB = parentRow.querySelector(".form-check-label").innerText;
+                var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
+                var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
+                var toDate = document.getElementById("toDate").value;
+                var toDateTime = toDate.replace("T", " ");
+
+                var data = {
+                    id: maTB,
+                    name: tenTB,
+                    description: moTaTB,
+                    maTV: maTV,
+                    toDateTime: toDateTime
+                };
+
+                fetch("/borrowHandle", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        alert(data.message);
+                        if (data.success === true) {
+                            parent.window.location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("error: " + error);
+                    });
+            });
+        });
+    }
+
     // add member
     saveButton.addEventListener("click", () => {
         let maTV = document.querySelector(".id").value;
@@ -1098,15 +1196,16 @@
                     },
                     body: JSON.stringify(data),
                 })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.success === true) {
-                        alert(data.message);
-                    }
-                })
-                .catch((error) => {
-                    console.log("error: " + error);
-                });
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data.success === true) {
+                            alert(data.message);
+                            parent.window.location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("error: " + error);
+                    });
             });
         });
     }
