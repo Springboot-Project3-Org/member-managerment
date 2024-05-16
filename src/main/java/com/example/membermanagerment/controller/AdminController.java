@@ -85,7 +85,7 @@ public class AdminController {
                                   Model model) {
         // member list
         List<ThanhVien> thanhVienList = null;
-        if(searchValue.isEmpty()) {
+        if(searchValue == null || searchValue.isEmpty()) {
             thanhVienList = thanhVienRepository.findAll();
         }else {
             if(searchType == null) {
@@ -96,8 +96,6 @@ public class AdminController {
                 }
             }
         }
-
-
 
         model.addAttribute("memberList", thanhVienList);
         return "admin-thanhvien";

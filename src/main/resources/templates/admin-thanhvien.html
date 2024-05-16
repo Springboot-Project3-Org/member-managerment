@@ -199,8 +199,7 @@
                 <div style="display: flex; flex-direction: column; margin-left: 15px">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="payBackBtn"
-                            data-bs-target="#returnDeviceModal" th:attr="data-maTV=${member.MaTV}"
-                            style="color: rgb(35, 222, 60); margin-left: 5px">
+                            data-bs-target="#returnDeviceModal" th:attr="data-maTV=${member.MaTV}">
                         Trả thiết bị
                     </button>
                     <!-- Modal -->
@@ -262,9 +261,8 @@
                             </div>
                         </div>
                     </div>
-                    <span class="center" th:attr="data-maTV=${member.MaTV}" id="borrowBtn"
-                          onclick="openBorrowDevice(this.getAttribute('data-maTV'))"
-                          style="color: rgb(152, 18, 18); margin-left: 5px">Mượn thiết bị</span>
+                    <span class="center btn btn-secondary mt-2" th:attr="data-maTV=${member.MaTV}" id="borrowBtn"
+                          onclick="openBorrowDevice(this.getAttribute('data-maTV'))">Mượn thiết bị</span>
                     <!-- Mượn thiết bị -->
                     <div id="borrowDevice" style="
                     height: 100%;
@@ -278,7 +276,7 @@
                   " th:attr="data-maTV=${member.MaTV}">
                         <div style="
                       position: absolute;
-                      height: 600px;
+                      height: 530px;
                       width: 600px;
                       background-color: white;
                       top: 12%;
@@ -348,9 +346,8 @@
                     <!-- Button trigger modal -->
                     <!-- Button trigger modal -->
 
-                    <span class="center" th:attr="data-maTV=${member.MaTV}" id="orderBtns"
-                          onclick="openOrderDevice(this.getAttribute('data-maTV'))"
-                          style="color: rgb(152, 18, 18); margin-left: 5px">Đặt thiết bị</span>
+                    <span class="center btn btn-info mt-2" th:attr="data-maTV=${member.MaTV}" id="orderBtns"
+                          onclick="openOrderDevice(this.getAttribute('data-maTV'))">Đặt thiết bị</span>
                     <!-- Đặt thiết bị -->
                     <div id="orderDevice" style="
                     height: 100%;
@@ -364,7 +361,7 @@
                   " th:attr="data-maTV=${member.MaTV}">
                         <div style="
                       position: absolute;
-                      height: 600px;
+                      height: 530px;
                       width: 600px;
                       background-color: white;
                       top: 12%;
@@ -647,12 +644,13 @@
         borrowDevice.style.display = " flex";
     }
     //close form borrow device
-    document
-        .querySelector(".closeBorrowDevice-btn")
-        .addEventListener("click", function () {
+    let closeBtnBorrow = document.querySelector(".closeBorrowDevice-btn");
+    if (closeBtnBorrow) {
+        closeBtnBorrow.addEventListener("click", function () {
             var borrowDevice = document.getElementById("borrowDevice");
             borrowDevice.style.display = " none";
         });
+    }
 
     //open form order device
     function openOrderDevice(user) {
@@ -660,21 +658,25 @@
         orderDevice.style.display = " flex";
     }
     //close form order device
-    document
-        .querySelector(".closeOrderDevice-btn")
-        .addEventListener("click", function () {
+    let closeOrderBtn = document.querySelector(".closeOrderDevice-btn");
+    if (closeOrderBtn) {
+        closeOrderBtn.addEventListener("click", function () {
             var orderDevice = document.getElementById("orderDevice");
             orderDevice.style.display = " none";
         });
+    }
 
     // Close form order device
-    document.querySelector(".btn-close").addEventListener("click", function () {
-        if (orderDeviceModalElement) {
-            orderDeviceModal.hide();
-        } else {
-            console.log("No element found with id:", "orderDeviceModal");
-        }
-    });
+    let btnClose = document.querySelector(".btn-close");
+    if (btnClose) {
+        btnClose.addEventListener("click", function () {
+            if (orderDeviceModalElement) {
+                orderDeviceModal.hide();
+            } else {
+                console.log("No element found with id:", "orderDeviceModal");
+            }
+        });
+    }
 
     function warningMember(user) {
         var warningMember = document.getElementById("warningMember");
@@ -717,20 +719,6 @@
         updateUser.style.display = " none";
     });
 
-    // fetch handle
-    payBackBtn.addEventListener("click", function () {
-        let returnDeviceModal = document.getElementById("showReturnDevice");
-        console.log(returnDeviceModal);
-        returnDeviceModal.style.display = "flex";
-    });
-    // Close form order device
-    document.querySelector(".btn-close").addEventListener("click", function () {
-        if (orderDeviceModalElement) {
-            orderDeviceModal.hide();
-        } else {
-            console.log("No element found with id:", "orderDeviceModal");
-        }
-    });
     //edit user
     editButtons.forEach((btn) => {
         btn.addEventListener("click", function () {
@@ -945,13 +933,6 @@
         }
     });
 
-    var haha = document.querySelectorAll('#payBackBtn');
-    haha.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            console.log(btn.getAttribute("data-matv"));
-        })
-    })
-
     document
         .getElementById("uploadButton")
         .addEventListener("click", function (event) {
@@ -1089,31 +1070,34 @@
                 .catch((error) => console.error("Error:", error));
         })
     })
-    document.getElementById("save-return-device-btn").addEventListener("click", function () {
-        var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
-        checkedRows.forEach(function (row) {
-            var maTV = document.getElementById("returnDeviceModal").getAttribute("data-maTV");
-            var parentRow = row.closest("tr");
-            var maTB = parentRow.querySelector(".form-check-label").innerText;
-            var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
-            var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
-            var formattedDate = parentRow.querySelector(".align-middle.text-center:nth-child(4)").innerText;
 
-            var data = {
-                id: maTB,
-                name: tenTB,
-                description: moTaTB,
-                date: formattedDate,
-                maTV: maTV
-            };
+    let saveReturnDeviceBtn = document.getElementById("save-return-device-btn");
+    if (saveReturnDeviceBtn) {
+        saveReturnDeviceBtn.addEventListener("click", function () {
+            var checkedRows = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkedRows.forEach(function (row) {
+                var maTV = document.getElementById("returnDeviceModal").getAttribute("data-maTV");
+                var parentRow = row.closest("tr");
+                var maTB = parentRow.querySelector(".form-check-label").innerText;
+                var tenTB = parentRow.querySelector(".align-middle.text-center:nth-child(2)").innerText;
+                var moTaTB = parentRow.querySelector(".align-middle.text-center:nth-child(3)").innerText;
+                var formattedDate = parentRow.querySelector(".align-middle.text-center:nth-child(4)").innerText;
 
-            fetch("/paybackHandle", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
+                var data = {
+                    id: maTB,
+                    name: tenTB,
+                    description: moTaTB,
+                    date: formattedDate,
+                    maTV: maTV
+                };
+
+                fetch("/paybackHandle", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                })
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.success === true) {
@@ -1123,8 +1107,9 @@
                 .catch((error) => {
                     console.log("error: " + error);
                 });
+            });
         });
-    });
+    }
 
 
     var orderBtns = document.querySelectorAll('#orderBtns');
