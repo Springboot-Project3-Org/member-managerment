@@ -81,16 +81,16 @@ public class AdminController {
     // --------------------MEMBER----------------------
     @GetMapping("/admin-thanhvien")
     public String admin_thanhvien(@RequestParam(name = "searchValue", required = false) String searchValue,
-                                  @RequestParam(name = "searchType", required = false) String searchType,
-                                  Model model) {
+            @RequestParam(name = "searchType", required = false) String searchType,
+            Model model) {
         // member list
         List<ThanhVien> thanhVienList = null;
-        if(searchValue == null || searchValue.isEmpty()) {
+        if (searchValue == null || searchValue.isEmpty()) {
             thanhVienList = thanhVienRepository.findAll();
-        }else {
-            if(searchType == null) {
+        } else {
+            if (searchType == null) {
                 thanhVienList = thanhVienRepository.findByKeyword(searchValue);
-            }else {
+            } else {
                 if (searchType.equals("searchYear")) {
                     thanhVienList = thanhVienRepository.findByYear(searchValue);
                 }
@@ -175,7 +175,7 @@ public class AdminController {
     public Map<String, Object> editMember(@RequestBody Map<String, String> memberData) {
         Map<String, Object> response = new HashMap<>();
 
-        System.out.println("test: "+memberData);
+        System.out.println("test: " + memberData);
         if (memberData.get("maTV") == null || memberData.get("maTV").isEmpty() ||
                 memberData.get("tenTV") == null || memberData.get("tenTV").isEmpty() ||
                 memberData.get("khoa") == null || memberData.get("khoa").isEmpty() ||
@@ -665,9 +665,14 @@ public class AdminController {
                 List<List<String>> data = ExcelUtil.readExcel(convertFile.getAbsolutePath(), 0);
 
                 List<ThanhVien> thanhvienList = thanhvienExcelUtil.convertTothanhvienList(data);
-                // clear all data in table thanhvien
-                thanhVienRepository.deleteAll();
-                thanhvienList.forEach(thanhvien -> thanhVienRepository.save(thanhvien));
+                // Loop through thanhvienList, check if thanhvien exists in db, if not save it,
+                // skip if exists by checking maTV:
+                for (ThanhVien tv : thanhvienList) {
+                    ThanhVien existingMember = thanhVienRepository.findByMaTV(tv.getMaTV());
+                    if (existingMember == null) {
+                        thanhVienRepository.save(tv);
+                    }
+                }
 
                 convertFile.delete();
 
@@ -703,9 +708,14 @@ public class AdminController {
                 List<List<String>> data = ExcelUtil.readExcel(convertFile.getAbsolutePath(), 0);
 
                 List<ThietBi> thietbiList = thietbiExcelUtil.convertToThietbiList(data);
-                // clear all data in table thietbi
-                thietBiRepository.deleteAll();
-                thietbiList.forEach(thietbi -> thietBiRepository.save(thietbi));
+                // Loop through thietbiList, check if thietbi exists in db, if not save it,
+                // skip if exists by checking maTB:
+                for (ThietBi tb : thietbiList) {
+                    ThietBi existingDevice = thietBiRepository.findByTenTB(tb.getTenTB());
+                    if (existingDevice == null) {
+                        thietBiRepository.save(tb);
+                    }
+                }
 
                 convertFile.delete();
 
@@ -1038,7 +1048,6 @@ public class AdminController {
         return response;
     }
 
-
     @PostMapping("/getPaybackList")
     @ResponseBody
     public Map<String, Object> getList(@RequestBody Map<String, String> requestData) {
@@ -1048,8 +1057,8 @@ public class AdminController {
 
         List<ThongTinSD> result = new ArrayList<>();
         List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
-        for(ThongTinSD info1 : info) {
-            if(info1.getTGMuon() != null && info1.getTGTra() != null) {
+        for (ThongTinSD info1 : info) {
+            if (info1.getTGMuon() != null && info1.getTGTra() != null) {
                 ThietBi device = thietBiRepository.findById(info1.getThietbi()).orElse(null);
                 info1.setDevice(device);
                 result.add(info1);
@@ -1068,8 +1077,8 @@ public class AdminController {
         BigInteger maTV = new BigInteger(requestData.get("maTV"));
         List<ThongTinSD> result = new ArrayList<>();
         List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
-        for(ThongTinSD info1 : info) {
-            if(info1.getTGDatCho() != null) {
+        for (ThongTinSD info1 : info) {
+            if (info1.getTGDatCho() != null) {
                 ThietBi device = thietBiRepository.findById(info1.getThietbi()).orElse(null);
                 info1.setDevice(device);
                 result.add(info1);
@@ -1104,29 +1113,27 @@ public class AdminController {
         return response;
     }
 
-
-
     @PostMapping("/paybackHandle")
     @ResponseBody
     public Map<String, Object> paybackHandle(@RequestBody Map<String, String> requestData) {
         Map<String, Object> response = new HashMap<>();
 
-        System.out.println("test cai: "+requestData);
+        System.out.println("test cai: " + requestData);
         BigInteger maTV = new BigInteger(requestData.get("maTV"));
-        int maTB  = Integer.parseInt(requestData.get("id"));
+        int maTB = Integer.parseInt(requestData.get("id"));
         String name = requestData.get("name");
         String description = requestData.get("description");
         Timestamp date = Timestamp.valueOf(requestData.get("date"));
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
         List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
-        for(ThongTinSD info1 : info) {
-            if(info1.getThietbi() != null && info1.getThietbi() == maTB) {
-                if(currentTime.compareTo(info1.getTGTra()) > 0) {
-                    XuLy xuly = new XuLy(maTV,"Trả thiết bị không đúng hạn",500000,currentTime,0);
+        for (ThongTinSD info1 : info) {
+            if (info1.getThietbi() != null && info1.getThietbi() == maTB) {
+                if (currentTime.compareTo(info1.getTGTra()) > 0) {
+                    XuLy xuly = new XuLy(maTV, "Trả thiết bị không đúng hạn", 500000, currentTime, 0);
                     xuLyRepository.save(xuly);
                 }
-                ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(),maTV,null,null,null,null,null);
+                ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(), maTV, null, null, null, null, null);
                 thongtinSdRepository.save(updateInfo);
             }
         }
@@ -1141,13 +1148,13 @@ public class AdminController {
         Map<String, Object> response = new HashMap<>();
 
         BigInteger maTV = new BigInteger(requestData.get("maTV"));
-        System.out.println("test cai: "+maTV);
-        int maTB  = Integer.parseInt(requestData.get("id"));
+        System.out.println("test cai: " + maTV);
+        int maTB = Integer.parseInt(requestData.get("id"));
         String name = requestData.get("name");
         String description = requestData.get("description");
         String dateString = requestData.get("toDateTime");
 
-        if(dateString.isEmpty()) {
+        if (dateString.isEmpty()) {
             response.put("success", false);
             response.put("message", "Vui lòng chọn thời gian trả thiết bị");
             return response;
@@ -1161,14 +1168,13 @@ public class AdminController {
         Timestamp date = Timestamp.valueOf(dateString);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
-        if(date.compareTo(currentTime) < 0) {
+        if (date.compareTo(currentTime) < 0) {
             response.put("success", false);
             response.put("message", "Thời gian đặt phải lớn hơn thời gian hiện tại");
             return response;
         }
 
-
-        ThongTinSD addInfo = new ThongTinSD(maTV,maTB,null,currentTime,date,null);
+        ThongTinSD addInfo = new ThongTinSD(maTV, maTB, null, currentTime, date, null);
         System.out.println(addInfo);
         thongtinSdRepository.save(addInfo);
 
@@ -1183,12 +1189,12 @@ public class AdminController {
         Map<String, Object> response = new HashMap<>();
 
         BigInteger maTV = new BigInteger(requestData.get("maTV"));
-        int maTB  = Integer.parseInt(requestData.get("id"));
+        int maTB = Integer.parseInt(requestData.get("id"));
         String name = requestData.get("name");
         String description = requestData.get("description");
         String dateString = requestData.get("toDateTime");
 
-        if(dateString.isEmpty()) {
+        if (dateString.isEmpty()) {
             response.put("success", false);
             response.put("message", "Vui lòng chọn thời gian trả thiết bị");
             return response;
@@ -1202,16 +1208,16 @@ public class AdminController {
         Timestamp date = Timestamp.valueOf(dateString);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
-        if(date.compareTo(currentTime) < 0) {
+        if (date.compareTo(currentTime) < 0) {
             response.put("success", false);
             response.put("message", "Thời gian đặt phải lớn hơn thời gian hiện tại");
             return response;
         }
 
         List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
-        for(ThongTinSD info1 : info) {
-            if(info1.getTGDatCho() != null) {
-                ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(),maTV,maTB,null,currentTime,date,null);
+        for (ThongTinSD info1 : info) {
+            if (info1.getTGDatCho() != null) {
+                ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(), maTV, maTB, null, currentTime, date, null);
                 thongtinSdRepository.save(updateInfo);
             }
         }
