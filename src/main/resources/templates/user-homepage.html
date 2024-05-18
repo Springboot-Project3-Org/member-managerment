@@ -149,6 +149,8 @@
                   <th scope="col">Mã thiết bị</th>
                   <th scope="col">Tên thiết bị</th>
                   <th scope="col">Mô tả</th>
+                  <th scope="col">Trạng thái mượn</th>
+                  <th scope="col">Thời gian đặt</th>
                 </tr>
               </thead>
               <tbody id="thietbiList">
@@ -156,6 +158,17 @@
                   <td scope="col" th:text="${thietbi.MaTB}" th:attr="data-device-id=${thietbi.MaTB}"></td>
                   <td scope="col" th:text="${thietbi.TenTB}"></td>
                   <td scope="col" th:text="${thietbi.MoTaTB}"></td>
+                  <td scope="col"
+                      th:classappend=" ${thietbi.TrangThaiMuon == 'Đang được mượn'} ? 'text-danger' : 'text-success' "
+                      th:text="${thietbi.TrangThaiMuon}"></td>
+
+                  <td scope="col">
+                    <div th:each="time : ${thietbi.ThoiGianDat}">
+                      <span th:text="${time}"></span>
+                    </div>
+                  </td>
+
+
                 </tr>
               </tbody>
             </table>

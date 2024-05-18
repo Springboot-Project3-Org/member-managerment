@@ -188,6 +188,7 @@
           background-color: rgba(189, 189, 189, 0.538);
           position: fixed;
           top: 0;
+          right: 0;
           display: none;
         ">
       <div style="
@@ -206,11 +207,11 @@
 
         <div class="input-group">
           <span class="input-group-text">Mô tả</span>
-          <textarea class="decription form-control" aria-label="With textarea"></textarea>
+          <textarea class="decription form-control" style="height: 115px;" aria-label="With textarea"></textarea>
         </div>
 
         <div style="display: flex; justify-content: right">
-          <button type="button" class="closeNewThietBi-btn btn btn-link" data-mdb-ripple-init
+          <button type="button" class="closeEditThietBi-btn btn btn-link" data-mdb-ripple-init
             data-mdb-ripple-color="dark">
             Hủy
           </button>
@@ -247,6 +248,13 @@
   closeNewThietBi.addEventListener("click", function () {
     newThietBi.style.display = " none";
   });
+
+  //close form edit thietbi
+  var closeEditThietBi = document.querySelector(".closeEditThietBi-btn");
+  closeEditThietBi.addEventListener("click", function () {
+    editThietBi.style.display = " none";
+  });
+
   //edit thietbi
   var editBtn = document.querySelectorAll(".edit-btn");
   editBtn.forEach((btn) => {

@@ -74,13 +74,42 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("member", member);
-        String mssv = memberID.toString();
-        List<ThietBi> thietbiList;
+
+        List<Map<String, Object>> thietbiList = new ArrayList<>();
+
+        List<ThietBi> thietBiListSearch;
+
         if (search == null || search.isEmpty()) {
-            thietbiList = thietBiRepository.findAll();
+            thietBiListSearch = thietBiRepository.findAll();
         } else {
-            thietbiList = thietBiRepository.findByKeyword2(search);
+            thietBiListSearch = thietBiRepository.findByKeyword2(search);
         }
+
+        for (ThietBi thietBi : thietBiListSearch) {
+            Map<String, Object> deviceInfo = new HashMap<>();
+            deviceInfo.put("MaTB", thietBi.getMaTB());
+            deviceInfo.put("TenTB", thietBi.getTenTB());
+            deviceInfo.put("MoTaTB", thietBi.getMoTaTB());
+
+//            Tao list de luu thoi gian dat cho
+            List<Timestamp> datCho = new ArrayList<>();
+
+//            Kiểm tra xem thiết bị có đang được mượn không
+            for (ThongTinSD ttsd : thietBi.getThongtinsd()) {
+                if (ttsd.getTGMuon() != null && ttsd.getTGTra() != null) {
+                    deviceInfo.put("TrangThaiMuon", "Đang được mượn");
+                }
+                else if (ttsd.getTGDatCho() != null) {
+                    datCho.add(ttsd.getTGDatCho());
+                }
+            }
+            deviceInfo.put("ThoiGianDat", datCho);
+
+            deviceInfo.putIfAbsent("TrangThaiMuon", "Không được mượn");
+
+            thietbiList.add(deviceInfo);
+        }
+
         model.addAttribute("thietbiList", thietbiList);
         return "user-homepage";
     }
