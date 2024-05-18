@@ -1215,6 +1215,15 @@ public class AdminController {
             return response;
         }
 
+//        Kiểm tra thiết bị có đang được mượn thay không
+        for (ThongTinSD info1 : thongtinSdRepository.findByThietbi(maTB)) {
+            if (info1.getTGMuon() != null && info1.getTGTra() != null) {
+                response.put("success", false);
+                response.put("message", "Thiết bị đang được mượn");
+                return response;
+            }
+        }
+
         List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
         for (ThongTinSD info1 : info) {
             if (info1.getTGDatCho() != null) {

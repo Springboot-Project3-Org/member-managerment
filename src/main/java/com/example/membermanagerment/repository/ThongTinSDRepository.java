@@ -36,6 +36,8 @@ public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer>
             "OR ttsd.TGDatCho LIKE CONCAT('%', :keyword, '%') ")
     List<ThongTinSD> findByKeyword(String keyword);
 
+    List<ThongTinSD> findByThietbi(Integer thietbi);
+
     List<ThongTinSD> findByThanhvien(BigInteger thanhvien);
     // Kiem tra xem thiet bi da duoc dat cho hay chua
     @Query("SELECT ttsd FROM ThongTinSD ttsd WHERE ttsd.thietbi = :maTB AND DATE(ttsd.TGDatCho) = DATE(:TGDatCho)")
