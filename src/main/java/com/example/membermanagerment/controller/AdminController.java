@@ -1133,8 +1133,9 @@ public class AdminController {
                     XuLy xuly = new XuLy(maTV, "Trả thiết bị không đúng hạn", 500000, currentTime, 0);
                     xuLyRepository.save(xuly);
                 }
-                ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(), maTV, null, null, null, null, null);
-                thongtinSdRepository.save(updateInfo);
+//                ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(), maTV, null, null, null, null, null);
+//                thongtinSdRepository.save(updateInfo);
+                thongtinSdRepository.deleteByMaTT(info1.getMaTT());
             }
         }
         response.put("success", true);

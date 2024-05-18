@@ -5,7 +5,9 @@ import com.example.membermanagerment.model.ThongTinSD;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,12 @@ import java.util.List;
 
 @Repository
 public interface ThongTinSDRepository extends JpaRepository<ThongTinSD, Integer> {
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ThongTinSD t WHERE t.MaTT = :maTT")
+    void deleteByMaTT(@Param("maTT") int maTT);
+
     @Query("select max(ttsd.MaTT) + 1 from ThongTinSD ttsd")
     Integer getMax();
 
