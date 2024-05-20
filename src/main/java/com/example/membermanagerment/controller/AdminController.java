@@ -1226,7 +1226,14 @@ public class AdminController {
 
         List<ThongTinSD> info = thongtinSdRepository.findByThanhvien(maTV);
         for (ThongTinSD info1 : info) {
-            if (info1.getTGDatCho() != null) {
+            if (info1.getTGDatCho() != null && info1.getThietbi() == maTB) {
+//                Kiểm tra tới thời gian đặt thay chưa
+                if (info1.getTGDatCho().compareTo(currentTime) > 0) {
+                    response.put("success", false);
+                    response.put("message", "Chưa tới thời gian đặt");
+                    return response;
+                }
+
                 ThongTinSD updateInfo = new ThongTinSD(info1.getMaTT(), maTV, maTB, null, currentTime, date, null);
                 thongtinSdRepository.save(updateInfo);
             }
